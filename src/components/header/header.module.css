@@ -1,0 +1,40 @@
+.nav {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    justify-content: center;
+}
+
+.menu {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
+
+.menu_element {
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+}
+
+/*.menu_button {*/
+/*    display: flex;*/
+/*    flex-direction: row;*/
+/*    align-items: center;*/
+/*    gap: 8px;*/
+/*    box-sizing: border-box;*/
+/*    border: 1px dashed #4C4CFF;*/
+/*    border-radius: 40px;*/
+/*}*/
+
+.logo {
+    display: flex;
+    justify-content: center;
+}
+
+.user_lk {
+    display: flex;
+    justify-content: end;
+}
