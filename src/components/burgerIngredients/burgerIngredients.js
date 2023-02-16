@@ -23,10 +23,10 @@ export default function BurgerIngredients({data}) {
 
     return (
         <div className={ingredientStyles.container}>
-            <section className={ingredientStyles.title}>
+            <section className={`${ingredientStyles.title} pt-10 pb-5`}>
                 <h1>Соберите бургер</h1>
             </section>
-            <section className={ingredientStyles.tab_section}>
+            <section className={`${ingredientStyles.tab_section}`}>
                 <Tab value="one">
                     Булки
                 </Tab>
@@ -37,7 +37,7 @@ export default function BurgerIngredients({data}) {
                     Начинки
                 </Tab>
             </section>
-            <section className={ingredientStyles.scroll_container}>
+            <section className={`${ingredientStyles.scroll_container}`}>
                 <IngredientType data={bun} title='Булки'></IngredientType>
                 <IngredientType data={sauce} title='Соусы'></IngredientType>
                 <IngredientType data={topping} title='Начинки'></IngredientType>

@@ -7,7 +7,6 @@ import {ProfileIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
 export default function Header() {
 
-
     return (
         <header className={headerStyles.header}>
             <div className="container-wrapper">

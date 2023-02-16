@@ -1,3 +1,45 @@
 .board {
+    display: flex;
+    flex-direction: column;
     background: green;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.items {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+}
+
+.item_top {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.scroll_list {
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.item_bottom {
+
+}
+
+.total {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 40px;
+}
+
+.total_price {
+
 }
