@@ -3,7 +3,7 @@ import constructorStyles from './burgerConstructor.module.css';
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
 
-export default function BurgerConstructor() {
+export default function BurgerConstructor({onButtonClick}) {
     const img = "https://code.s3.yandex.net/react/code/bun-02-mobile.png";
     return (
         <div className={`${constructorStyles.board} pt-25 pb-10 pl-4`}>
@@ -82,7 +82,7 @@ export default function BurgerConstructor() {
                     <span className="text text_type_digits-medium">500</span>
                     <CurrencyIcon type="primary"/>
                 </p>
-                <Button type={"primary"} size={"large"}>
+                <Button type={"primary"} size={"large"} onClick={onButtonClick}>
                     Оформить заказ
                 </Button>
             </section>

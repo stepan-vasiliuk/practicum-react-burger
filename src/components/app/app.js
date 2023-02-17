@@ -4,6 +4,7 @@ import Header from "../header/header";
 import BurgerConstructor from "../burgerConstructor/burgerConstructor";
 import BurgerIngredients from "../burgerIngredients/burgerIngredients";
 import MainSection from "../main/main";
+import Modal from "../modal/modal";
 
 export default function App() {
     const [state, setState] = React.useState({
@@ -11,6 +12,8 @@ export default function App() {
         hasError: false,
         data: []
     })
+    const [isOpened, setIsOpened] = React.useState(false);
+
 
     React.useEffect(() => {
         getIngredients()
@@ -35,6 +38,15 @@ export default function App() {
         console.log('Загрузка данных с сервера')
     }
 
+    const handleButtonClick = () => {
+        setIsOpened(true);
+    }
+
+    const onClose = () => {
+        setIsOpened(false);
+    }
+
+
     const {data, isLoading, hasError} = state;
     return (
         <>
@@ -45,7 +57,13 @@ export default function App() {
                 !hasError &&
                 data.length &&
                 <MainSection
-                    data={data}/>
+                    data={data}
+                    isOpened={isOpened}
+                    onButtonClick={handleButtonClick}
+                />
+            }
+            {isOpened &&
+                <Modal onClose={onClose}/>
             }
         </>
     )
