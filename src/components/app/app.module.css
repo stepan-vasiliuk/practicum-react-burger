@@ -1,4 +1,11 @@
-/*.main {*/
-/*    display: grid;*/
-/*    grid-template-columns: 1fr 1fr;*/
-/*}*/
+.main {
+    background: #131316;
+    height: 100%;
+}
+
+.container_grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 85vh;
+    gap: 40px;
+}

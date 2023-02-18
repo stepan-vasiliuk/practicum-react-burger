@@ -1,9 +1,6 @@
-import modalStyles from "../modal.module.css";
 import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import orderImage from "../../../images/orderImage.svg";
 import cardStyles from "./ingredientsModal.module.css";
 import React from "react";
-import orderStyles from "../orderModal/orderModal.module.css";
 
 
 export default function IngredientsModal({onClose, ingredient}) {

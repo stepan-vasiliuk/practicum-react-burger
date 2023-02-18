@@ -2,6 +2,7 @@ import React, {useMemo} from "react";
 import ingredientStyles from "./burgerIngredients.module.css";
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientType from "../ingredientType/ingredientType";
+import PropTypes from "prop-types";
 
 
 export default function BurgerIngredients({data, onIngredientClick}) {
@@ -44,4 +45,22 @@ export default function BurgerIngredients({data, onIngredientClick}) {
             </section>
         </div>
     )
+}
+
+BurgerIngredients.propTypes = {
+    onIngredientClick: PropTypes.func.isRequired,
+    data: PropTypes.arrayOf(PropTypes.shape({
+        _id: PropTypes.string,
+        name: PropTypes.string.isRequired,
+        type: PropTypes.string.isRequired,
+        proteins: PropTypes.number.isRequired,
+        fat: PropTypes.number.isRequired,
+        carbohydrates: PropTypes.number.isRequired,
+        calories: PropTypes.number.isRequired,
+        price: PropTypes.number.isRequired,
+        image: PropTypes.string.isRequired,
+        image_large: PropTypes.string.isRequired,
+        image_mobile: PropTypes.string.isRequired,
+
+    }))
 }

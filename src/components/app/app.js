@@ -3,7 +3,6 @@ import appStyles from './app.module.css';
 import Header from "../header/header";
 import BurgerConstructor from "../burgerConstructor/burgerConstructor";
 import BurgerIngredients from "../burgerIngredients/burgerIngredients";
-import MainSection from "../main/main";
 import Modal from "../modal/modal";
 import OrderModal from "../modal/orderModal/orderModal";
 import IngredientsModal from "../modal/ingredientsModal/ingredientsModal";
@@ -67,11 +66,17 @@ export default function App() {
             {!isLoading &&
                 !hasError &&
                 data.length &&
-                <MainSection
-                    data={data}
-                    onIngredientClick={handleIngredientClick}
-                    onButtonClick={handleOrderButtonClick}
-                />
+
+                <main className={appStyles.main}>
+                    <div className="container-wrapper">
+
+                        <div className={appStyles.container_grid}>
+                            <BurgerIngredients data={data}
+                                               onIngredientClick={handleIngredientClick}/>
+                            <BurgerConstructor onButtonClick={handleOrderButtonClick}/>
+                        </div>
+                    </div>
+                </main>
             }
             {orderModal.isOpened &&
                 <Modal onClose={onClose}>
@@ -81,7 +86,7 @@ export default function App() {
                 <Modal onClose={onClose}>
                     <IngredientsModal
                         ingredient={ingredientsModal.ingredient}
-                    onClose={onClose}></IngredientsModal>
+                        onClose={onClose}></IngredientsModal>
                 </Modal>
             }
         </>

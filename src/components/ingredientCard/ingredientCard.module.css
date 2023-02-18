@@ -7,7 +7,7 @@
     position: relative;
 }
 
-.card:hover{
+.card:hover {
     cursor: pointer;
 }
 
@@ -17,8 +17,8 @@
     align-items: center;
 }
 
-.price_value{
-    font-family: Iceland ,sans-serif;
+.price_value {
+    font-family: Iceland, sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 28px;

@@ -1,6 +1,7 @@
 import React from "react";
 import constructorStyles from './burgerConstructor.module.css';
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import PropTypes from "prop-types";
 
 
 export default function BurgerConstructor({onButtonClick}) {
@@ -19,7 +20,7 @@ export default function BurgerConstructor({onButtonClick}) {
                 </div>
                 <ul className={constructorStyles.scroll_list}>
                     <li className={constructorStyles.scroll_list_item}>
-                        <DragIcon type="primary" />
+                        <DragIcon type="primary"/>
                         <ConstructorElement
                             text="Краторная булка N-200i (верх)"
                             price={200}
@@ -27,7 +28,7 @@ export default function BurgerConstructor({onButtonClick}) {
                         />
                     </li>
                     <li className={constructorStyles.scroll_list_item}>
-                        <DragIcon type="primary" />
+                        <DragIcon type="primary"/>
                         <ConstructorElement
                             text="Краторная булка N-200i (верх)"
                             price={200}
@@ -35,7 +36,7 @@ export default function BurgerConstructor({onButtonClick}) {
                         />
                     </li>
                     <li className={constructorStyles.scroll_list_item}>
-                        <DragIcon type="primary" />
+                        <DragIcon type="primary"/>
                         <ConstructorElement
                             text="Краторная булка N-200i (верх)"
                             price={200}
@@ -43,7 +44,7 @@ export default function BurgerConstructor({onButtonClick}) {
                         />
                     </li>
                     <li className={constructorStyles.scroll_list_item}>
-                        <DragIcon type="primary" />
+                        <DragIcon type="primary"/>
                         <ConstructorElement
                             text="Краторная булка N-200i (верх)"
                             price={200}
@@ -51,7 +52,7 @@ export default function BurgerConstructor({onButtonClick}) {
                         />
                     </li>
                     <li className={constructorStyles.scroll_list_item}>
-                        <DragIcon type="primary" />
+                        <DragIcon type="primary"/>
                         <ConstructorElement
                             text="Краторная булка N-200i (верх)"
                             price={200}
@@ -59,7 +60,7 @@ export default function BurgerConstructor({onButtonClick}) {
                         />
                     </li>
                     <li className={constructorStyles.scroll_list_item}>
-                        <DragIcon type="primary" />
+                        <DragIcon type="primary"/>
                         <ConstructorElement
                             text="Краторная булка N-200i (верх)"
                             price={200}
@@ -89,5 +90,8 @@ export default function BurgerConstructor({onButtonClick}) {
         </div>
     )
 
+}
 
+BurgerConstructor.propTypes = {
+    onButtonClick: PropTypes.func.isRequired
 }
