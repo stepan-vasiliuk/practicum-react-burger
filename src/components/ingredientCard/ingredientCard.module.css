@@ -4,10 +4,11 @@
     align-items: center;
     gap: 4px;
 
-    /*width: 272px;*/
-    /*height: 200px;*/
-    /*background: red;*/
     position: relative;
+}
+
+.card:hover{
+    cursor: pointer;
 }
 
 .price {

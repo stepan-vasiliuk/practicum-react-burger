@@ -4,7 +4,7 @@ import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientType from "../ingredientType/ingredientType";
 
 
-export default function BurgerIngredients({data}) {
+export default function BurgerIngredients({data, onIngredientClick}) {
 
     const bun = useMemo(
         () => data.filter((ingredient) => ingredient.type === 'bun'),
@@ -38,9 +38,9 @@ export default function BurgerIngredients({data}) {
                 </Tab>
             </section>
             <section className={`${ingredientStyles.scroll_container}`}>
-                <IngredientType data={bun} title='Булки'></IngredientType>
-                <IngredientType data={sauce} title='Соусы'></IngredientType>
-                <IngredientType data={topping} title='Начинки'></IngredientType>
+                <IngredientType onCardClick={onIngredientClick} data={bun} title='Булки'></IngredientType>
+                <IngredientType onCardClick={onIngredientClick} data={sauce} title='Соусы'></IngredientType>
+                <IngredientType onCardClick={onIngredientClick} data={topping} title='Начинки'></IngredientType>
             </section>
         </div>
     )

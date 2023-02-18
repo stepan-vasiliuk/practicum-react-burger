@@ -5,6 +5,8 @@ import BurgerConstructor from "../burgerConstructor/burgerConstructor";
 import BurgerIngredients from "../burgerIngredients/burgerIngredients";
 import MainSection from "../main/main";
 import Modal from "../modal/modal";
+import OrderModal from "../modal/orderModal/orderModal";
+import IngredientsModal from "../modal/ingredientsModal/ingredientsModal";
 
 export default function App() {
     const [state, setState] = React.useState({
@@ -12,7 +14,11 @@ export default function App() {
         hasError: false,
         data: []
     })
-    const [isOpened, setIsOpened] = React.useState(false);
+    const [orderModal, setOrderModal] = React.useState({isOpened: false});
+    const [ingredientsModal, setIngredientsModal] = React.useState({
+        isOpened: false,
+        ingredient: null
+    })
 
 
     React.useEffect(() => {
@@ -38,12 +44,17 @@ export default function App() {
         console.log('Загрузка данных с сервера')
     }
 
-    const handleButtonClick = () => {
-        setIsOpened(true);
+    const handleOrderButtonClick = () => {
+        setOrderModal({isOpened: true});
     }
 
     const onClose = () => {
-        setIsOpened(false);
+        setOrderModal({isOpened: false});
+        setIngredientsModal({...ingredientsModal, isOpened: false})
+    }
+
+    const handleIngredientClick = (data) => {
+        setIngredientsModal({isOpened: true, ingredient: data})
     }
 
 
@@ -58,12 +69,20 @@ export default function App() {
                 data.length &&
                 <MainSection
                     data={data}
-                    isOpened={isOpened}
-                    onButtonClick={handleButtonClick}
+                    onIngredientClick={handleIngredientClick}
+                    onButtonClick={handleOrderButtonClick}
                 />
             }
-            {isOpened &&
-                <Modal onClose={onClose}/>
+            {orderModal.isOpened &&
+                <Modal onClose={onClose}>
+                    <OrderModal onClose={onClose}></OrderModal>
+                </Modal>}
+            {ingredientsModal.isOpened &&
+                <Modal onClose={onClose}>
+                    <IngredientsModal
+                        ingredient={ingredientsModal.ingredient}
+                    onClose={onClose}></IngredientsModal>
+                </Modal>
             }
         </>
     )

@@ -11,7 +11,8 @@ export default function MainSection(props) {
             <div className="container-wrapper">
 
                 <div className={mainStyles.container_grid}>
-                    <BurgerIngredients data={props.data}/>
+                    <BurgerIngredients data={props.data}
+                    onIngredientClick={props.onIngredientClick}/>
                     <BurgerConstructor isOpened={props.isOpened}
                                        onButtonClick={props.onButtonClick}/>
                 </div>
