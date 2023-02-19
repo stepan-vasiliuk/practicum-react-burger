@@ -4,8 +4,9 @@ import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/
 import PropTypes from "prop-types";
 
 
-export default function BurgerConstructor({onButtonClick}) {
-    const img = "https://code.s3.yandex.net/react/code/bun-02-mobile.png";
+export default function BurgerConstructor({onButtonClick, ingredientsArray}) {
+    const {price, name, image_mobile} = ingredientsArray[1];
+
     return (
         <div className={`${constructorStyles.board} pt-25 pb-10 pl-4`}>
             <section className={constructorStyles.items}>
@@ -13,58 +14,58 @@ export default function BurgerConstructor({onButtonClick}) {
                     <ConstructorElement
                         type="top"
                         isLocked={true}
-                        text="Краторная булка N-200i (верх)"
-                        price={200}
-                        thumbnail={img}
+                        text={name}
+                        price={price}
+                        thumbnail={image_mobile}
                     />
                 </div>
                 <ul className={constructorStyles.scroll_list}>
                     <li className={constructorStyles.scroll_list_item}>
                         <DragIcon type="primary"/>
                         <ConstructorElement
-                            text="Краторная булка N-200i (верх)"
-                            price={200}
-                            thumbnail={img}
+                            text={name}
+                            price={price}
+                            thumbnail={image_mobile}
                         />
                     </li>
                     <li className={constructorStyles.scroll_list_item}>
                         <DragIcon type="primary"/>
                         <ConstructorElement
-                            text="Краторная булка N-200i (верх)"
-                            price={200}
-                            thumbnail={img}
+                            text={name}
+                            price={price}
+                            thumbnail={image_mobile}
                         />
                     </li>
                     <li className={constructorStyles.scroll_list_item}>
                         <DragIcon type="primary"/>
                         <ConstructorElement
-                            text="Краторная булка N-200i (верх)"
-                            price={200}
-                            thumbnail={img}
+                            text={name}
+                            price={price}
+                            thumbnail={image_mobile}
                         />
                     </li>
                     <li className={constructorStyles.scroll_list_item}>
                         <DragIcon type="primary"/>
                         <ConstructorElement
-                            text="Краторная булка N-200i (верх)"
-                            price={200}
-                            thumbnail={img}
+                            text={name}
+                            price={price}
+                            thumbnail={image_mobile}
                         />
                     </li>
                     <li className={constructorStyles.scroll_list_item}>
                         <DragIcon type="primary"/>
                         <ConstructorElement
-                            text="Краторная булка N-200i (верх)"
-                            price={200}
-                            thumbnail={img}
+                            text={name}
+                            price={price}
+                            thumbnail={image_mobile}
                         />
                     </li>
                     <li className={constructorStyles.scroll_list_item}>
                         <DragIcon type="primary"/>
                         <ConstructorElement
-                            text="Краторная булка N-200i (верх)"
-                            price={200}
-                            thumbnail={img}
+                            text={name}
+                            price={price}
+                            thumbnail={image_mobile}
                         />
                     </li>
                 </ul>
@@ -74,7 +75,7 @@ export default function BurgerConstructor({onButtonClick}) {
                         isLocked={true}
                         text="Краторная булка N-200i (верх)"
                         price={200}
-                        thumbnail={img}
+                        thumbnail={image_mobile}
                     />
                 </div>
             </section>
@@ -93,5 +94,19 @@ export default function BurgerConstructor({onButtonClick}) {
 }
 
 BurgerConstructor.propTypes = {
-    onButtonClick: PropTypes.func.isRequired
+    onButtonClick: PropTypes.func.isRequired,
+    ingredientsArray: PropTypes.arrayOf(PropTypes.shape({
+        _id: PropTypes.string,
+        name: PropTypes.string.isRequired,
+        type: PropTypes.string.isRequired,
+        proteins: PropTypes.number.isRequired,
+        fat: PropTypes.number.isRequired,
+        carbohydrates: PropTypes.number.isRequired,
+        calories: PropTypes.number.isRequired,
+        price: PropTypes.number.isRequired,
+        image: PropTypes.string.isRequired,
+        image_large: PropTypes.string.isRequired,
+        image_mobile: PropTypes.string.isRequired,
+
+    }))
 }

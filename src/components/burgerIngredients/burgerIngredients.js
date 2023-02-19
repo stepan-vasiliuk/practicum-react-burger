@@ -5,21 +5,21 @@ import IngredientType from "../ingredientType/ingredientType";
 import PropTypes from "prop-types";
 
 
-export default function BurgerIngredients({data, onIngredientClick}) {
+export default function BurgerIngredients({ingredientArray, onIngredientClick}) {
 
     const bun = useMemo(
-        () => data.filter((ingredient) => ingredient.type === 'bun'),
-        [data]
+        () => ingredientArray.filter((ingredient) => ingredient.type === 'bun'),
+        [ingredientArray]
     );
 
     const topping = useMemo(
-        () => data.filter((ingredient) => ingredient.type === 'main'),
-        [data]
+        () => ingredientArray.filter((ingredient) => ingredient.type === 'main'),
+        [ingredientArray]
     );
 
     const sauce = useMemo(
-        () => data.filter((ingredient) => ingredient.type === 'sauce'),
-        [data]
+        () => ingredientArray.filter((ingredient) => ingredient.type === 'sauce'),
+        [ingredientArray]
     );
 
     return (
@@ -39,9 +39,9 @@ export default function BurgerIngredients({data, onIngredientClick}) {
                 </Tab>
             </section>
             <section className={`${ingredientStyles.scroll_container}`}>
-                <IngredientType onCardClick={onIngredientClick} data={bun} title='Булки'></IngredientType>
-                <IngredientType onCardClick={onIngredientClick} data={sauce} title='Соусы'></IngredientType>
-                <IngredientType onCardClick={onIngredientClick} data={topping} title='Начинки'></IngredientType>
+                <IngredientType onCardClick={onIngredientClick} groupType={bun} title='Булки' />
+                <IngredientType onCardClick={onIngredientClick} groupType={sauce} title='Соусы' />
+                <IngredientType onCardClick={onIngredientClick} groupType={topping} title='Начинки' />
             </section>
         </div>
     )
@@ -49,7 +49,7 @@ export default function BurgerIngredients({data, onIngredientClick}) {
 
 BurgerIngredients.propTypes = {
     onIngredientClick: PropTypes.func.isRequired,
-    data: PropTypes.arrayOf(PropTypes.shape({
+    ingredientArray: PropTypes.arrayOf(PropTypes.shape({
         _id: PropTypes.string,
         name: PropTypes.string.isRequired,
         type: PropTypes.string.isRequired,

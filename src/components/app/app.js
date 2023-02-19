@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import appStyles from './app.module.css';
 import Header from "../header/header";
 import BurgerConstructor from "../burgerConstructor/burgerConstructor";
@@ -8,19 +8,19 @@ import OrderModal from "../modal/orderModal/orderModal";
 import IngredientsModal from "../modal/ingredientsModal/ingredientsModal";
 
 export default function App() {
-    const [state, setState] = React.useState({
+    const [ingredientsData, setIngredientsData] = useState({
         isLoading: false,
         hasError: false,
         data: []
     })
-    const [orderModal, setOrderModal] = React.useState({isOpened: false});
-    const [ingredientsModal, setIngredientsModal] = React.useState({
+    const [orderModal, setOrderModal] = useState({isOpened: false});
+    const [ingredientsModal, setIngredientsModal] = useState({
         isOpened: false,
         ingredient: null
     })
 
 
-    React.useEffect(() => {
+    useEffect(() => {
         getIngredients()
     }, [])
 
@@ -28,11 +28,11 @@ export default function App() {
     const URL = 'https://norma.nomoreparties.space/api/ingredients';
 
     const getIngredients = () => {
-        setState({...state, hasError: false, isLoading: true});
+        setIngredientsData({...ingredientsData, hasError: false, isLoading: true});
         fetch(URL)
             .then(res => res.json())
-            .then(data => setState({...state, isLoading: false, data: data.data}))
-            .catch(e => setState({isLoading: false, hasError: true, ...state}))
+            .then(data => setIngredientsData({...ingredientsData, isLoading: false, data: data.data}))
+            .catch(e => setIngredientsData({isLoading: false, hasError: true, ...ingredientsData}))
     }
 
     const handleError = () => {
@@ -52,12 +52,12 @@ export default function App() {
         setIngredientsModal({...ingredientsModal, isOpened: false})
     }
 
-    const handleIngredientClick = (data) => {
-        setIngredientsModal({isOpened: true, ingredient: data})
+    const handleIngredientClick = (ingredient) => {
+        setIngredientsModal({isOpened: true, ingredient: ingredient})
     }
 
 
-    const {data, isLoading, hasError} = state;
+    const {data, isLoading, hasError} = ingredientsData;
     return (
         <>
             <Header/>
@@ -71,9 +71,12 @@ export default function App() {
                     <div className="container-wrapper">
 
                         <div className={appStyles.container_grid}>
-                            <BurgerIngredients data={data}
-                                               onIngredientClick={handleIngredientClick}/>
-                            <BurgerConstructor onButtonClick={handleOrderButtonClick}/>
+                            <BurgerIngredients
+                                ingredientArray={data}
+                                onIngredientClick={handleIngredientClick}/>
+                            <BurgerConstructor
+                                ingredientsArray={data}
+                                onButtonClick={handleOrderButtonClick}/>
                         </div>
                     </div>
                 </main>

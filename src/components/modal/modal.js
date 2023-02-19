@@ -1,5 +1,5 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React, {useEffect} from "react";
+import ReactDOM, {createPortal} from "react-dom";
 import modalStyles from "./modal.module.css";
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import PropTypes from "prop-types";
@@ -8,7 +8,7 @@ const modalsRoot = document.getElementById('modals');
 
 export default function Modal({onClose, children}) {
 
-    React.useEffect(() => {
+    useEffect(() => {
         document.addEventListener('keydown', handleEscButton);
         return () => {
             document.removeEventListener('keydown', handleEscButton);
@@ -19,13 +19,13 @@ export default function Modal({onClose, children}) {
         e.key === 'Escape' && onClose();
     }
 
-    return ReactDOM.createPortal(
+    return createPortal(
         (
             <>
                 <div className={modalStyles.modal}>
                     {children}
                 </div>
-                <ModalOverlay/>
+                <ModalOverlay onClose={onClose}/>
             </>
         ),
         modalsRoot
