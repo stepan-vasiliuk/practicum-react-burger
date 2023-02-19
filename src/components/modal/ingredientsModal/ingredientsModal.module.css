@@ -1,0 +1,51 @@
+.ingredients_modal {
+    max-width: 720px;
+    max-height: 539px;
+    padding: 60px 40px 60px 40px;
+}
+
+.content_wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal_content {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header_text {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 111%;
+
+    display: flex;
+    align-items: center;
+}
+
+.modal_image {
+    display: flex;
+    justify-content: center;
+}
+
+.modal_text {
+    display: flex;
+    justify-content: center;
+}
+
+.modal_description {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.modal_description_text {
+
+}

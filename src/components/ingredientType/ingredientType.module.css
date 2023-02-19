@@ -1,0 +1,30 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.section_container {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.title {
+    font-family: 'Jet Brains Mono', Arial, serif;
+    font-weight: bold;
+    width: 600px;
+    height: 30px;
+
+}
+
+.cards_grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 24px;
+    row-gap: 32px;
+    justify-items: center;
+    justify-content: stretch;
+    box-sizing: border-box;
+    padding-left: 16px;
+    padding-top: 24px;
+}

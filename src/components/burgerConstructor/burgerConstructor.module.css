@@ -1,0 +1,58 @@
+.board {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+.items {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+    overflow: hidden;
+}
+
+.item_top {
+    padding-right: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-self: end;
+}
+
+.scroll_list {
+    padding-right: 8px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+    align-self: stretch;
+}
+
+.scroll_list_item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.item_bottom {
+    align-self: flex-end;
+    padding-right: 16px;
+
+}
+
+
+.total {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    align-self: flex-end;
+}
+
+.total_price {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
