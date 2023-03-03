@@ -1,11 +1,25 @@
-import React, {useMemo} from "react";
+import React, {useEffect, useMemo} from "react";
 import ingredientStyles from "./burgerIngredients.module.css";
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientType from "../ingredientType/ingredientType";
 import PropTypes from "prop-types";
+import {useDispatch, useSelector} from "react-redux";
+import {ingredientsLoad} from "../../services/actions";
 
 
 export default function BurgerIngredients({ingredientArray, onIngredientClick}) {
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(ingredientsLoad())
+    }, []);
+
+    const ingredientsData = useSelector(state => {
+        const {dataReducer} = state;
+        console.log('Redux state >>>', dataReducer.data);
+        return dataReducer.data;
+    })
 
     const bun = useMemo(
         () => ingredientArray.filter((ingredient) => ingredient.type === 'bun'),

@@ -1,7 +1,8 @@
-import React from "react";
+import React, {useEffect} from "react";
 import constructorStyles from './burgerConstructor.module.css';
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
+import {useDispatch} from "react-redux";
 
 
 export default function BurgerConstructor({onButtonClick, ingredientsArray}) {
