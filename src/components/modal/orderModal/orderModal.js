@@ -6,6 +6,7 @@ import React from "react";
 
 
 export default function OrderModal({onClose})  {
+
     return(
         <div className={orderStyles.order_modal}>
             <a href='#' className={orderStyles.close_button} onClick={onClose}>

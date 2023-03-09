@@ -2,8 +2,8 @@ import {
     DATA_ERROR_DISPLAY_OFF,
     DATA_ERROR_DISPLAY_ON,
     DATA_LOADING_OFF,
-    DATA_LOADING_ON,
-    INGREDIENTS_LOAD
+    DATA_LOADING_ON, INGREDIENTS_GET_FAILED, INGREDIENTS_GET_SUCCESS,
+    INGREDIENTS_LOAD, MODAL_CLOSE, MODAL_OPEN
 } from "./actionTypes";
 
 const URL = 'https://norma.nomoreparties.space/api/ingredients';
@@ -14,13 +14,20 @@ export function ingredientsLoad() {
             dispatch(dataLoadingOn())
             const response = await fetch(URL);
             const jsonData = await response.json();
-            dispatch({
-                type: INGREDIENTS_LOAD,
-                data: jsonData.data
-            })
+            if (jsonData.success && jsonData) {
+                dispatch({
+                    type: INGREDIENTS_GET_SUCCESS,
+                    data: jsonData.data
+                })
+            } else {
+                dispatch({
+                    type: INGREDIENTS_GET_FAILED,
+                })
+                dispatch(dataErrorOn('Не выполнено условие получения данных'))
+            }
             dispatch(dataLoadingOff())
         } catch (e) {
-            dispatch(dataErrorOn('Ошибка API'));
+            dispatch(dataErrorOn('Ошибка при получении данных ингредиентов из API'));
             dispatch(dataLoadingOff());
         }
     }
@@ -29,7 +36,7 @@ export function ingredientsLoad() {
 export function dataErrorOn(text) {
     return {
         type: DATA_ERROR_DISPLAY_ON,
-        payload: text,
+        data: text
     }
 }
 
@@ -48,5 +55,18 @@ export function dataLoadingOn() {
 export function dataLoadingOff() {
     return {
         type: DATA_LOADING_OFF
+    }
+}
+
+export function modalOpen(ingredient) {
+    return {
+        type: MODAL_OPEN,
+        data: ingredient
+    }
+}
+
+export function modalClose() {
+    return {
+        type: MODAL_CLOSE
     }
 }

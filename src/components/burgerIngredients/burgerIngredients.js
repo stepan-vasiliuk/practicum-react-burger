@@ -7,33 +7,26 @@ import {useDispatch, useSelector} from "react-redux";
 import {ingredientsLoad} from "../../services/actions";
 
 
-export default function BurgerIngredients({ingredientArray, onIngredientClick}) {
-
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(ingredientsLoad())
-    }, []);
+export default function BurgerIngredients() {
 
     const ingredientsData = useSelector(state => {
         const {dataReducer} = state;
-        console.log('Redux state >>>', dataReducer.data);
         return dataReducer.data;
     })
 
     const bun = useMemo(
-        () => ingredientArray.filter((ingredient) => ingredient.type === 'bun'),
-        [ingredientArray]
+        () => ingredientsData.filter((ingredient) => ingredient.type === 'bun'),
+        [ingredientsData]
     );
 
     const topping = useMemo(
-        () => ingredientArray.filter((ingredient) => ingredient.type === 'main'),
-        [ingredientArray]
+        () => ingredientsData.filter((ingredient) => ingredient.type === 'main'),
+        [ingredientsData]
     );
 
     const sauce = useMemo(
-        () => ingredientArray.filter((ingredient) => ingredient.type === 'sauce'),
-        [ingredientArray]
+        () => ingredientsData.filter((ingredient) => ingredient.type === 'sauce'),
+        [ingredientsData]
     );
 
     return (
@@ -53,9 +46,9 @@ export default function BurgerIngredients({ingredientArray, onIngredientClick}) 
                 </Tab>
             </section>
             <section className={`${ingredientStyles.scroll_container}`}>
-                <IngredientType onCardClick={onIngredientClick} groupType={bun} title='Булки' />
-                <IngredientType onCardClick={onIngredientClick} groupType={sauce} title='Соусы' />
-                <IngredientType onCardClick={onIngredientClick} groupType={topping} title='Начинки' />
+                <IngredientType groupType={bun} title='Булки'/>
+                <IngredientType groupType={sauce} title='Соусы'/>
+                <IngredientType groupType={topping} title='Начинки'/>
             </section>
         </div>
     )

@@ -6,34 +6,37 @@ import BurgerIngredients from "../burgerIngredients/burgerIngredients";
 import Modal from "../modal/modal";
 import OrderModal from "../modal/orderModal/orderModal";
 import IngredientsModal from "../modal/ingredientsModal/ingredientsModal";
+import {useDispatch, useSelector} from "react-redux";
+import {ingredientsLoad, modalClose} from "../../services/actions";
 
 export default function App() {
-    const [ingredientsData, setIngredientsData] = useState({
-        isLoading: false,
-        hasError: false,
-        data: []
+
+    const dataReducer = useSelector(state => {
+        const {dataReducer} = state;
+        console.log(`Data was successfully loaded>>`, dataReducer.data)
+        return dataReducer;
     })
+
+    const dispatch = useDispatch();
+
+    const ingrModal = useSelector(state => {
+        const {modalReducer} = state;
+        return modalReducer;
+    })
+    const closeModals = () => {
+        dispatch(modalClose());
+    }
+
+    useEffect(() => {
+        dispatch(ingredientsLoad())
+    }, []);
+
+
     const [orderModal, setOrderModal] = useState({isOpened: false});
     const [ingredientsModal, setIngredientsModal] = useState({
         isOpened: false,
         ingredient: null
     })
-
-
-    useEffect(() => {
-        getIngredients()
-    }, [])
-
-
-    const URL = 'https://norma.nomoreparties.space/api/ingredients';
-
-    const getIngredients = () => {
-        setIngredientsData({...ingredientsData, hasError: false, isLoading: true});
-        fetch(URL)
-            .then(res => res.json())
-            .then(data => setIngredientsData({...ingredientsData, isLoading: false, data: data.data}))
-            .catch(e => setIngredientsData({isLoading: false, hasError: true, ...ingredientsData}))
-    }
 
     const handleError = () => {
         alert('Ошибка при загрузке данных с сервера')
@@ -52,12 +55,8 @@ export default function App() {
         setIngredientsModal({...ingredientsModal, isOpened: false})
     }
 
-    const handleIngredientClick = (ingredient) => {
-        setIngredientsModal({isOpened: true, ingredient: ingredient})
-    }
+    const {data, hasError, isLoading} = dataReducer;
 
-
-    const {data, isLoading, hasError} = ingredientsData;
     return (
         <>
             <Header/>
@@ -71,25 +70,21 @@ export default function App() {
                     <div className="container-wrapper">
 
                         <div className={appStyles.container_grid}>
-                            <BurgerIngredients
-                                ingredientArray={data}
-                                onIngredientClick={handleIngredientClick}/>
-                            <BurgerConstructor
-                                ingredientsArray={data}
-                                onButtonClick={handleOrderButtonClick}/>
+                            <BurgerIngredients />
+                            <BurgerConstructor />
                         </div>
                     </div>
                 </main>
             }
-            {orderModal.isOpened &&
-                <Modal onClose={onClose}>
-                    <OrderModal onClose={onClose}></OrderModal>
-                </Modal>}
-            {ingredientsModal.isOpened &&
-                <Modal onClose={onClose}>
-                    <IngredientsModal
-                        ingredient={ingredientsModal.ingredient}
-                        onClose={onClose}></IngredientsModal>
+            {ingrModal.isOpen &&
+                <Modal onClose={closeModals}>
+                    {ingrModal.ingredient ?
+                        <IngredientsModal
+                            ingredient={ingrModal.ingredient}
+                            onClose={closeModals}>
+                        </IngredientsModal>
+                        : <OrderModal onClose={closeModals}></OrderModal>
+                    }
                 </Modal>
             }
         </>

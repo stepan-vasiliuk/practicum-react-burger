@@ -1,4 +1,10 @@
-import {DATA_ERROR_DISPLAY_ON, DATA_LOADING_OFF, DATA_LOADING_ON, INGREDIENTS_LOAD} from "../actionTypes";
+import {
+    DATA_ERROR_DISPLAY_ON,
+    DATA_LOADING_OFF,
+    DATA_LOADING_ON, INGREDIENTS_GET_FAILED,
+    INGREDIENTS_GET_SUCCESS,
+    INGREDIENTS_LOAD
+} from "../actionTypes";
 
 const initialState = {
     isLoading: false,
@@ -7,14 +13,26 @@ const initialState = {
 }
 
 export const dataReducer = (state = initialState, action) => {
-    // console.log(`dataReducer >>>`, action.data)
+    console.log(`dataReducer >>>`, action.data)
     switch (action.type) {
-        case INGREDIENTS_LOAD:
+        case INGREDIENTS_GET_SUCCESS:
             return {
                 ...state,
-                data: action.data
+                data: action.data,
             }
+        case INGREDIENTS_GET_FAILED:
+            return {
+                ...state,
+                isLoading: false,
+                hasError: true,
+            }
+        // case INGREDIENTS_LOAD:
+        //     return {
+        //         ...state,
+        //         data: action.data
+        //     }
         case DATA_ERROR_DISPLAY_ON:
+            console.log(action.data);
             return {
                 ...state,
                 hasError: true,
