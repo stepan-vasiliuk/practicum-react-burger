@@ -13,13 +13,12 @@ export default function App() {
 
     const dataReducer = useSelector(state => {
         const {dataReducer} = state;
-        console.log(`Data was successfully loaded>>`, dataReducer.data)
         return dataReducer;
     })
 
     const dispatch = useDispatch();
 
-    const ingrModal = useSelector(state => {
+    const modal = useSelector(state => {
         const {modalReducer} = state;
         return modalReducer;
     })
@@ -32,12 +31,6 @@ export default function App() {
     }, []);
 
 
-    const [orderModal, setOrderModal] = useState({isOpened: false});
-    const [ingredientsModal, setIngredientsModal] = useState({
-        isOpened: false,
-        ingredient: null
-    })
-
     const handleError = () => {
         alert('Ошибка при загрузке данных с сервера')
     }
@@ -46,14 +39,6 @@ export default function App() {
         console.log('Загрузка данных с сервера')
     }
 
-    const handleOrderButtonClick = () => {
-        setOrderModal({isOpened: true});
-    }
-
-    const onClose = () => {
-        setOrderModal({isOpened: false});
-        setIngredientsModal({...ingredientsModal, isOpened: false})
-    }
 
     const {data, hasError, isLoading} = dataReducer;
 
@@ -76,11 +61,11 @@ export default function App() {
                     </div>
                 </main>
             }
-            {ingrModal.isOpen &&
+            {modal.isOpen &&
                 <Modal onClose={closeModals}>
-                    {ingrModal.ingredient ?
+                    {modal.ingredient ?
                         <IngredientsModal
-                            ingredient={ingrModal.ingredient}
+                            ingredient={modal.ingredient}
                             onClose={closeModals}>
                         </IngredientsModal>
                         : <OrderModal onClose={closeModals}></OrderModal>

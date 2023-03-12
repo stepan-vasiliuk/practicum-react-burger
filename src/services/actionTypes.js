@@ -11,3 +11,10 @@ export const DATA_LOADING_OFF = 'DATA_LOADING_OFF';
 
 export const MODAL_CLOSE = 'MODAL_CLOSE';
 export const MODAL_OPEN = 'MODAL_OPEN';
+
+export const ADD_INGREDIENT = 'ADD_INGREDIENT';
+export const REMOVE_INGREDIENT = 'REMOVE_INGREDIENT';
+export const ADD_BUN = 'ADD_BUN';
+export const CHANGE_BUN = 'CHANGE_BUN';
+
+export const TOTAL_PRICE_UPDATE = 'TOTAL_PRICE_UPDATE';

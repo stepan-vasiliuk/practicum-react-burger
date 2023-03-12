@@ -13,7 +13,6 @@ const initialState = {
 }
 
 export const dataReducer = (state = initialState, action) => {
-    console.log(`dataReducer >>>`, action.data)
     switch (action.type) {
         case INGREDIENTS_GET_SUCCESS:
             return {
@@ -32,19 +31,16 @@ export const dataReducer = (state = initialState, action) => {
         //         data: action.data
         //     }
         case DATA_ERROR_DISPLAY_ON:
-            console.log(action.data);
             return {
                 ...state,
                 hasError: true,
             }
         case DATA_LOADING_ON:
-            console.log('Data loading...')
             return {
                 ...state,
                 isLoading: true
             }
         case DATA_LOADING_OFF:
-            console.log('Data loading off')
             return {
                 ...state,
                 isLoading: false,

@@ -1,9 +1,11 @@
 import {
+    ADD_BUN,
+    ADD_INGREDIENT,
     DATA_ERROR_DISPLAY_OFF,
     DATA_ERROR_DISPLAY_ON,
     DATA_LOADING_OFF,
     DATA_LOADING_ON, INGREDIENTS_GET_FAILED, INGREDIENTS_GET_SUCCESS,
-    INGREDIENTS_LOAD, MODAL_CLOSE, MODAL_OPEN
+    INGREDIENTS_LOAD, MODAL_CLOSE, MODAL_OPEN, TOTAL_PRICE_UPDATE
 } from "./actionTypes";
 
 const URL = 'https://norma.nomoreparties.space/api/ingredients';
@@ -68,5 +70,35 @@ export function modalOpen(ingredient) {
 export function modalClose() {
     return {
         type: MODAL_CLOSE
+    }
+}
+
+export function addIngredient(ingredient) {
+    return {
+        type: ADD_INGREDIENT,
+        data: ingredient
+    }
+}
+
+export function addBun(bun) {
+    return {
+        type: ADD_BUN,
+        data: bun,
+    }
+}
+
+export function totalPriceUpdate(ingredientsPrice) {
+    let sum = 0;
+    ingredientsPrice.map((item) => sum += item);
+    console.log(`Сумма >>> `, sum);
+    if (sum) {
+        return {
+            type: TOTAL_PRICE_UPDATE,
+            data: sum,
+        }
+    }
+    return {
+        type: TOTAL_PRICE_UPDATE,
+        data: 0
     }
 }

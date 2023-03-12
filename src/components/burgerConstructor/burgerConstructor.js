@@ -3,99 +3,94 @@ import constructorStyles from './burgerConstructor.module.css';
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 import {useDispatch, useSelector} from "react-redux";
-import {modalOpen} from "../../services/actions";
+import {modalOpen, totalPriceUpdate} from "../../services/actions";
 
 
 export default function BurgerConstructor() {
+    const {ingredientsList, bun, totalPrice} = useSelector(state => {
+            console.log(`Constructor State >>>`, state.constructorReducer);
+            return state.constructorReducer;
+        }
+    );
+    console.log(`Ingredients in constructor >>>`, ingredientsList);
 
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        const ingredientsPrices = ingredientsList.map((ingredient) => ingredient.price);
+        const bunPrice = bun.price * 2;
+        dispatch(totalPriceUpdate([bunPrice, ...ingredientsPrices]));
+    }, [ingredientsList, bun]);
 
     const handleOrderClick = () => {
         dispatch(modalOpen());
     }
 
-    const ingredientsData = useSelector(state => {
-        const {dataReducer} = state;
-        return dataReducer.data;
-    })
-
-    const {price, name, image_mobile} = ingredientsData[1];
+    // const ingredientsData = useSelector(state => {
+    //     const {dataReducer} = state;
+    //     return dataReducer.data;
+    // })
+    //
+    // const {price, name, image_mobile} = ingredientsData[1];
 
     return (
         <div className={`${constructorStyles.board} pt-25 pb-10 pl-4`}>
             <section className={constructorStyles.items}>
-                <div className={constructorStyles.item_top}>
-                    <ConstructorElement
-                        type="top"
-                        isLocked={true}
-                        text={name}
-                        price={price}
-                        thumbnail={image_mobile}
-                    />
-                </div>
-                <ul className={constructorStyles.scroll_list}>
-                    <li className={constructorStyles.scroll_list_item}>
-                        <DragIcon type="primary"/>
-                        <ConstructorElement
-                            text={name}
-                            price={price}
-                            thumbnail={image_mobile}
-                        />
-                    </li>
-                    <li className={constructorStyles.scroll_list_item}>
-                        <DragIcon type="primary"/>
-                        <ConstructorElement
-                            text={name}
-                            price={price}
-                            thumbnail={image_mobile}
-                        />
-                    </li>
-                    <li className={constructorStyles.scroll_list_item}>
-                        <DragIcon type="primary"/>
-                        <ConstructorElement
-                            text={name}
-                            price={price}
-                            thumbnail={image_mobile}
-                        />
-                    </li>
-                    <li className={constructorStyles.scroll_list_item}>
-                        <DragIcon type="primary"/>
-                        <ConstructorElement
-                            text={name}
-                            price={price}
-                            thumbnail={image_mobile}
-                        />
-                    </li>
-                    <li className={constructorStyles.scroll_list_item}>
-                        <DragIcon type="primary"/>
-                        <ConstructorElement
-                            text={name}
-                            price={price}
-                            thumbnail={image_mobile}
-                        />
-                    </li>
-                    <li className={constructorStyles.scroll_list_item}>
-                        <DragIcon type="primary"/>
-                        <ConstructorElement
-                            text={name}
-                            price={price}
-                            thumbnail={image_mobile}
-                        />
-                    </li>
-                </ul>
-                <div className={constructorStyles.item_bottom}>
-                    <ConstructorElement
-                        type={"bottom"}
-                        isLocked={true}
-                        text="Краторная булка N-200i (верх)"
-                        price={200}
-                        thumbnail={image_mobile}
-                    />
-                </div>
+                {!Object.keys(bun).length ?
+                    <>
+                        <div className={constructorStyles.item_top}>
+                            <ConstructorElement
+                                type="top"
+                                isLocked={true}
+                                text="Перетащите сюда булочку (верх)"
+                                price={0}
+                                thumbnail={''}/>
+                        </div>
+                        <div className={constructorStyles.item_bottom}>
+                            <ConstructorElement
+                                type={"bottom"}
+                                isLocked={true}
+                                text="Перетащите сюда булочку (низ)"
+                                price={0}
+                                thumbnail={''}/>
+                        </div>
+                    </>
+                    :
+                    <>
+                        <div className={constructorStyles.item_top}>
+                            <ConstructorElement
+                                type="top"
+                                isLocked={true}
+                                text={bun.name}
+                                price={bun.price}
+                                thumbnail={bun.image_mobile}/>
+                        </div>
+                        <ul className={constructorStyles.scroll_list}>
+                        {ingredientsList.map(ingredient => (
+                                    <li className={constructorStyles.scroll_list_item}>
+                                        <DragIcon type="primary"/>
+                                        <ConstructorElement
+                                            text={ingredient.name}
+                                            price={ingredient.price}
+                                            thumbnail={ingredient.image_mobile}/>
+                                    </li>
+                            )
+                        )}
+                        </ul>
+                        <div className={constructorStyles.item_bottom}>
+                            <ConstructorElement
+                                type={"bottom"}
+                                isLocked={true}
+                                text={bun.name}
+                                price={bun.price}
+                                thumbnail={bun.image_mobile}/>
+                        </div>
+                    </>
+                }
             </section>
             <section className={`${constructorStyles.total} pr-4`}>
                 <p className={constructorStyles.total_price}>
-                    <span className="text text_type_digits-medium">500</span>
+                    <span className="text text_type_digits-medium">{totalPrice}</span>
                     <CurrencyIcon type="primary"/>
                 </p>
                 <Button type={"primary"} size={"large"}
