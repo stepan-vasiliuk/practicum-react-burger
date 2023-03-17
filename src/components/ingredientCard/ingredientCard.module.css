@@ -34,6 +34,15 @@
     color: #F2F2F3;
 }
 
+.image:hover {
+    transform: scale(1.2);
+    transition: 0.5s;
+}
+
+.image_dragging {
+    transform: scale(1.1);
+}
+
 .plus_icon {
     position: absolute;
     bottom: 0;
@@ -57,6 +66,6 @@
     cursor: pointer;
 }
 
-.plus_icon_text{
+.plus_icon_text {
     margin: auto;
 }

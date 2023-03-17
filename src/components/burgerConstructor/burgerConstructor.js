@@ -3,7 +3,17 @@ import constructorStyles from './burgerConstructor.module.css';
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 import {useDispatch, useSelector} from "react-redux";
-import {modalOpen, totalPriceUpdate} from "../../services/actions";
+import {
+    addBun,
+    addIngredient,
+    createOrder,
+    modalOpen, removeIngredient,
+    totalPriceUpdate,
+    updateIngredients
+} from "../../services/actions";
+import {useDrag, useDrop} from "react-dnd";
+import {itemTypes} from "../../services/itemTypes";
+import ConstructorItem from "../constructorItem/constructorItem";
 
 
 export default function BurgerConstructor() {
@@ -12,7 +22,8 @@ export default function BurgerConstructor() {
             return state.constructorReducer;
         }
     );
-    console.log(`Ingredients in constructor >>>`, ingredientsList);
+    const originalIngredients = useSelector(state => state.dataReducer.data);
+
 
     const dispatch = useDispatch();
 
@@ -23,19 +34,53 @@ export default function BurgerConstructor() {
     }, [ingredientsList, bun]);
 
     const handleOrderClick = () => {
+        const ingredientIds = ingredientsList.map((ingredient) => ingredient._id);
+        const idsToOrder = [bun._id, bun._id, ...ingredientIds];
+        dispatch(createOrder(idsToOrder))
+
         dispatch(modalOpen());
     }
 
-    // const ingredientsData = useSelector(state => {
-    //     const {dataReducer} = state;
-    //     return dataReducer.data;
-    // })
-    //
-    // const {price, name, image_mobile} = ingredientsData[1];
+    const [, dropTarget] = useDrop({
+            accept: itemTypes.CARD,
+            drop(item) {
+                handleDrop(item._id);
+                console.log(`item.id>>>`, item._id)
+            }
+        }
+    )
+
+    const handleDrop = (id) => {
+        const currentItem = originalIngredients.find((item) => item._id === id);
+        console.log(currentItem);
+        if (!Object.keys(bun).length && currentItem.type === 'bun') {
+            // console.log('key >>>', key);
+            dispatch(addBun(currentItem));
+        } else if (!Object.keys(bun).length && currentItem.type !== 'bun') {
+            return;
+        } else {
+            currentItem.type === 'bun' ? dispatch(addBun(currentItem)) : dispatch(addIngredient(currentItem));
+        }
+    }
+
+    const handleMovingItem = (dragIndex, hoverIndex) => {
+        const updatedList = [...ingredientsList];
+        const dragItem = updatedList[dragIndex];
+        updatedList.splice(dragIndex, 1);
+        updatedList.splice(hoverIndex, 0, dragItem);
+
+        dispatch(updateIngredients(updatedList));
+    }
+
+
+    const handleDeleteItem = (key) => {
+        const filteredArray = ingredientsList.filter(item => item.key !== key);
+        dispatch(removeIngredient(filteredArray));
+    }
 
     return (
         <div className={`${constructorStyles.board} pt-25 pb-10 pl-4`}>
-            <section className={constructorStyles.items}>
+            <section className={constructorStyles.items} ref={dropTarget}>
                 {!Object.keys(bun).length ?
                     <>
                         <div className={constructorStyles.item_top}>
@@ -66,16 +111,15 @@ export default function BurgerConstructor() {
                                 thumbnail={bun.image_mobile}/>
                         </div>
                         <ul className={constructorStyles.scroll_list}>
-                        {ingredientsList.map(ingredient => (
-                                    <li className={constructorStyles.scroll_list_item}>
-                                        <DragIcon type="primary"/>
-                                        <ConstructorElement
-                                            text={ingredient.name}
-                                            price={ingredient.price}
-                                            thumbnail={ingredient.image_mobile}/>
-                                    </li>
-                            )
-                        )}
+                            {ingredientsList.map((ingredient, index) => (
+                                <ConstructorItem
+                                    ingredient={ingredient}
+                                    key={ingredient.key}
+                                    index={index}
+                                    handleMovingItem={handleMovingItem}
+                                    handleClose={handleDeleteItem}
+                                />)
+                            )}
                         </ul>
                         <div className={constructorStyles.item_bottom}>
                             <ConstructorElement
@@ -95,9 +139,7 @@ export default function BurgerConstructor() {
                 </p>
                 <Button type={"primary"} size={"large"}
                         onClick={() => handleOrderClick()}
-                >
-                    Оформить заказ
-                </Button>
+                >Оформить заказ</Button>
             </section>
         </div>
     )

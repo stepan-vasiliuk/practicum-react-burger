@@ -8,6 +8,8 @@ import OrderModal from "../modal/orderModal/orderModal";
 import IngredientsModal from "../modal/ingredientsModal/ingredientsModal";
 import {useDispatch, useSelector} from "react-redux";
 import {ingredientsLoad, modalClose} from "../../services/actions";
+import {DndProvider} from "react-dnd";
+import {HTML5Backend} from "react-dnd-html5-backend";
 
 export default function App() {
 
@@ -55,8 +57,10 @@ export default function App() {
                     <div className="container-wrapper">
 
                         <div className={appStyles.container_grid}>
-                            <BurgerIngredients />
-                            <BurgerConstructor />
+                            <DndProvider backend={HTML5Backend}>
+                                <BurgerIngredients/>
+                                <BurgerConstructor/>
+                            </DndProvider>
                         </div>
                     </div>
                 </main>
