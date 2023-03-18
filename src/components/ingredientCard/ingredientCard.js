@@ -25,6 +25,8 @@ export default function IngredientCard({ingredient}) {
         let count = 0;
 
         if (ingredient.type === 'bun') {
+            //Здесь получил ошибку- cant reading undefined in reading _id
+            //Не смог воспроизвести повторно
             if (bun._id === ingredient._id) {
                 count = 2;
                 return count;

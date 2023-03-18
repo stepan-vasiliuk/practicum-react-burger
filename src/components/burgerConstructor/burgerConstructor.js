@@ -118,6 +118,7 @@ export default function BurgerConstructor() {
                                     index={index}
                                     handleMovingItem={handleMovingItem}
                                     handleClose={handleDeleteItem}
+                                    id={ingredient.key}
                                 />)
                             )}
                         </ul>

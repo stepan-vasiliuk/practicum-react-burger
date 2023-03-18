@@ -5,7 +5,7 @@ import {useDrag, useDrop} from "react-dnd";
 import {itemTypes} from "../../services/itemTypes";
 
 
-export default function ConstructorItem({ingredient, index, handleMovingItem, handleClose}) {
+export default function ConstructorItem({ingredient, index, handleMovingItem, handleClose, id}) {
 
     const ref = useRef(null);
 
@@ -22,11 +22,11 @@ export default function ConstructorItem({ingredient, index, handleMovingItem, ha
                 return;
             }
 
-            const hoverBoundingRect = ref.current.getBoundingClientRect();
+            const hoverBoundingRect = ref.current?.getBoundingClientRect();
             const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
 
-            const mousePosition = monitor.getClientOffset();
-            const hoverClientY = mousePosition.y - hoverBoundingRect.top;
+            const clientOffset = monitor.getClientOffset();
+            const hoverClientY = clientOffset.y - hoverBoundingRect.top;
 
             if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
                 return;
@@ -42,7 +42,9 @@ export default function ConstructorItem({ingredient, index, handleMovingItem, ha
 
     const [{opacity}, drag] = useDrag(() => ({
         type: itemTypes.INGREDIENT,
-        item: {index},
+        item: () => {
+            return {index, id};
+        },
         collect: monitor => ({
             opacity: monitor.isDragging() ? 0 : 1
         })
