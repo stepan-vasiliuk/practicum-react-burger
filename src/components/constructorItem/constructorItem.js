@@ -40,7 +40,7 @@ export default function ConstructorItem({ingredient, index, handleMovingItem, ha
         }
     })
 
-    const [{opacity}, drag] = useDrag(() => ({
+    const [{opacity}, drag] = useDrag({
         type: itemTypes.INGREDIENT,
         item: () => {
             return {index, id};
@@ -48,7 +48,7 @@ export default function ConstructorItem({ingredient, index, handleMovingItem, ha
         collect: monitor => ({
             opacity: monitor.isDragging() ? 0 : 1
         })
-    }))
+    })
 
     drag(drop(ref));
 

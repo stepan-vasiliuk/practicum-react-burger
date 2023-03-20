@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import {useDispatch, useSelector} from "react-redux";
 import {
     addBun,
-    addIngredient,
+    addIngredient, clearConstructor,
     createOrder,
     modalOpen, removeIngredient,
     totalPriceUpdate,
@@ -39,6 +39,7 @@ export default function BurgerConstructor() {
         dispatch(createOrder(idsToOrder))
 
         dispatch(modalOpen());
+        dispatch(clearConstructor());
     }
 
     const [, dropTarget] = useDrop({
@@ -52,9 +53,7 @@ export default function BurgerConstructor() {
 
     const handleDrop = (id) => {
         const currentItem = originalIngredients.find((item) => item._id === id);
-        console.log(currentItem);
         if (!Object.keys(bun).length && currentItem.type === 'bun') {
-            // console.log('key >>>', key);
             dispatch(addBun(currentItem));
         } else if (!Object.keys(bun).length && currentItem.type !== 'bun') {
             return;
@@ -87,9 +86,10 @@ export default function BurgerConstructor() {
                             <ConstructorElement
                                 type="top"
                                 isLocked={true}
-                                text="Перетащите сюда булочку (верх)"
+                                text="Перетащите сюда булочку (низ)"
                                 price={0}
-                                thumbnail={''}/>
+                                //thumbnail={''}
+                            />
                         </div>
                         <div className={constructorStyles.item_bottom}>
                             <ConstructorElement
@@ -97,7 +97,8 @@ export default function BurgerConstructor() {
                                 isLocked={true}
                                 text="Перетащите сюда булочку (низ)"
                                 price={0}
-                                thumbnail={''}/>
+                                //thumbnail={''}
+                            />
                         </div>
                     </>
                     :
@@ -106,7 +107,7 @@ export default function BurgerConstructor() {
                             <ConstructorElement
                                 type="top"
                                 isLocked={true}
-                                text={bun.name}
+                                text={`${bun.name} (верх)`}
                                 price={bun.price}
                                 thumbnail={bun.image_mobile}/>
                         </div>
@@ -126,7 +127,7 @@ export default function BurgerConstructor() {
                             <ConstructorElement
                                 type={"bottom"}
                                 isLocked={true}
-                                text={bun.name}
+                                text={`${bun.name} (низ)`}
                                 price={bun.price}
                                 thumbnail={bun.image_mobile}/>
                         </div>

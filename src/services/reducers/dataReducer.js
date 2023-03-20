@@ -25,11 +25,7 @@ export const dataReducer = (state = initialState, action) => {
                 isLoading: false,
                 hasError: true,
             }
-        // case INGREDIENTS_LOAD:
-        //     return {
-        //         ...state,
-        //         data: action.data
-        //     }
+
         case DATA_ERROR_DISPLAY_ON:
             return {
                 ...state,

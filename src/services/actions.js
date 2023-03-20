@@ -1,11 +1,21 @@
 import {
     ADD_BUN,
-    ADD_INGREDIENT,
+    ADD_INGREDIENT, CLEAR_CONSTRUCTOR_DATA,
     DATA_ERROR_DISPLAY_OFF,
     DATA_ERROR_DISPLAY_ON,
     DATA_LOADING_OFF,
-    DATA_LOADING_ON, GET_ORDER_FAILED, GET_ORDER_SUCCESS, INGREDIENTS_GET_FAILED, INGREDIENTS_GET_SUCCESS,
-    INGREDIENTS_LOAD, MODAL_CLOSE, MODAL_OPEN, REMOVE_INGREDIENT, TOTAL_PRICE_UPDATE, UPDATE_INGREDIENTS
+    DATA_LOADING_ON,
+    GET_ORDER_FAILED,
+    GET_ORDER_SUCCESS,
+    INGREDIENTS_GET_FAILED,
+    INGREDIENTS_GET_SUCCESS,
+    INGREDIENTS_LOAD,
+    MODAL_CLOSE,
+    MODAL_OPEN, ORDER_MODAL_DATA_LOADING_OFF,
+    ORDER_MODAL_DATA_LOADING_ON,
+    REMOVE_INGREDIENT,
+    TOTAL_PRICE_UPDATE,
+    UPDATE_INGREDIENTS
 } from "./actionTypes";
 import {v4 as uuid} from 'uuid';
 
@@ -104,6 +114,12 @@ export function addBun(bun) {
     }
 }
 
+export function clearConstructor() {
+    return {
+        type: CLEAR_CONSTRUCTOR_DATA,
+    }
+}
+
 export function totalPriceUpdate(ingredientsPrice) {
     let sum = 0;
     ingredientsPrice.map((item) => sum += item);
@@ -127,6 +143,8 @@ export function totalPriceUpdate(ingredientsPrice) {
 export function createOrder(ingredients) {
     return async dispatch => {
         try {
+            dispatch(orderDataLoadingOn());
+
             const response = await fetch('https://norma.nomoreparties.space/api/orders', {
                 method: 'POST',
                 headers: {
@@ -149,8 +167,25 @@ export function createOrder(ingredients) {
                     type: GET_ORDER_FAILED,
                 })
             }
+            dispatch(orderDataLoadingOff());
         } catch (e) {
             console.log('An error has occurred while getting Order data from API >>> ')
+            dispatch({
+                type: GET_ORDER_FAILED,
+            })
+            dispatch(orderDataLoadingOff());
         }
+    }
+}
+
+export function orderDataLoadingOn() {
+    return {
+        type: ORDER_MODAL_DATA_LOADING_ON,
+    }
+}
+
+export function orderDataLoadingOff() {
+    return {
+        type: ORDER_MODAL_DATA_LOADING_OFF,
     }
 }

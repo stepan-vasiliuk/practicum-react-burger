@@ -1,6 +1,6 @@
 import {
     ADD_BUN,
-    ADD_INGREDIENT,
+    ADD_INGREDIENT, CLEAR_CONSTRUCTOR_DATA,
     GET_ORDER_FAILED,
     GET_ORDER_SUCCESS, REMOVE_INGREDIENT,
     TOTAL_PRICE_UPDATE,
@@ -11,8 +11,6 @@ const initialState = {
     ingredientsList: [],
     totalPrice: 0,
     bun: {},
-    orderNumber: 0,
-    hasError: false,
 }
 
 export const constructorReducer = (state = initialState, action) => {
@@ -44,23 +42,17 @@ export const constructorReducer = (state = initialState, action) => {
                 ...state,
                 ingredientsList: action.data,
             }
+        case CLEAR_CONSTRUCTOR_DATA:
+            return {
+                ...state,
+                ingredientsList: [],
+                bun: {},
+            }
 
         case TOTAL_PRICE_UPDATE:
             return {
                 ...state,
                 totalPrice: action.data,
-            }
-
-        case GET_ORDER_SUCCESS:
-            return {
-                ...state,
-                orderNumber: action.data
-            }
-
-        case GET_ORDER_FAILED:
-            return {
-                ...state,
-                hasError: true
             }
 
         default:
