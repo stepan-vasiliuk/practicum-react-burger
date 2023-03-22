@@ -4,6 +4,7 @@ import orderImage from "../../../images/orderImage.svg";
 import orderStyles from "./orderModal.module.css";
 import React from "react";
 import {useSelector} from "react-redux";
+import PropTypes from "prop-types";
 
 
 export default function OrderModal({onClose}) {
@@ -54,4 +55,8 @@ export default function OrderModal({onClose}) {
             </div>
         </div>
     )
+}
+
+OrderModal.propTypes = {
+    onClose: PropTypes.func.isRequired,
 }

@@ -3,6 +3,7 @@ import React, {useRef} from "react";
 import itemStyles from './constructorItem.module.css';
 import {useDrag, useDrop} from "react-dnd";
 import {itemTypes} from "../../services/itemTypes";
+import PropTypes, {number} from "prop-types";
 
 
 export default function ConstructorItem({ingredient, index, handleMovingItem, handleClose, id}) {
@@ -63,4 +64,12 @@ export default function ConstructorItem({ingredient, index, handleMovingItem, ha
             />
         </li>
     )
+}
+
+ConstructorItem.propTypes = {
+    id: PropTypes.string,
+    handleClose: PropTypes.func.isRequired,
+    handleMovingItem: PropTypes.func.isRequired,
+    index: PropTypes.number.isRequired,
+    ingredient: PropTypes.object.isRequired,
 }

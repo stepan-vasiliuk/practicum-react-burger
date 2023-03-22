@@ -2,6 +2,7 @@ import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import cardStyles from "./ingredientsModal.module.css";
 import React from "react";
 import {useDispatch} from "react-redux";
+import PropTypes from "prop-types";
 
 
 export default function IngredientsModal({onClose, ingredient}) {
@@ -64,4 +65,9 @@ export default function IngredientsModal({onClose, ingredient}) {
             </div>
         </div>
     )
+}
+
+IngredientsModal.propTypes = {
+    onClose: PropTypes.func.isRequired,
+    ingredient: PropTypes.object.isRequired,
 }

@@ -1,8 +1,7 @@
 import {
     ADD_BUN,
     ADD_INGREDIENT, CLEAR_CONSTRUCTOR_DATA,
-    GET_ORDER_FAILED,
-    GET_ORDER_SUCCESS, REMOVE_INGREDIENT,
+    REMOVE_INGREDIENT,
     TOTAL_PRICE_UPDATE,
     UPDATE_INGREDIENTS
 } from "../actionTypes";
@@ -10,7 +9,7 @@ import {
 const initialState = {
     ingredientsList: [],
     totalPrice: 0,
-    bun: {},
+    bun: null,
 }
 
 export const constructorReducer = (state = initialState, action) => {
@@ -33,10 +32,15 @@ export const constructorReducer = (state = initialState, action) => {
                 bun: action.data
             }
         case UPDATE_INGREDIENTS:
+            const updatedList = [...state.ingredientsList];
+            const dragItem = updatedList[action.dragIndex];
+            updatedList.splice(action.dragIndex, 1);
+            updatedList.splice(action.hoverIndex, 0, dragItem)
             return {
                 ...state,
-                ingredientsList: action.data,
+                ingredientsList: updatedList,
             }
+
         case REMOVE_INGREDIENT:
             return {
                 ...state,
@@ -46,7 +50,7 @@ export const constructorReducer = (state = initialState, action) => {
             return {
                 ...state,
                 ingredientsList: [],
-                bun: {},
+                bun: null,
             }
 
         case TOTAL_PRICE_UPDATE:

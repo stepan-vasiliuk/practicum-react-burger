@@ -19,14 +19,20 @@ import {
 } from "./actionTypes";
 import {v4 as uuid} from 'uuid';
 
-const URL = 'https://norma.nomoreparties.space/api/ingredients';
+const URL = 'https://norma.nomoreparties.space/api';
 
 export function ingredientsLoad() {
     return async dispatch => {
         try {
             dispatch(dataLoadingOn())
-            const response = await fetch(URL);
-            const jsonData = await response.json();
+            const response = await fetch(`${URL}/ingredients`);
+            let jsonData;
+            if (response.ok) {
+                jsonData = await response.json();
+            } else {
+                throw new Error('Error in response')
+            }
+
             if (jsonData.success && jsonData) {
                 dispatch({
                     type: INGREDIENTS_GET_SUCCESS,
@@ -92,11 +98,12 @@ export function addIngredient(ingredient) {
     }
 }
 
-export function updateIngredients(updatedList) {
+export function updateIngredients(dragIndex, hoverIndex) {
+
     return {
         type: UPDATE_INGREDIENTS,
-        data: updatedList,
-
+        dragIndex: dragIndex,
+        hoverIndex: hoverIndex,
     }
 }
 
@@ -123,7 +130,6 @@ export function clearConstructor() {
 export function totalPriceUpdate(ingredientsPrice) {
     let sum = 0;
     ingredientsPrice.map((item) => sum += item);
-    console.log(`Сумма >>> `, sum);
     if (sum) {
         return {
             type: TOTAL_PRICE_UPDATE,
@@ -145,7 +151,7 @@ export function createOrder(ingredients) {
         try {
             dispatch(orderDataLoadingOn());
 
-            const response = await fetch('https://norma.nomoreparties.space/api/orders', {
+            const response = await fetch(`${URL}/orders`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json;charset=utf-8'
@@ -154,9 +160,13 @@ export function createOrder(ingredients) {
                     ingredients: ingredients,
                 })
             });
-            console.log(`Response >>>`, response)
-            const jsonData = await response.json();
-            console.log(`JSON DATA >>>`, jsonData);
+            let jsonData;
+            if (response.ok) {
+                jsonData = await response.json();
+            } else {
+                throw new Error('An error occured in order Response')
+            }
+
             if (jsonData.success && jsonData) {
                 dispatch({
                     type: GET_ORDER_SUCCESS,

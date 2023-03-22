@@ -17,11 +17,10 @@ import ConstructorItem from "../constructorItem/constructorItem";
 
 
 export default function BurgerConstructor() {
-    const {ingredientsList, bun, totalPrice} = useSelector(state => {
-            console.log(`Constructor State >>>`, state.constructorReducer);
-            return state.constructorReducer;
-        }
-    );
+    const ingredientsList = useSelector(state => state.constructorReducer.ingredientsList);
+    const bun = useSelector(state => state.constructorReducer.bun);
+    const totalPrice = useSelector(state => state.constructorReducer.totalPrice);
+
     const originalIngredients = useSelector(state => state.dataReducer.data);
 
 
@@ -29,13 +28,13 @@ export default function BurgerConstructor() {
 
     useEffect(() => {
         const ingredientsPrices = ingredientsList.map((ingredient) => ingredient.price);
-        const bunPrice = bun.price * 2;
+        const bunPrice = bun?.price * 2;
         dispatch(totalPriceUpdate([bunPrice, ...ingredientsPrices]));
     }, [ingredientsList, bun]);
 
     const handleOrderClick = () => {
         const ingredientIds = ingredientsList.map((ingredient) => ingredient._id);
-        const idsToOrder = [bun._id, bun._id, ...ingredientIds];
+        const idsToOrder = [bun?._id, bun?._id, ...ingredientIds];
         dispatch(createOrder(idsToOrder))
 
         dispatch(modalOpen());
@@ -46,16 +45,15 @@ export default function BurgerConstructor() {
             accept: itemTypes.CARD,
             drop(item) {
                 handleDrop(item._id);
-                console.log(`item.id>>>`, item._id)
             }
         }
     )
 
     const handleDrop = (id) => {
         const currentItem = originalIngredients.find((item) => item._id === id);
-        if (!Object.keys(bun).length && currentItem.type === 'bun') {
+        if (!bun && currentItem.type === 'bun') {
             dispatch(addBun(currentItem));
-        } else if (!Object.keys(bun).length && currentItem.type !== 'bun') {
+        } else if (!bun && currentItem.type !== 'bun') {
             return;
         } else {
             currentItem.type === 'bun' ? dispatch(addBun(currentItem)) : dispatch(addIngredient(currentItem));
@@ -63,12 +61,7 @@ export default function BurgerConstructor() {
     }
 
     const handleMovingItem = (dragIndex, hoverIndex) => {
-        const updatedList = [...ingredientsList];
-        const dragItem = updatedList[dragIndex];
-        updatedList.splice(dragIndex, 1);
-        updatedList.splice(hoverIndex, 0, dragItem);
-
-        dispatch(updateIngredients(updatedList));
+        dispatch(updateIngredients(dragIndex, hoverIndex));
     }
 
 
@@ -80,7 +73,7 @@ export default function BurgerConstructor() {
     return (
         <div className={`${constructorStyles.board} pt-25 pb-10 pl-4`}>
             <section className={constructorStyles.items} ref={dropTarget}>
-                {!Object.keys(bun).length ?
+                {!bun ?
                     <>
                         <div className={constructorStyles.item_top}>
                             <ConstructorElement
@@ -107,9 +100,9 @@ export default function BurgerConstructor() {
                             <ConstructorElement
                                 type="top"
                                 isLocked={true}
-                                text={`${bun.name} (верх)`}
-                                price={bun.price}
-                                thumbnail={bun.image_mobile}/>
+                                text={`${bun?.name} (верх)`}
+                                price={bun?.price}
+                                thumbnail={bun?.image_mobile}/>
                         </div>
                         <ul className={constructorStyles.scroll_list}>
                             {ingredientsList.map((ingredient, index) => (
@@ -127,9 +120,9 @@ export default function BurgerConstructor() {
                             <ConstructorElement
                                 type={"bottom"}
                                 isLocked={true}
-                                text={`${bun.name} (низ)`}
-                                price={bun.price}
-                                thumbnail={bun.image_mobile}/>
+                                text={`${bun?.name} (низ)`}
+                                price={bun?.price}
+                                thumbnail={bun?.image_mobile}/>
                         </div>
                     </>
                 }
@@ -147,21 +140,3 @@ export default function BurgerConstructor() {
     )
 
 }
-
-// BurgerConstructor.propTypes = {
-//     onButtonClick: PropTypes.func.isRequired,
-//     ingredientsArray: PropTypes.arrayOf(PropTypes.shape({
-//         _id: PropTypes.string,
-//         name: PropTypes.string.isRequired,
-//         type: PropTypes.string.isRequired,
-//         proteins: PropTypes.number.isRequired,
-//         fat: PropTypes.number.isRequired,
-//         carbohydrates: PropTypes.number.isRequired,
-//         calories: PropTypes.number.isRequired,
-//         price: PropTypes.number.isRequired,
-//         image: PropTypes.string.isRequired,
-//         image_large: PropTypes.string.isRequired,
-//         image_mobile: PropTypes.string.isRequired,
-//
-//     }))
-// }
