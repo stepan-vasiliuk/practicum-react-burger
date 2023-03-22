@@ -14,7 +14,6 @@ import {
     MODAL_OPEN, ORDER_MODAL_DATA_LOADING_OFF,
     ORDER_MODAL_DATA_LOADING_ON,
     REMOVE_INGREDIENT,
-    TOTAL_PRICE_UPDATE,
     UPDATE_INGREDIENTS
 } from "./actionTypes";
 import {v4 as uuid} from 'uuid';
@@ -124,21 +123,6 @@ export function addBun(bun) {
 export function clearConstructor() {
     return {
         type: CLEAR_CONSTRUCTOR_DATA,
-    }
-}
-
-export function totalPriceUpdate(ingredientsPrice) {
-    let sum = 0;
-    ingredientsPrice.map((item) => sum += item);
-    if (sum) {
-        return {
-            type: TOTAL_PRICE_UPDATE,
-            data: sum,
-        }
-    }
-    return {
-        type: TOTAL_PRICE_UPDATE,
-        data: 0
     }
 }
 

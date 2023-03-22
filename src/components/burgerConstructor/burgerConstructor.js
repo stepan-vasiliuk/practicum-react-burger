@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useMemo} from "react";
 import constructorStyles from './burgerConstructor.module.css';
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
@@ -26,11 +26,16 @@ export default function BurgerConstructor() {
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        const ingredientsPrices = ingredientsList.map((ingredient) => ingredient.price);
+    const totalPriceUpdated = useMemo(() => {
+        let sum = 0;
         const bunPrice = bun?.price * 2;
-        dispatch(totalPriceUpdate([bunPrice, ...ingredientsPrices]));
-    }, [ingredientsList, bun]);
+        ingredientsList.map((item) => sum += item.price);
+        sum = sum + bunPrice;
+        if (!sum) {
+            return 0;
+        }
+        return sum;
+    }, [ingredientsList, bun])
 
     const handleOrderClick = () => {
         const ingredientIds = ingredientsList.map((ingredient) => ingredient._id);
@@ -129,7 +134,7 @@ export default function BurgerConstructor() {
             </section>
             <section className={`${constructorStyles.total} pr-4`}>
                 <p className={constructorStyles.total_price}>
-                    <span className="text text_type_digits-medium">{totalPrice}</span>
+                    <span className="text text_type_digits-medium">{totalPriceUpdated}</span>
                     <CurrencyIcon type="primary"/>
                 </p>
                 <Button type={"primary"} size={"large"}

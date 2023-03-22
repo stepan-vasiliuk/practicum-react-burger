@@ -2,13 +2,11 @@ import {
     ADD_BUN,
     ADD_INGREDIENT, CLEAR_CONSTRUCTOR_DATA,
     REMOVE_INGREDIENT,
-    TOTAL_PRICE_UPDATE,
     UPDATE_INGREDIENTS
 } from "../actionTypes";
 
 const initialState = {
     ingredientsList: [],
-    totalPrice: 0,
     bun: null,
 }
 
@@ -51,12 +49,6 @@ export const constructorReducer = (state = initialState, action) => {
                 ...state,
                 ingredientsList: [],
                 bun: null,
-            }
-
-        case TOTAL_PRICE_UPDATE:
-            return {
-                ...state,
-                totalPrice: action.data,
             }
 
         default:

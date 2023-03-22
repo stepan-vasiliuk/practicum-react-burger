@@ -32,8 +32,6 @@ export const ADD_BUN = 'ADD_BUN';
 
 export const CLEAR_CONSTRUCTOR_DATA = 'CLEAR_CONSTRUCTOR_DATA';
 
-export const TOTAL_PRICE_UPDATE = 'TOTAL_PRICE_UPDATE';
-
 /**
  * Работа с Order Modal
  * @type {string}
