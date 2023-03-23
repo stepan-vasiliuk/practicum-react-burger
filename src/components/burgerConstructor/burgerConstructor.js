@@ -8,7 +8,6 @@ import {
     addIngredient, clearConstructor,
     createOrder,
     modalOpen, removeIngredient,
-    totalPriceUpdate,
     updateIngredients
 } from "../../services/actions";
 import {useDrag, useDrop} from "react-dnd";
@@ -84,7 +83,7 @@ export default function BurgerConstructor() {
                             <ConstructorElement
                                 type="top"
                                 isLocked={true}
-                                text="Перетащите сюда булочку (низ)"
+                                text="Перетащите сюда булочку (верх)"
                                 price={0}
                                 //thumbnail={''}
                             />
@@ -137,7 +136,7 @@ export default function BurgerConstructor() {
                     <span className="text text_type_digits-medium">{totalPriceUpdated}</span>
                     <CurrencyIcon type="primary"/>
                 </p>
-                <Button type={"primary"} size={"large"}
+                <Button htmlType='button' type={"primary"} size={"large"}
                         onClick={() => handleOrderClick()}
                 >Оформить заказ</Button>
             </section>
