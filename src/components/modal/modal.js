@@ -8,6 +8,7 @@ const modalsRoot = document.getElementById('modals');
 
 export default function Modal({onClose, children}) {
 
+
     useEffect(() => {
         document.addEventListener('keydown', handleEscButton);
         return () => {

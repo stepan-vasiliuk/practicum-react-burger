@@ -1,0 +1,6 @@
+.scroll_list_item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: grab;
+}

@@ -27,8 +27,8 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
-    align-items: center;
-    align-self: stretch;
+    align-items: stretch;
+    width: 100%;
 }
 
 .scroll_list_item {
