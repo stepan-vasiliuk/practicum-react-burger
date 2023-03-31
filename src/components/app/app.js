@@ -10,6 +10,9 @@ import {useDispatch, useSelector} from "react-redux";
 import {ingredientsLoad, modalClose} from "../../services/actions";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
+import {Route, Routes} from "react-router-dom";
+import HomePage from "../../pages/homePage/homePage";
+import LoginPage from "../../pages/loginPage/loginPage";
 
 export default function App() {
 
@@ -55,13 +58,14 @@ export default function App() {
 
                 <main className={appStyles.main}>
                     <div className="container-wrapper">
-
-                        <div className={appStyles.container_grid}>
-                            <DndProvider backend={HTML5Backend}>
-                                <BurgerIngredients/>
-                                <BurgerConstructor/>
-                            </DndProvider>
-                        </div>
+                            <Routes>
+                                <Route path='/' element={<HomePage />} />
+                                <Route path='/login' element={<LoginPage />} />
+                            </Routes>
+                            {/*<DndProvider backend={HTML5Backend}>*/}
+                            {/*    <BurgerIngredients/>*/}
+                            {/*    <BurgerConstructor/>*/}
+                            {/*</DndProvider>*/}
                     </div>
                 </main>
             }

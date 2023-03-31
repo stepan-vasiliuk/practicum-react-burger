@@ -3,9 +3,9 @@
     height: 100%;
 }
 
-.container_grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 85vh;
-    gap: 40px;
-}
+/*.container_grid {*/
+/*    display: grid;*/
+/*    grid-template-columns: 1fr 1fr;*/
+/*    grid-template-rows: 85vh;*/
+/*    gap: 40px;*/
+/*}*/
