@@ -13,6 +13,9 @@ import {HTML5Backend} from "react-dnd-html5-backend";
 import {Route, Routes} from "react-router-dom";
 import HomePage from "../../pages/homePage/homePage";
 import LoginPage from "../../pages/loginPage/loginPage";
+import RegisterPage from "../../pages/registerPage/registerPage";
+import ForgotPassword from "../../pages/forgot-password/forgotPassword";
+import ResetPassword from "../../pages/reset-password/resetPassword";
 
 export default function App() {
 
@@ -58,14 +61,15 @@ export default function App() {
 
                 <main className={appStyles.main}>
                     <div className="container-wrapper">
-                            <Routes>
-                                <Route path='/' element={<HomePage />} />
-                                <Route path='/login' element={<LoginPage />} />
-                            </Routes>
-                            {/*<DndProvider backend={HTML5Backend}>*/}
-                            {/*    <BurgerIngredients/>*/}
-                            {/*    <BurgerConstructor/>*/}
-                            {/*</DndProvider>*/}
+                        <Routes>
+                            <Route path='/' element={<HomePage />}/>
+                            <Route path='/login' element={<LoginPage />}/>
+                            <Route path='/register' element={<RegisterPage />}/>
+                            <Route path='/forgot-password' element={<ForgotPassword />}/>
+                            <Route path='/reset-password' element={<ResetPassword />}/>
+
+                        </Routes>
+
                     </div>
                 </main>
             }

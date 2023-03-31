@@ -1,4 +1,4 @@
-import loginStyles from './loginPage.module.css';
+import loginStyles from '../formStyles.module.css';
 import {Button, EmailInput, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useState} from "react";
 import {useSearchParams} from "react-router-dom";
@@ -8,7 +8,7 @@ export default function LoginPage() {
     const [passWord, setPassword] = useState('');
 
     // const [searchEmail, setSearchEmail] = useSearchParams();
-    const onChange = (e) => {
+    const onEmailChange = (e) => {
         // let filter = e.target.value;
         // if (filter) {
         //     setSearchEmail({filter});
@@ -26,8 +26,8 @@ export default function LoginPage() {
         <div className={loginStyles.wrapper}>
             <form className={loginStyles.form_flexbox}>
                 <h1 className='text text_type_main-medium'>Вход</h1>
-                <EmailInput value={email} onChange={onChange}/>
-                <PasswordInput value={passWord} onChange={onPasswordChange}/>
+                <EmailInput value={email} onChange={e => onEmailChange(e)}/>
+                <PasswordInput value={passWord} onChange={e => onPasswordChange(e)}/>
                 <Button htmlType="button" type='primary' size='medium'>Войти</Button>
             </form>
             <section className={loginStyles.bottom_section}>
