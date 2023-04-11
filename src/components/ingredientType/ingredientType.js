@@ -2,8 +2,10 @@ import React from "react";
 import cardTypeStyles from './ingredientType.module.css';
 import IngredientCard from "../ingredientCard/ingredientCard";
 import PropTypes, {arrayOf, string} from "prop-types";
+import {Link, useLocation} from "react-router-dom";
 
 export default function IngredientType({groupType, title, propsRef, id}) {
+
     return (
         <div className={`${cardTypeStyles.section_container} pt-10`}
              ref={propsRef}

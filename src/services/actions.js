@@ -14,9 +14,10 @@ import {
     MODAL_OPEN, ORDER_MODAL_DATA_LOADING_OFF,
     ORDER_MODAL_DATA_LOADING_ON,
     REMOVE_INGREDIENT,
-    UPDATE_INGREDIENTS
+    UPDATE_INGREDIENTS, USER_REGISTER_FAILED, USER_REGISTER_SUCCESS
 } from "./actionTypes";
 import {v4 as uuid} from 'uuid';
+import {registerRequest} from "../utils/api";
 
 const URL = 'https://norma.nomoreparties.space/api';
 
@@ -76,10 +77,9 @@ export function dataLoadingOff() {
     }
 }
 
-export function modalOpen(ingredient) {
+export function modalOpen() {
     return {
         type: MODAL_OPEN,
-        data: ingredient
     }
 }
 
@@ -181,5 +181,42 @@ export function orderDataLoadingOn() {
 export function orderDataLoadingOff() {
     return {
         type: ORDER_MODAL_DATA_LOADING_OFF,
+    }
+}
+
+/**
+ * Работа с данными пользователя
+ * @param userData
+ * @returns {(function(*): Promise<void>)|*}
+ */
+
+export function userRegister(userData) {
+    return async dispatch => {
+        try {
+            const response = await registerRequest(userData);
+            let jsonData;
+            if (response.ok) {
+                console.log(`Response>>> `, response);
+                jsonData = await response.json();
+            } else {
+                throw new Error('Ошибка в ответе от сервера. Response.ok = false');
+            }
+            if (jsonData.success && jsonData) {
+                console.log('Json Data>>>', jsonData);
+                localStorage.setItem('accessToken', jsonData.accessToken);
+                localStorage.setItem('refreshToken', jsonData.refreshToken);
+                dispatch({
+                    type: USER_REGISTER_SUCCESS,
+                    data: jsonData
+                })
+            } else dispatch({
+                type: USER_REGISTER_FAILED,
+            })
+        } catch (e){
+            console.log('Ошибка при регистрации', e);
+            dispatch({
+                type: USER_REGISTER_FAILED,
+            })
+        }
     }
 }

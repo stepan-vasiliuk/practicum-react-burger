@@ -9,7 +9,9 @@ import PropTypes from "prop-types";
 
 export default function OrderModal({onClose}) {
 
-    const {orderNumber, hasError, isLoading} = useSelector(state => state.modalReducer)
+    const orderNumber = useSelector(state => state.orderReducer.orderNumber);
+    const hasError = useSelector(state => state.orderReducer.hasError);
+    const isLoading = useSelector(state => state.orderReducer.isLoading);
 
     return (
         <div className={orderStyles.order_modal}>

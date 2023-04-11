@@ -8,19 +8,17 @@ import {
 
 const initialState = {
     isOpen: false,
-    ingredient: null,
     orderNumber: 0,
     hasError: false,
     isLoading: false,
 }
 
-export const modalReducer = (state = initialState, action) => {
+export const orderReducer = (state = initialState, action) => {
     switch (action.type) {
         case MODAL_CLOSE:
             return {
                 ...state,
                 isOpen: false,
-                ingredient: null,
                 isLoading: false,
                 hasError: false,
             }
@@ -28,7 +26,6 @@ export const modalReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isOpen: true,
-                ingredient: action.data,
             }
         case GET_ORDER_SUCCESS:
             return {

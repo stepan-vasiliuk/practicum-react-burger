@@ -1,11 +1,13 @@
 import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import cardStyles from "./ingredientsModal.module.css";
-import React from "react";
+import React, {useEffect} from "react";
 import {useDispatch} from "react-redux";
 import PropTypes from "prop-types";
+import {useLocation} from "react-router-dom";
 
 
 export default function IngredientsModal({onClose, ingredient}) {
+
 
     return (
         <div className={cardStyles.ingredients_modal}>

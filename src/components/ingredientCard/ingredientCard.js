@@ -8,6 +8,7 @@ import {itemTypes} from "../../services/itemTypes";
 import {v4 as uuidv4} from 'uuid';
 import PropTypes from "prop-types";
 import ConstructorItem from "../constructorItem/constructorItem";
+import {Link, useLocation} from "react-router-dom";
 
 export default function IngredientCard({ingredient}) {
 
@@ -16,6 +17,9 @@ export default function IngredientCard({ingredient}) {
 
 
     const dispatch = useDispatch();
+
+    const location = useLocation();
+    const currentId = ingredient._id;
 
     const handleOnCardClick = (e) => {
         dispatch(modalOpen(ingredient))
@@ -53,20 +57,27 @@ export default function IngredientCard({ingredient}) {
 
 
     return (
-        <li className={`${cardStyles.card} pl-4 pr-4 pb-8`}>
-            {counter ?
-                <Counter count={counter} size={"default"}/> : null
-            }
-            <img className={cardStyles.image}
-                 src={ingredient.image}
-                 onClick={() => handleOnCardClick()}
-                 ref={dragRef} />
-            <div className={cardStyles.price}>
-                <p className={cardStyles.price_value}>{ingredient.price}</p>
-                <CurrencyIcon type="primary"/>
-            </div>
-            <p className={cardStyles.description}>{ingredient.name}</p>
-        </li>
+        <Link
+            to={`/ingredients/${currentId}`}
+            key={ingredient._id}
+            state={{background: location}}
+            style={{textDecoration: "none"}}
+        >
+            <li className={`${cardStyles.card} pl-4 pr-4 pb-8`}>
+                {counter ?
+                    <Counter count={counter} size={"default"}/> : null
+                }
+                <img className={cardStyles.image}
+                     src={ingredient.image}
+                     // onClick={() => handleOnCardClick()}
+                     ref={dragRef}/>
+                <div className={cardStyles.price}>
+                    <p className={cardStyles.price_value}>{ingredient.price}</p>
+                    <CurrencyIcon type="primary"/>
+                </div>
+                <p className={cardStyles.description}>{ingredient.name}</p>
+            </li>
+        </Link>
     )
 }
 IngredientCard.propTypes = {

@@ -10,12 +10,16 @@ import {useDispatch, useSelector} from "react-redux";
 import {ingredientsLoad, modalClose} from "../../services/actions";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
-import {Route, Routes} from "react-router-dom";
+import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import HomePage from "../../pages/homePage/homePage";
 import LoginPage from "../../pages/loginPage/loginPage";
 import RegisterPage from "../../pages/registerPage/registerPage";
 import ForgotPassword from "../../pages/forgot-password/forgotPassword";
 import ResetPassword from "../../pages/reset-password/resetPassword";
+import IngredientDetails from "../../pages/ingredientDetails/ingredientDetails";
+import {orderReducer} from "../../services/reducers/orderReducer";
+import ProfilePage from "../../pages/profile/profilePage";
+import EditPage from "../../pages/profile/editPage/editPage";
 
 export default function App() {
 
@@ -24,14 +28,15 @@ export default function App() {
         return dataReducer;
     })
 
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const modal = useSelector(state => {
-        const {modalReducer} = state;
-        return modalReducer;
+        const {orderReducer} = state;
+        return orderReducer;
     })
     const closeModals = () => {
-        dispatch(modalClose());
+        modal.isOpen ? dispatch(modalClose()) : navigate(-1);
     }
 
     useEffect(() => {
@@ -47,6 +52,17 @@ export default function App() {
         console.log('Загрузка данных с сервера')
     }
 
+    let location = useLocation();
+    let state = location.state;
+
+    const getCurrentIngredient = () => {
+        if (data.length) {
+            const current = data.find(el => {
+                return location.pathname.includes(el._id);
+            });
+            return current;
+        } else return null;
+    }
 
     const {data, hasError, isLoading} = dataReducer;
 
@@ -61,27 +77,39 @@ export default function App() {
 
                 <main className={appStyles.main}>
                     <div className="container-wrapper">
-                        <Routes>
-                            <Route path='/' element={<HomePage />}/>
-                            <Route path='/login' element={<LoginPage />}/>
-                            <Route path='/register' element={<RegisterPage />}/>
-                            <Route path='/forgot-password' element={<ForgotPassword />}/>
-                            <Route path='/reset-password' element={<ResetPassword />}/>
-
+                        <Routes location={state?.background || location}>
+                            <Route path='/' element={<HomePage/>}/>
+                            <Route path='/login' element={<LoginPage/>}/>
+                            <Route path='/register' element={<RegisterPage/>}/>
+                            <Route path='/forgot-password' element={<ForgotPassword/>}/>
+                            <Route path='/reset-password' element={<ResetPassword/>}/>
+                            <Route path='/ingredients/:_id' element={<IngredientDetails
+                                ingredient={getCurrentIngredient()}/>} />
+                            <Route path='/profile' element={<ProfilePage/>}>
+                                <Route index element={<EditPage />} />
+                            </Route>
                         </Routes>
 
                     </div>
                 </main>
+
             }
+            {
+                getCurrentIngredient() && state?.background && (
+                    <Routes>
+                        <Route path='/ingredients/:_id' element={
+                            <Modal onClose={closeModals}>
+                                <IngredientsModal ingredient={getCurrentIngredient()} onClose={closeModals}/>
+                            </Modal>
+                        }/>
+                    </Routes>
+                )
+            }
+
             {modal.isOpen &&
                 <Modal onClose={closeModals}>
-                    {modal.ingredient ?
-                        <IngredientsModal
-                            ingredient={modal.ingredient}
-                            onClose={closeModals}>
-                        </IngredientsModal>
-                        : <OrderModal onClose={closeModals}></OrderModal>
-                    }
+
+                    <OrderModal onClose={closeModals}></OrderModal>
                 </Modal>
             }
         </>

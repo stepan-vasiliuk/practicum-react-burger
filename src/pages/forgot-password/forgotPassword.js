@@ -1,6 +1,7 @@
 import forgotStyles from '..//formStyles.module.css';
 import {Button, EmailInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useState} from "react";
+import {Link} from "react-router-dom";
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState('');
@@ -17,7 +18,9 @@ export default function ForgotPassword() {
             </form>
             <section className={forgotStyles.bottom_text}>
                 <p className='text text_type_main-small text_color_inactive'>Вспомнили пароль?</p>
-                <p className='text text_type_main-small text_color_accent'>Войти</p>
+                <Link to='/login'>
+                    <p className='text text_type_main-small text_color_accent'>Войти</p>
+                </Link>
             </section>
         </div>
     )

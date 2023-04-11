@@ -4,7 +4,7 @@ import './index.css';
 import App from "./components/app/app";
 import {Provider} from "react-redux";
 import configureStore from "./services";
-import {BrowserRouter} from "react-router-dom";
+import {BrowserRouter as Router} from "react-router-dom";
 import {DevSupport} from "@react-buddy/ide-toolbox";
 import {ComponentPreviews, useInitial} from "./dev";
 
@@ -13,7 +13,7 @@ const store = configureStore();
 
 root.render(
     <React.StrictMode>
-        <BrowserRouter>
+        <Router>
             <Provider store={store}>
                 <DevSupport ComponentPreviews={ComponentPreviews}
                             useInitialHook={useInitial}
@@ -21,6 +21,6 @@ root.render(
                     <App/>
                 </DevSupport>
             </Provider>
-        </BrowserRouter>
+        </Router>
     </React.StrictMode>
 )
