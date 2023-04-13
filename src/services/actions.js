@@ -1,6 +1,6 @@
 import {
     ADD_BUN,
-    ADD_INGREDIENT, CLEAR_CONSTRUCTOR_DATA,
+    ADD_INGREDIENT, AUTH_CHECKED, CLEAR_CONSTRUCTOR_DATA, CLEAR_USER_DATA,
     DATA_ERROR_DISPLAY_OFF,
     DATA_ERROR_DISPLAY_ON,
     DATA_LOADING_OFF,
@@ -13,11 +13,11 @@ import {
     MODAL_CLOSE,
     MODAL_OPEN, ORDER_MODAL_DATA_LOADING_OFF,
     ORDER_MODAL_DATA_LOADING_ON,
-    REMOVE_INGREDIENT,
-    UPDATE_INGREDIENTS, USER_REGISTER_FAILED, USER_REGISTER_SUCCESS
+    REMOVE_INGREDIENT, SET_USER,
+    UPDATE_INGREDIENTS, USER_REGISTER_FAILED,
 } from "./actionTypes";
 import {v4 as uuid} from 'uuid';
-import {registerRequest} from "../utils/api";
+import {fetchWithRefresh, loginRequest, registerRequest} from "../utils/api";
 
 const URL = 'https://norma.nomoreparties.space/api';
 
@@ -190,6 +190,62 @@ export function orderDataLoadingOff() {
  * @returns {(function(*): Promise<void>)|*}
  */
 
+export function setAuthChecked(isChecked) {
+    return {
+        type: AUTH_CHECKED,
+        data: isChecked,
+    }
+}
+
+export function clearUserData() {
+    return {
+        type: CLEAR_USER_DATA,
+    }
+}
+
+export function checkUserAuth() {
+    return async dispatch => {
+        if (localStorage.getItem('accessToken')) {
+            dispatch(getUser())
+                .catch((e) => {
+                    console.log('localStorage getItem Error>>', e);
+                    localStorage.removeItem('accessToken');
+                    localStorage.removeItem('refreshToken');
+                    dispatch(clearUserData());
+                })
+                .finally(() => dispatch(setAuthChecked(true)));
+        } else {
+            dispatch(setAuthChecked(true));
+        }
+    }
+}
+
+export function getUser() {
+    return async dispatch => {
+        try {
+            const jsonData = await fetchWithRefresh('https://norma.nomoreparties.space/api/auth/user',
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf-8',
+                        authorization: localStorage.getItem("accessToken")
+
+                    }
+                })
+            if (jsonData.success) {
+                dispatch({
+                    type: SET_USER,
+                    data: jsonData,
+                })
+            } else {
+                console.log('Json_data from get user failed>>>', jsonData)
+            }
+        } catch (err) {
+            console.log('Ошибка при получении информации о пользователе')
+        }
+    }
+}
+
 export function userRegister(userData) {
     return async dispatch => {
         try {
@@ -206,14 +262,38 @@ export function userRegister(userData) {
                 localStorage.setItem('accessToken', jsonData.accessToken);
                 localStorage.setItem('refreshToken', jsonData.refreshToken);
                 dispatch({
-                    type: USER_REGISTER_SUCCESS,
+                    type: SET_USER,
                     data: jsonData
                 })
             } else dispatch({
                 type: USER_REGISTER_FAILED,
             })
-        } catch (e){
+        } catch (e) {
             console.log('Ошибка при регистрации', e);
+            dispatch({
+                type: USER_REGISTER_FAILED,
+            })
+        }
+    }
+}
+
+export function userLogin(userData) {
+    return async dispatch => {
+        try {
+            const jsonData = await loginRequest(userData);
+            if (jsonData.success && jsonData) {
+                console.log('Auth JSON data >>>>', jsonData);
+                localStorage.setItem('accessToken', jsonData.accessToken);
+                localStorage.setItem('refreshToken', jsonData.refreshToken);
+                dispatch({
+                    type: SET_USER,
+                    data: jsonData
+                })
+            } else dispatch({
+                type: USER_REGISTER_FAILED,
+            })
+        } catch (e) {
+            console.log('Ошибка при авторизации', e);
             dispatch({
                 type: USER_REGISTER_FAILED,
             })

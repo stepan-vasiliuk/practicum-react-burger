@@ -4,6 +4,7 @@ import {BurgerIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import headerStyles from "./header.module.css";
 import {ListIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {ProfileIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import {Link} from "react-router-dom";
 
 export default function Header() {
 
@@ -25,10 +26,12 @@ export default function Header() {
                         <Logo/>
                     </section>
                     <section className={headerStyles.user_lk}>
-                        <a className={`${headerStyles.menu_element}`}>
-                            <ProfileIcon type="secondary"/>
-                            <p className="text text_type_main-default text_color_inactive">Личный кабинет</p>
-                        </a>
+                        <Link to='/profile'>
+                            <a className={`${headerStyles.menu_element}`}>
+                                <ProfileIcon type="secondary"/>
+                                <p className="text text_type_main-default text_color_inactive">Личный кабинет</p>
+                            </a>
+                        </Link>
                     </section>
                 </nav>
             </div>

@@ -7,7 +7,7 @@ import Modal from "../modal/modal";
 import OrderModal from "../modal/orderModal/orderModal";
 import IngredientsModal from "../modal/ingredientsModal/ingredientsModal";
 import {useDispatch, useSelector} from "react-redux";
-import {ingredientsLoad, modalClose} from "../../services/actions";
+import {checkUserAuth, ingredientsLoad, modalClose} from "../../services/actions";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
@@ -20,6 +20,7 @@ import IngredientDetails from "../../pages/ingredientDetails/ingredientDetails";
 import {orderReducer} from "../../services/reducers/orderReducer";
 import ProfilePage from "../../pages/profile/profilePage";
 import EditPage from "../../pages/profile/editPage/editPage";
+import {OnlyAuth, OnlyUnAuth} from "../protectedRoute";
 
 export default function App() {
 
@@ -42,6 +43,11 @@ export default function App() {
     useEffect(() => {
         dispatch(ingredientsLoad())
     }, []);
+
+    //userAuthChecking
+    useEffect(() => {
+        dispatch(checkUserAuth());
+    }, [])
 
 
     const handleError = () => {
@@ -79,14 +85,14 @@ export default function App() {
                     <div className="container-wrapper">
                         <Routes location={state?.background || location}>
                             <Route path='/' element={<HomePage/>}/>
-                            <Route path='/login' element={<LoginPage/>}/>
-                            <Route path='/register' element={<RegisterPage/>}/>
-                            <Route path='/forgot-password' element={<ForgotPassword/>}/>
-                            <Route path='/reset-password' element={<ResetPassword/>}/>
+                            <Route path='/login' element={<OnlyUnAuth component={LoginPage}/>}/>
+                            <Route path='/register' element={<OnlyUnAuth component={RegisterPage}/>}/>
+                            <Route path='/forgot-password' element={<OnlyAuth component={ForgotPassword}/>} />
+                            <Route path='/reset-password' element={<OnlyAuth component={ResetPassword}/>} />
                             <Route path='/ingredients/:_id' element={<IngredientDetails
-                                ingredient={getCurrentIngredient()}/>} />
-                            <Route path='/profile' element={<ProfilePage/>}>
-                                <Route index element={<EditPage />} />
+                                ingredient={getCurrentIngredient()}/>}/>
+                            <Route path='/profile' element={<OnlyAuth component={ProfilePage}/>}>
+                                <Route index element={<EditPage/>}/>
                             </Route>
                         </Routes>
 

@@ -46,5 +46,8 @@ export const ORDER_MODAL_DATA_LOADING_OFF = 'ORDER_MODAL_DATA_LOADING_OFF'
 /**
  * Работа с пользователем
  */
-export const USER_REGISTER_SUCCESS = 'USER_REGISTER_SUCCESS';
+export const SET_USER = 'SET_USER';
 export const USER_REGISTER_FAILED = 'USER_REGISTER_FAILED';
+
+export const AUTH_CHECKED = 'AUTH_CHECKED';
+export const CLEAR_USER_DATA = 'CLEAR_USER_DATA';

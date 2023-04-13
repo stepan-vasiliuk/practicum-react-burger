@@ -5,40 +5,30 @@ import {Link, useSubmit} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import {useDispatch} from "react-redux";
 import {userRegister} from "../../services/actions";
+import {useFormCustom} from "../../utils/form";
 
 export default function RegisterPage() {
 
     const dispatch = useDispatch();
 
-    const useFormCustom = () => {
-        const [form, setForm] = useState({
-            name: '',
-            email: '',
-            password: '',
-        });
-
-        const handleChange = (e) => {
-            setForm({...form, [e.target.name]: e.target.value})
-        }
-
-        const handleSubmit = (e) => {
-            e.preventDefault();
-            console.log(form);
-            dispatch(userRegister(form));
-            setForm({...form, name: "", email: "", password: ""});
-        }
-
-        return {form, handleChange, handleSubmit};
+    const initial = {
+        name: '',
+        email: '',
+        password: '',
     }
+    const {form, setForm, handleChange} = useFormCustom(initial);
 
-    const {form, handleChange, handleSubmit} = useFormCustom();
-
-
+    const onSubmit = (e) => {
+        e.preventDefault();
+        console.log(form);
+        dispatch(userRegister(form));
+        setForm(initial);
+    }
 
     return (
         <div className={registerStyles.wrapper}>
             <form
-                onSubmit={e => (handleSubmit(e))}
+                onSubmit={e => (onSubmit(e))}
                 className={registerStyles.form_flexbox}>
                 <h1 className='text text_type_main-medium'>Регистрация</h1>
                 <Input
@@ -50,12 +40,10 @@ export default function RegisterPage() {
 
                 />
                 <EmailInput
-                    //{...register('email')}
                     value={form.email}
                     onChange={e => handleChange(e)}
                     name='email'/>
                 <PasswordInput
-                    //{...register('password')}
                     value={form.password}
                     onChange={e => handleChange(e)}
                     name='password'/>
