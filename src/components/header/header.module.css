@@ -3,32 +3,55 @@
 }
 
 .nav {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    align-items: center;
-    justify-content: center;
+    /*display: grid;*/
+    /*grid-template-columns: repeat(3, 1fr);*/
+    /*align-items: center;*/
+    /*justify-content: center;*/
+
+
 }
 
 .menu {
     display: flex;
     flex-direction: row;
     gap: 8px;
+    justify-content: space-between;
 }
 
+.left {
+    display: flex;
+    flex-direction: row;
+    gap: 48px;
+}
+
+
 .menu_element {
-    padding: 16px 20px;
+    text-decoration: none;
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 8px;
+
+    font-family: 'Jet Brains Mono', serif;
+    font-size: 16px;
+    line-height: 1.5;
+    font-weight: normal;
+    color: var(--text-inactive-color);
+    
 }
 
 .logo {
-    display: flex;
-    justify-content: center;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 40%);
 }
 
 .user_lk {
     display: flex;
     justify-content: end;
 }
+
+.active_link {
+    color: var(--text-primary-color);
+}
+

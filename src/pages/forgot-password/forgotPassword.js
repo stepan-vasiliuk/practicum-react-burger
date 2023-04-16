@@ -1,20 +1,46 @@
 import forgotStyles from '..//formStyles.module.css';
 import {Button, EmailInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useState} from "react";
-import {Link} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {Link, Navigate, useNavigate} from "react-router-dom";
+import {useFormCustom} from "../../utils/form";
+import {useDispatch, useSelector} from "react-redux";
+import {resetPassword} from "../../services/actions";
 
 export default function ForgotPassword() {
-    const [email, setEmail] = useState('');
-    const onChange = (e) => {
-        setEmail(e.target.value);
+    const navigate = useNavigate();
+    const emailSentSuccess = useSelector(state => state.userReducer.emailSent);
+
+    const dispatch = useDispatch();
+    const initial = {
+        email: '',
+    }
+
+    useEffect(() => {
+        if (emailSentSuccess) {
+            navigate('/reset-password');
+        }
+    }, [emailSentSuccess])
+
+    const {form, setForm, handleChange} = useFormCustom(initial);
+
+    const onSubmit = e => {
+        e.preventDefault();
+        console.log(form);
+        dispatch(resetPassword(form));
+        navigate('')
     }
 
     return (
         <div className={forgotStyles.wrapper}>
-            <form className={forgotStyles.form_flexbox}>
+            <form onSubmit={e => onSubmit(e)} className={forgotStyles.form_flexbox}>
                 <h1 className='text text_type_main-medium'>Восстановление пароля</h1>
-                <EmailInput value={email} onChange={e => onChange(e)} placeholder='Укажите e-mail'/>
-                <Button htmlType='button' type='primary' size='medium'>Восстановить</Button>
+                <EmailInput
+                    value={form.email}
+                    onChange={e => handleChange(e)}
+                    placeholder='Укажите e-mail'
+                    name='email'
+                />
+                <Button htmlType='submit' type='primary' size='medium'>Восстановить</Button>
             </form>
             <section className={forgotStyles.bottom_text}>
                 <p className='text text_type_main-small text_color_inactive'>Вспомнили пароль?</p>

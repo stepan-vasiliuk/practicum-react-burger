@@ -4,7 +4,7 @@ import {
     DATA_ERROR_DISPLAY_OFF,
     DATA_ERROR_DISPLAY_ON,
     DATA_LOADING_OFF,
-    DATA_LOADING_ON,
+    DATA_LOADING_ON, EMAIL_SENT,
     GET_ORDER_FAILED,
     GET_ORDER_SUCCESS,
     INGREDIENTS_GET_FAILED,
@@ -17,7 +17,13 @@ import {
     UPDATE_INGREDIENTS, USER_REGISTER_FAILED,
 } from "./actionTypes";
 import {v4 as uuid} from 'uuid';
-import {fetchWithRefresh, loginRequest, registerRequest} from "../utils/api";
+import {
+    fetchWithRefresh,
+    loginRequest, logOutRequest,
+    passwordRecoveryRequest,
+    passwordResetRequest,
+    registerRequest, userDataUpdateRequest
+} from "../utils/api";
 
 const URL = 'https://norma.nomoreparties.space/api';
 
@@ -297,6 +303,82 @@ export function userLogin(userData) {
             dispatch({
                 type: USER_REGISTER_FAILED,
             })
+        }
+    }
+}
+
+export function resetPassword(email) {
+    return async dispatch => {
+        try {
+            const jsonData = await passwordResetRequest(email);
+            if (jsonData.success && jsonData) {
+                console.log('Reset pass success:\n', jsonData);
+                dispatch({
+                    type: EMAIL_SENT,
+                    data: true,
+                })
+
+            } else {
+                console.log('Sorry, something went wrong..')
+            }
+        } catch (err) {
+            console.log('Ошибка при сбросе пароля:\n', err);
+        }
+    }
+}
+
+export function passwordRecovery(data) {
+    return async dispatch => {
+        try {
+            const jsonData = await passwordRecoveryRequest(data);
+            if (jsonData.success && jsonData) {
+                console.log('Reset pass success:\n', jsonData);
+                dispatch({
+                    type: EMAIL_SENT,
+                    data: false,
+                })
+            } else {
+                console.log('Sorry, something went wrong..')
+            }
+        } catch (err) {
+            console.log('Ошибка при сбросе пароля:\n', err);
+        }
+    }
+
+}
+
+export function updateUserData(updatedForm) {
+    return async dispatch => {
+        try {
+            const jsonData = await userDataUpdateRequest(updatedForm);
+            if (jsonData.success && jsonData) {
+                console.log(`Updated data\n`, jsonData);
+                dispatch({
+                    type: SET_USER,
+                    data: jsonData,
+                })
+            } else {
+                console.log('Error in JsonData getting');
+            }
+        } catch (err) {
+            console.log('Ошибка при изменении данных пользователя\n', err);
+        }
+    }
+}
+
+export function userLogOut() {
+    return async dispatch => {
+        try {
+            const jsonData = await logOutRequest();
+            if (jsonData.success && jsonData) {
+                localStorage.removeItem('accessToken');
+                localStorage.removeItem('refreshToken');
+                dispatch(clearUserData());
+            } else {
+                console.log('Error in JsonData getting');
+            }
+        } catch (err) {
+            console.log('Ошибка при выходе\n', err);
         }
     }
 }

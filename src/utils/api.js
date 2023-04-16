@@ -22,6 +22,57 @@ export const loginRequest = async data => {
     return await checkResponse(res);
 }
 
+export const passwordResetRequest = async email => {
+    const res = await fetch(`${baseUrl}/password-reset`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(email),
+        }
+    )
+    return await checkResponse(res);
+}
+
+export const passwordRecoveryRequest = async data => {
+    const res = await fetch(`${baseUrl}/password-reset/reset`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(data),
+        }
+    )
+    return await checkResponse(res);
+}
+
+export const userDataUpdateRequest = async data => {
+    const res = await fetch(`${baseUrl}/auth/user`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            authorization: localStorage.getItem("accessToken")
+        },
+        body: JSON.stringify(data),
+
+    })
+    return await checkResponse(res);
+}
+
+export const logOutRequest = async () => {
+    const res = await fetch(`${baseUrl}/auth/logout`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+        },
+        body: JSON.stringify({
+            token: localStorage.getItem('refreshToken'),
+        }),
+    })
+    return await checkResponse(res);
+}
+
+
 const checkResponse = res => {
     return res.ok ? res.json() : res.json().then(err => Promise.reject(err));
 }

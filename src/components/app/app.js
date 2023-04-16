@@ -21,6 +21,9 @@ import {orderReducer} from "../../services/reducers/orderReducer";
 import ProfilePage from "../../pages/profile/profilePage";
 import EditPage from "../../pages/profile/editPage/editPage";
 import {OnlyAuth, OnlyUnAuth} from "../protectedRoute";
+import NotFoundPage from "../../pages/notFoundPage/notFoundPage";
+import OrderFeed from "../../pages/orderFeed/orderFeed";
+import OrdersHistory from "../../pages/profile/ordersHistory/ordersHistory";
 
 export default function App() {
 
@@ -85,15 +88,18 @@ export default function App() {
                     <div className="container-wrapper">
                         <Routes location={state?.background || location}>
                             <Route path='/' element={<HomePage/>}/>
-                            <Route path='/login' element={<OnlyUnAuth component={LoginPage}/>}/>
-                            <Route path='/register' element={<OnlyUnAuth component={RegisterPage}/>}/>
-                            <Route path='/forgot-password' element={<OnlyAuth component={ForgotPassword}/>} />
-                            <Route path='/reset-password' element={<OnlyAuth component={ResetPassword}/>} />
+                            <Route path='/order-feed' element={<OrderFeed />} />
+                            <Route path='/login' element={<OnlyUnAuth component={<LoginPage/>}/>}/>
+                            <Route path='/register' element={<OnlyUnAuth component={<RegisterPage/>}/>}/>
+                            <Route path='/forgot-password' element={<OnlyUnAuth component={<ForgotPassword/>}/>} />
+                            <Route path='/reset-password' element={<OnlyUnAuth component={<ResetPassword/>}/>} />
                             <Route path='/ingredients/:_id' element={<IngredientDetails
                                 ingredient={getCurrentIngredient()}/>}/>
-                            <Route path='/profile' element={<OnlyAuth component={ProfilePage}/>}>
+                            <Route path='/profile' element={<OnlyAuth component={<ProfilePage/>}/>}>
                                 <Route index element={<EditPage/>}/>
+                                <Route path='orders' element={<OrdersHistory/>} />
                             </Route>
+                            <Route path='/*' element={<NotFoundPage />} />
                         </Routes>
 
                     </div>

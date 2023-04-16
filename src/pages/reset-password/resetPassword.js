@@ -1,31 +1,60 @@
 import {useState} from "react";
 import resetStyles from "..//formStyles.module.css";
 import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
+import {useDispatch, useSelector} from "react-redux";
+import {Link, Navigate, useNavigate} from "react-router-dom";
+import {useFormCustom} from "../../utils/form";
+import {resetPassword} from "../../services/actions";
+import {passwordRecovery} from "../../services/actions";
 
 export default function ResetPassword() {
-    const [code, setCode] = useState('');
-    const [passWord, setPassword] = useState('');
 
-    const onPasswordChange = (e) => {
-        setPassword(e.target.value);
+    const emailSent = useSelector(state => state.userReducer.emailSent);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+
+    const initial = {
+        password: '',
+        token: '',
     }
 
-    const onCodeChange = (e) => {
-        setCode(e.target.value);
+    const {form, setForm, handleChange} = useFormCustom(initial);
+
+    const onSubmit = e => {
+        e.preventDefault();
+        console.log(form);
+        dispatch(passwordRecovery(form))
+        setForm(initial);
     }
 
     return (
-        <div className={resetStyles.wrapper}>
-            <form className={resetStyles.form_flexbox}>
-                <h1 className='text text_type_main-medium'>Восстановление пароля</h1>
-                <PasswordInput value={passWord} placeholder='Введите новый пароль' onChange={e => onPasswordChange(e)}/>
-                <Input value={code} placeholder='Введите код из письма' onChange={e => onCodeChange(e)}/>
-                <Button htmlType='button' type='primary' size='medium'>Сохранить</Button>
-            </form>
-            <section className={resetStyles.bottom_text}>
-                <p className='text text_type_main-small text_color_inactive'>Вспомнили пароль?</p>
-                <p className='text text_type_main-small text_color_accent'>Войти</p>
-            </section>
-        </div>
+        <>
+            {emailSent ?
+                <div className={resetStyles.wrapper}>
+                    <form className={resetStyles.form_flexbox} onSubmit={e => onSubmit(e)}>
+                        <h1 className='text text_type_main-medium'>Восстановление пароля</h1>
+                        <PasswordInput value={form.password}
+                                       placeholder='Введите новый пароль'
+                                       onChange={e => handleChange(e)}
+                                       name='password'
+                        />
+                        <Input value={form.token}
+                               placeholder='Введите код из письма'
+                               onChange={e => handleChange(e)}
+                               name='token'
+                        />
+                        <Button htmlType='submit' type='primary' size='medium'>Сохранить</Button>
+                    </form>
+                    <section className={resetStyles.bottom_text}>
+                        <p className='text text_type_main-small text_color_inactive'>Вспомнили пароль?</p>
+                        <Link to='/login'>
+                            <p className='text text_type_main-small text_color_accent'>Войти</p>
+                        </Link>
+                    </section>
+                </div>
+                : <Navigate to='/login'/>
+            }
+        </>
     )
 }

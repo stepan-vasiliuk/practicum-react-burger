@@ -1,9 +1,17 @@
-import {AUTH_CHECKED, CLEAR_USER_DATA, SET_USER, USER_REGISTER_FAILED, USER_REGISTER_SUCCESS} from "../actionTypes";
+import {
+    AUTH_CHECKED,
+    CLEAR_USER_DATA,
+    EMAIL_SENT,
+    SET_USER,
+    USER_REGISTER_FAILED,
+    USER_REGISTER_SUCCESS
+} from "../actionTypes";
 import {compareArraysAsSet} from "@testing-library/jest-dom/dist/utils";
 
 const initialState = {
     user: null,
     isAuthChecked: false,
+    emailSent: false,
 }
 
 export const userReducer = (state = initialState, action) => {
@@ -31,6 +39,12 @@ export const userReducer = (state = initialState, action) => {
                 ...state,
                 user: null,
                 isAuthChecked: true,
+            }
+
+        case EMAIL_SENT:
+            return {
+                ...state,
+                emailSent: action.data,
             }
         default:
             return state;

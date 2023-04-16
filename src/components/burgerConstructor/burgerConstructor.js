@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import {useDispatch, useSelector} from "react-redux";
 import {
     addBun,
-    addIngredient, clearConstructor,
+    addIngredient, checkUserAuth, clearConstructor,
     createOrder,
     modalOpen, removeIngredient,
     updateIngredients
@@ -13,17 +13,19 @@ import {
 import {useDrag, useDrop} from "react-dnd";
 import {itemTypes} from "../../services/itemTypes";
 import ConstructorItem from "../constructorItem/constructorItem";
+import {userReducer} from "../../services/reducers/userReducer";
+import {useNavigate} from "react-router-dom";
 
 
 export default function BurgerConstructor() {
     const ingredientsList = useSelector(state => state.constructorReducer.ingredientsList);
     const bun = useSelector(state => state.constructorReducer.bun);
-    const totalPrice = useSelector(state => state.constructorReducer.totalPrice);
 
     const originalIngredients = useSelector(state => state.dataReducer.data);
 
-
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const user = useSelector(state => state.userReducer.user);
 
     const totalPriceUpdated = useMemo(() => {
         let sum = 0;
@@ -38,11 +40,13 @@ export default function BurgerConstructor() {
 
     const handleOrderClick = () => {
         const ingredientIds = ingredientsList.map((ingredient) => ingredient._id);
-        const idsToOrder = [bun?._id, bun?._id, ...ingredientIds];
-        dispatch(createOrder(idsToOrder))
-
-        dispatch(modalOpen());
-        dispatch(clearConstructor());
+        const idsToOrder = [bun?._id, ...ingredientIds, bun?._id];
+        checkUserAuth();
+        if (user) {
+            dispatch(createOrder(idsToOrder))
+            dispatch(modalOpen());
+            dispatch(clearConstructor());
+        } else navigate('/login');
     }
 
     const [, dropTarget] = useDrop({

@@ -51,3 +51,5 @@ export const USER_REGISTER_FAILED = 'USER_REGISTER_FAILED';
 
 export const AUTH_CHECKED = 'AUTH_CHECKED';
 export const CLEAR_USER_DATA = 'CLEAR_USER_DATA';
+
+export const EMAIL_SENT = 'EMAIL_SENT';
