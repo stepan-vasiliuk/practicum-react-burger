@@ -1,6 +1,7 @@
 import cardStyles from "./IngredientDetails.module.css";
 import React, {useEffect} from "react";
 import PropTypes from "prop-types";
+import {ingredientType} from "../../../utils/types";
 
 
 export default function IngredientDetails({ingredient}) {
@@ -63,18 +64,4 @@ export default function IngredientDetails({ingredient}) {
     )
 }
 
-IngredientDetails.propTypes = {
-    ingredient: PropTypes.shape({
-        _id: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        type: PropTypes.string.isRequired,
-        proteins: PropTypes.number.isRequired,
-        fat: PropTypes.number.isRequired,
-        carbohydrates: PropTypes.number.isRequired,
-        calories: PropTypes.number.isRequired,
-        price: PropTypes.number.isRequired,
-        image: PropTypes.string.isRequired,
-        image_large: PropTypes.string.isRequired,
-        image_mobile: PropTypes.string.isRequired,
-    }).isRequired
-}
+IngredientDetails.propTypes = ingredientType;

@@ -9,6 +9,7 @@ import {v4 as uuidv4} from 'uuid';
 import PropTypes from "prop-types";
 import ConstructorItem from "../constructorItem/constructorItem";
 import {Link, useLocation} from "react-router-dom";
+import {ingredientType} from "../../utils/types";
 
 export default function IngredientCard({ingredient}) {
 
@@ -75,18 +76,4 @@ export default function IngredientCard({ingredient}) {
         </Link>
     )
 }
-IngredientCard.propTypes = {
-    ingredient: PropTypes.shape({
-        _id: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        type: PropTypes.string.isRequired,
-        proteins: PropTypes.number.isRequired,
-        fat: PropTypes.number.isRequired,
-        carbohydrates: PropTypes.number.isRequired,
-        calories: PropTypes.number.isRequired,
-        price: PropTypes.number.isRequired,
-        image: PropTypes.string.isRequired,
-        image_large: PropTypes.string.isRequired,
-        image_mobile: PropTypes.string.isRequired,
-    }).isRequired,
-}
+IngredientCard.propTypes = ingredientType;
