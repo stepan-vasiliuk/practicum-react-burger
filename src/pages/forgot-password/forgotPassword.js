@@ -25,7 +25,6 @@ export default function ForgotPassword() {
 
     const onSubmit = e => {
         e.preventDefault();
-        console.log(form);
         dispatch(resetPassword(form));
         navigate('')
     }

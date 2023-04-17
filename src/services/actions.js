@@ -18,41 +18,29 @@ import {
 } from "./actionTypes";
 import {v4 as uuid} from 'uuid';
 import {
-    fetchWithRefresh,
-    loginRequest, logOutRequest,
+    BASE_URL,
+    fetchWithRefresh, ingredientsRequest,
+    loginRequest, logOutRequest, orderRequest,
     passwordRecoveryRequest,
     passwordResetRequest,
     registerRequest, userDataUpdateRequest
 } from "../utils/api";
 
-const URL = 'https://norma.nomoreparties.space/api';
-
 export function ingredientsLoad() {
     return async dispatch => {
         try {
             dispatch(dataLoadingOn())
-            const response = await fetch(`${URL}/ingredients`);
-            let jsonData;
-            if (response.ok) {
-                jsonData = await response.json();
-            } else {
-                throw new Error('Error in response')
-            }
-
-            if (jsonData.success && jsonData) {
-                dispatch({
-                    type: INGREDIENTS_GET_SUCCESS,
-                    data: jsonData.data
-                })
-            } else {
-                dispatch({
-                    type: INGREDIENTS_GET_FAILED,
-                })
-                dispatch(dataErrorOn('Не выполнено условие получения данных'))
-            }
+            const jsonData = await ingredientsRequest();
+            dispatch({
+                type: INGREDIENTS_GET_SUCCESS,
+                data: jsonData.data
+            })
             dispatch(dataLoadingOff())
         } catch (e) {
             dispatch(dataErrorOn('Ошибка при получении данных ингредиентов из API'));
+            dispatch({
+                type: INGREDIENTS_GET_FAILED,
+            })
             dispatch(dataLoadingOff());
         }
     }
@@ -140,33 +128,11 @@ export function createOrder(ingredients) {
     return async dispatch => {
         try {
             dispatch(orderDataLoadingOn());
-
-            const response = await fetch(`${URL}/orders`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json;charset=utf-8'
-                },
-                body: JSON.stringify({
-                    ingredients: ingredients,
-                })
-            });
-            let jsonData;
-            if (response.ok) {
-                jsonData = await response.json();
-            } else {
-                throw new Error('An error occured in order Response')
-            }
-
-            if (jsonData.success && jsonData) {
-                dispatch({
-                    type: GET_ORDER_SUCCESS,
-                    data: jsonData.order.number
-                })
-            } else {
-                dispatch({
-                    type: GET_ORDER_FAILED,
-                })
-            }
+            const jsonData = await orderRequest(ingredients);
+            dispatch({
+                type: GET_ORDER_SUCCESS,
+                data: jsonData.order.number
+            })
             dispatch(orderDataLoadingOff());
         } catch (e) {
             console.log('An error has occurred while getting Order data from API >>> ')
@@ -229,7 +195,7 @@ export function checkUserAuth() {
 export function getUser() {
     return async dispatch => {
         try {
-            const jsonData = await fetchWithRefresh('https://norma.nomoreparties.space/api/auth/user',
+            const jsonData = await fetchWithRefresh(`auth/user`,
                 {
                     method: 'GET',
                     headers: {
@@ -238,16 +204,12 @@ export function getUser() {
 
                     }
                 })
-            if (jsonData.success) {
-                dispatch({
-                    type: SET_USER,
-                    data: jsonData,
-                })
-            } else {
-                console.log('Json_data from get user failed>>>', jsonData)
-            }
+            dispatch({
+                type: SET_USER,
+                data: jsonData,
+            })
         } catch (err) {
-            console.log('Ошибка при получении информации о пользователе')
+            console.log('Ошибка при получении информации о пользователе', err)
         }
     }
 }
@@ -255,24 +217,13 @@ export function getUser() {
 export function userRegister(userData) {
     return async dispatch => {
         try {
-            const response = await registerRequest(userData);
-            let jsonData;
-            if (response.ok) {
-                console.log(`Response>>> `, response);
-                jsonData = await response.json();
-            } else {
-                throw new Error('Ошибка в ответе от сервера. Response.ok = false');
-            }
-            if (jsonData.success && jsonData) {
-                console.log('Json Data>>>', jsonData);
-                localStorage.setItem('accessToken', jsonData.accessToken);
-                localStorage.setItem('refreshToken', jsonData.refreshToken);
-                dispatch({
-                    type: SET_USER,
-                    data: jsonData
-                })
-            } else dispatch({
-                type: USER_REGISTER_FAILED,
+            const jsonData = await registerRequest(userData);
+            console.log('Json Data>>>', jsonData);
+            localStorage.setItem('accessToken', jsonData.accessToken);
+            localStorage.setItem('refreshToken', jsonData.refreshToken);
+            dispatch({
+                type: SET_USER,
+                data: jsonData
             })
         } catch (e) {
             console.log('Ошибка при регистрации', e);
@@ -287,16 +238,12 @@ export function userLogin(userData) {
     return async dispatch => {
         try {
             const jsonData = await loginRequest(userData);
-            if (jsonData.success && jsonData) {
-                console.log('Auth JSON data >>>>', jsonData);
-                localStorage.setItem('accessToken', jsonData.accessToken);
-                localStorage.setItem('refreshToken', jsonData.refreshToken);
-                dispatch({
-                    type: SET_USER,
-                    data: jsonData
-                })
-            } else dispatch({
-                type: USER_REGISTER_FAILED,
+            console.log('Auth JSON data >>>>', jsonData);
+            localStorage.setItem('accessToken', jsonData.accessToken);
+            localStorage.setItem('refreshToken', jsonData.refreshToken);
+            dispatch({
+                type: SET_USER,
+                data: jsonData,
             })
         } catch (e) {
             console.log('Ошибка при авторизации', e);
@@ -311,16 +258,11 @@ export function resetPassword(email) {
     return async dispatch => {
         try {
             const jsonData = await passwordResetRequest(email);
-            if (jsonData.success && jsonData) {
-                console.log('Reset pass success:\n', jsonData);
-                dispatch({
-                    type: EMAIL_SENT,
-                    data: true,
-                })
-
-            } else {
-                console.log('Sorry, something went wrong..')
-            }
+            console.log('Reset pass success:\n', jsonData);
+            dispatch({
+                type: EMAIL_SENT,
+                data: true,
+            })
         } catch (err) {
             console.log('Ошибка при сбросе пароля:\n', err);
         }
@@ -331,15 +273,11 @@ export function passwordRecovery(data) {
     return async dispatch => {
         try {
             const jsonData = await passwordRecoveryRequest(data);
-            if (jsonData.success && jsonData) {
-                console.log('Reset pass success:\n', jsonData);
-                dispatch({
-                    type: EMAIL_SENT,
-                    data: false,
-                })
-            } else {
-                console.log('Sorry, something went wrong..')
-            }
+            console.log('Reset pass success:\n', jsonData);
+            dispatch({
+                type: EMAIL_SENT,
+                data: false,
+            })
         } catch (err) {
             console.log('Ошибка при сбросе пароля:\n', err);
         }
@@ -351,15 +289,10 @@ export function updateUserData(updatedForm) {
     return async dispatch => {
         try {
             const jsonData = await userDataUpdateRequest(updatedForm);
-            if (jsonData.success && jsonData) {
-                console.log(`Updated data\n`, jsonData);
-                dispatch({
-                    type: SET_USER,
-                    data: jsonData,
-                })
-            } else {
-                console.log('Error in JsonData getting');
-            }
+            dispatch({
+                type: SET_USER,
+                data: jsonData,
+            })
         } catch (err) {
             console.log('Ошибка при изменении данных пользователя\n', err);
         }
@@ -369,14 +302,10 @@ export function updateUserData(updatedForm) {
 export function userLogOut() {
     return async dispatch => {
         try {
-            const jsonData = await logOutRequest();
-            if (jsonData.success && jsonData) {
-                localStorage.removeItem('accessToken');
-                localStorage.removeItem('refreshToken');
-                dispatch(clearUserData());
-            } else {
-                console.log('Error in JsonData getting');
-            }
+            await logOutRequest();
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+            dispatch(clearUserData());
         } catch (err) {
             console.log('Ошибка при выходе\n', err);
         }

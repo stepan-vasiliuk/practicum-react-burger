@@ -1,23 +1,18 @@
 import React, {useState, useEffect} from "react";
 import appStyles from './app.module.css';
 import Header from "../header/header";
-import BurgerConstructor from "../burgerConstructor/burgerConstructor";
-import BurgerIngredients from "../burgerIngredients/burgerIngredients";
 import Modal from "../modal/modal";
-import OrderModal from "../modal/orderModal/orderModal";
-import IngredientsModal from "../modal/ingredientsModal/ingredientsModal";
+import OrderDetails from "../modal/orderModal/orderDetails";
+import IngredientDetails from "../modal/ingredientDetails/IngredientDetails";
 import {useDispatch, useSelector} from "react-redux";
 import {checkUserAuth, ingredientsLoad, modalClose} from "../../services/actions";
-import {DndProvider} from "react-dnd";
-import {HTML5Backend} from "react-dnd-html5-backend";
 import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import HomePage from "../../pages/homePage/homePage";
 import LoginPage from "../../pages/loginPage/loginPage";
 import RegisterPage from "../../pages/registerPage/registerPage";
 import ForgotPassword from "../../pages/forgot-password/forgotPassword";
 import ResetPassword from "../../pages/reset-password/resetPassword";
-import IngredientDetails from "../../pages/ingredientDetails/ingredientDetails";
-import {orderReducer} from "../../services/reducers/orderReducer";
+import IngredientDetailsPage from "../../pages/ingredientDetailsPage/ingredientDetailsPage";
 import ProfilePage from "../../pages/profile/profilePage";
 import EditPage from "../../pages/profile/editPage/editPage";
 import {OnlyAuth, OnlyUnAuth} from "../protectedRoute";
@@ -47,7 +42,7 @@ export default function App() {
         dispatch(ingredientsLoad())
     }, []);
 
-    //userAuthChecking
+
     useEffect(() => {
         dispatch(checkUserAuth());
     }, [])
@@ -93,7 +88,7 @@ export default function App() {
                             <Route path='/register' element={<OnlyUnAuth component={<RegisterPage/>}/>}/>
                             <Route path='/forgot-password' element={<OnlyUnAuth component={<ForgotPassword/>}/>} />
                             <Route path='/reset-password' element={<OnlyUnAuth component={<ResetPassword/>}/>} />
-                            <Route path='/ingredients/:_id' element={<IngredientDetails
+                            <Route path='/ingredients/:_id' element={<IngredientDetailsPage
                                 ingredient={getCurrentIngredient()}/>}/>
                             <Route path='/profile' element={<OnlyAuth component={<ProfilePage/>}/>}>
                                 <Route index element={<EditPage/>}/>
@@ -111,17 +106,15 @@ export default function App() {
                     <Routes>
                         <Route path='/ingredients/:_id' element={
                             <Modal onClose={closeModals}>
-                                <IngredientsModal ingredient={getCurrentIngredient()} onClose={closeModals}/>
+                                <IngredientDetails ingredient={getCurrentIngredient()} />
                             </Modal>
                         }/>
                     </Routes>
                 )
             }
-
             {modal.isOpen &&
                 <Modal onClose={closeModals}>
-
-                    <OrderModal onClose={closeModals}></OrderModal>
+                    <OrderDetails />
                 </Modal>
             }
         </>

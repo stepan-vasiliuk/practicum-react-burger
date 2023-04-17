@@ -14,9 +14,11 @@ export default function Header() {
     return (
         <header className={headerStyles.header}>
             <div className="container-wrapper">
-                <div className={headerStyles.logo}>
+                <Link
+                    to='/'
+                    className={headerStyles.logo}>
                     <Logo/>
-                </div>
+                </Link>
                 <div className={`${headerStyles.menu} pt-8 pb-8`}>
                     <section className={headerStyles.left}>
                         <NavLink

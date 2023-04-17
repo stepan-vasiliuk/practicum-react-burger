@@ -13,3 +13,8 @@
 
 }
 
+.close_button{
+    position: absolute;
+    top: 60px;
+    right: 40px;
+}

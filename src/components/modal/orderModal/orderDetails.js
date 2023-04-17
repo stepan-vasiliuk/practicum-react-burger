@@ -1,13 +1,10 @@
-import modalStyles from "../modal.module.css";
-import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import orderImage from "../../../images/orderImage.svg";
-import orderStyles from "./orderModal.module.css";
+import orderStyles from "./orderDetails.module.css";
 import React from "react";
 import {useSelector} from "react-redux";
-import PropTypes from "prop-types";
 
 
-export default function OrderModal({onClose}) {
+export default function OrderDetails() {
 
     const orderNumber = useSelector(state => state.orderReducer.orderNumber);
     const hasError = useSelector(state => state.orderReducer.hasError);
@@ -15,10 +12,6 @@ export default function OrderModal({onClose}) {
 
     return (
         <div className={orderStyles.order_modal}>
-            <a href='#' className={orderStyles.close_button} onClick={onClose}>
-                <CloseIcon type="primary"/>
-            </a>
-
             <div className={orderStyles.modal_content}>
                 {orderNumber && !hasError && !isLoading &&
                     <>
@@ -57,8 +50,4 @@ export default function OrderModal({onClose}) {
             </div>
         </div>
     )
-}
-
-OrderModal.propTypes = {
-    onClose: PropTypes.func.isRequired,
 }

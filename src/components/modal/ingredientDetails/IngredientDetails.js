@@ -1,12 +1,9 @@
-import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import cardStyles from "./ingredientsModal.module.css";
+import cardStyles from "./IngredientDetails.module.css";
 import React, {useEffect} from "react";
-import {useDispatch} from "react-redux";
 import PropTypes from "prop-types";
-import {useLocation} from "react-router-dom";
 
 
-export default function IngredientsModal({onClose, ingredient}) {
+export default function IngredientDetails({ingredient}) {
 
 
     return (
@@ -14,9 +11,6 @@ export default function IngredientsModal({onClose, ingredient}) {
             <div className={cardStyles.content_wrapper}>
                 <div className={cardStyles.modal_header}>
                     <h1 className={`text text_type_main-large ${cardStyles.header_text}`}>Детали ингредиента</h1>
-                    <a href='#' className={cardStyles.close_button} onClick={onClose}>
-                        <CloseIcon type="primary"/>
-                    </a>
                 </div>
                 <ul className={`pl-15 pr-15 ${cardStyles.modal_content}`}>
                     <li className={cardStyles.modal_image}>
@@ -69,8 +63,7 @@ export default function IngredientsModal({onClose, ingredient}) {
     )
 }
 
-IngredientsModal.propTypes = {
-    onClose: PropTypes.func.isRequired,
+IngredientDetails.propTypes = {
     ingredient: PropTypes.shape({
         _id: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,

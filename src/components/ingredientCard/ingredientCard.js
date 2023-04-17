@@ -21,10 +21,6 @@ export default function IngredientCard({ingredient}) {
     const location = useLocation();
     const currentId = ingredient._id;
 
-    const handleOnCardClick = (e) => {
-        dispatch(modalOpen(ingredient))
-    }
-
     const counter = useMemo(() => getCount(), [bun, ingredientsList]);
 
 
@@ -69,7 +65,6 @@ export default function IngredientCard({ingredient}) {
                 }
                 <img className={cardStyles.image}
                      src={ingredient.image}
-                     // onClick={() => handleOnCardClick()}
                      ref={dragRef}/>
                 <div className={cardStyles.price}>
                     <p className={cardStyles.price_value}>{ingredient.price}</p>

@@ -17,7 +17,6 @@ export default function LoginPage() {
     const {form, setForm, handleChange} = useFormCustom(initial);
     const onSubmit = (e) => {
         e.preventDefault();
-        console.log(form);
         dispatch(userLogin(form));
         setForm(initial);
     }
