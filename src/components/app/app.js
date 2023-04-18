@@ -83,18 +83,20 @@ export default function App() {
                     <div className="container-wrapper">
                         <Routes location={state?.background || location}>
                             <Route path='/' element={<HomePage/>}/>
-                            <Route path='/order-feed' element={<OrderFeed />} />
+                            <Route path='/order-feed' element={<OrderFeed/>}/>
                             <Route path='/login' element={<OnlyUnAuth component={<LoginPage/>}/>}/>
                             <Route path='/register' element={<OnlyUnAuth component={<RegisterPage/>}/>}/>
-                            <Route path='/forgot-password' element={<OnlyUnAuth component={<ForgotPassword/>}/>} />
-                            <Route path='/reset-password' element={<OnlyUnAuth component={<ResetPassword/>}/>} />
-                            <Route path='/ingredients/:_id' element={<IngredientDetailsPage
-                                ingredient={getCurrentIngredient()}/>}/>
+                            <Route path='/forgot-password' element={<OnlyUnAuth component={<ForgotPassword/>}/>}/>
+                            <Route path='/reset-password' element={<OnlyUnAuth component={<ResetPassword/>}/>}/>
+                            {getCurrentIngredient() &&
+                                <Route path='/ingredients/:_id' element={<IngredientDetailsPage
+                                    ingredient={getCurrentIngredient()}/>}/>
+                            }
                             <Route path='/profile' element={<OnlyAuth component={<ProfilePage/>}/>}>
                                 <Route index element={<EditPage/>}/>
-                                <Route path='orders' element={<OrdersHistory/>} />
+                                <Route path='orders' element={<OrdersHistory/>}/>
                             </Route>
-                            <Route path='/*' element={<NotFoundPage />} />
+                            <Route path='/*' element={<NotFoundPage/>}/>
                         </Routes>
 
                     </div>
@@ -106,7 +108,7 @@ export default function App() {
                     <Routes>
                         <Route path='/ingredients/:_id' element={
                             <Modal onClose={closeModals}>
-                                <IngredientDetails ingredient={getCurrentIngredient()} />
+                                <IngredientDetails ingredient={getCurrentIngredient()}/>
                             </Modal>
                         }/>
                     </Routes>
@@ -114,7 +116,7 @@ export default function App() {
             }
             {modal.isOpen &&
                 <Modal onClose={closeModals}>
-                    <OrderDetails />
+                    <OrderDetails/>
                 </Modal>
             }
         </>
