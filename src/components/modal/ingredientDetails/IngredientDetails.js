@@ -1,7 +1,7 @@
 import cardStyles from "./IngredientDetails.module.css";
 import React, {useEffect} from "react";
 import PropTypes from "prop-types";
-import {ingredientType} from "../../../utils/types";
+import {ingredientTypes} from "../../../utils/types";
 
 
 export default function IngredientDetails({ingredient}) {
@@ -64,4 +64,6 @@ export default function IngredientDetails({ingredient}) {
     )
 }
 
-IngredientDetails.propTypes = ingredientType;
+IngredientDetails.propTypes = {
+    ingredient: ingredientTypes
+};

@@ -9,7 +9,7 @@ import {v4 as uuidv4} from 'uuid';
 import PropTypes from "prop-types";
 import ConstructorItem from "../constructorItem/constructorItem";
 import {Link, useLocation} from "react-router-dom";
-import {ingredientType} from "../../utils/types";
+import {ingredientTypes} from "../../utils/types";
 
 export default function IngredientCard({ingredient}) {
 
@@ -76,4 +76,6 @@ export default function IngredientCard({ingredient}) {
         </Link>
     )
 }
-IngredientCard.propTypes = ingredientType;
+IngredientCard.propTypes = {
+    ingredient: ingredientTypes,
+}

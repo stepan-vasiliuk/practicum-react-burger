@@ -4,7 +4,7 @@ import itemStyles from './constructorItem.module.css';
 import {useDrag, useDrop} from "react-dnd";
 import {itemTypes} from "../../services/itemTypes";
 import PropTypes, {number} from "prop-types";
-import {ingredientType} from "../../utils/types";
+import {ingredientTypes} from "../../utils/types";
 
 
 export default function ConstructorItem({ingredient, index, handleMovingItem, handleClose, id}) {
@@ -72,5 +72,5 @@ ConstructorItem.propTypes = {
     handleClose: PropTypes.func.isRequired,
     handleMovingItem: PropTypes.func.isRequired,
     index: PropTypes.number.isRequired,
-    ingredientType,
+    ingredient: ingredientTypes,
 }
