@@ -1,10 +1,12 @@
 import {combineReducers} from "redux";
 import {dataReducer} from "./dataReducer";
-import {modalReducer} from "./modalReducer";
+import {orderReducer} from "./orderReducer";
 import {constructorReducer} from "./constructorReducer";
+import {userReducer} from "./userReducer";
 
 export const rootReducer = combineReducers({
     dataReducer,
-    modalReducer,
+    orderReducer,
     constructorReducer,
+    userReducer,
 })

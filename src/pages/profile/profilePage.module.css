@@ -1,0 +1,51 @@
+.profile {
+    display: flex;
+    flex-direction: row;
+    gap: 60px;
+}
+
+.static {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 80px;
+    max-width: 320px;
+    align-content: flex-start;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.menu_item {
+    min-height: 64px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.element_text{
+    text-decoration: none;
+    font-family: 'Jet Brains Mono', serif;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 1.25;
+    color: var(--text-inactive-color);
+}
+
+.element_text :hover {
+    color: var(--text-primary-color);
+}
+
+.active_text{
+    color: var(--text-primary-color);
+}
+
+.page_description {
+
+}
+
+.dynamic_page {
+    flex-grow: 0;
+}

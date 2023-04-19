@@ -8,6 +8,8 @@ import {itemTypes} from "../../services/itemTypes";
 import {v4 as uuidv4} from 'uuid';
 import PropTypes from "prop-types";
 import ConstructorItem from "../constructorItem/constructorItem";
+import {Link, useLocation} from "react-router-dom";
+import {ingredientTypes} from "../../utils/types";
 
 export default function IngredientCard({ingredient}) {
 
@@ -17,9 +19,8 @@ export default function IngredientCard({ingredient}) {
 
     const dispatch = useDispatch();
 
-    const handleOnCardClick = (e) => {
-        dispatch(modalOpen(ingredient))
-    }
+    const location = useLocation();
+    const currentId = ingredient._id;
 
     const counter = useMemo(() => getCount(), [bun, ingredientsList]);
 
@@ -53,34 +54,28 @@ export default function IngredientCard({ingredient}) {
 
 
     return (
-        <li className={`${cardStyles.card} pl-4 pr-4 pb-8`}>
-            {counter ?
-                <Counter count={counter} size={"default"}/> : null
-            }
-            <img className={cardStyles.image}
-                 src={ingredient.image}
-                 onClick={() => handleOnCardClick()}
-                 ref={dragRef} />
-            <div className={cardStyles.price}>
-                <p className={cardStyles.price_value}>{ingredient.price}</p>
-                <CurrencyIcon type="primary"/>
-            </div>
-            <p className={cardStyles.description}>{ingredient.name}</p>
-        </li>
+        <Link
+            to={`/ingredients/${currentId}`}
+            key={ingredient._id}
+            state={{background: location}}
+            style={{textDecoration: "none"}}
+        >
+            <li className={`${cardStyles.card} pl-4 pr-4 pb-8`}>
+                {counter ?
+                    <Counter count={counter} size={"default"}/> : null
+                }
+                <img className={cardStyles.image}
+                     src={ingredient.image}
+                     ref={dragRef}/>
+                <div className={cardStyles.price}>
+                    <p className={cardStyles.price_value}>{ingredient.price}</p>
+                    <CurrencyIcon type="primary"/>
+                </div>
+                <p className={cardStyles.description}>{ingredient.name}</p>
+            </li>
+        </Link>
     )
 }
 IngredientCard.propTypes = {
-    ingredient: PropTypes.shape({
-        _id: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        type: PropTypes.string.isRequired,
-        proteins: PropTypes.number.isRequired,
-        fat: PropTypes.number.isRequired,
-        carbohydrates: PropTypes.number.isRequired,
-        calories: PropTypes.number.isRequired,
-        price: PropTypes.number.isRequired,
-        image: PropTypes.string.isRequired,
-        image_large: PropTypes.string.isRequired,
-        image_mobile: PropTypes.string.isRequired,
-    }).isRequired,
+    ingredient: ingredientTypes,
 }

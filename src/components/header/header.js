@@ -4,33 +4,53 @@ import {BurgerIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import headerStyles from "./header.module.css";
 import {ListIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {ProfileIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import {Link, NavLink, useLocation, useMatch} from "react-router-dom";
 
 export default function Header() {
+
+    const location = useLocation();
+    const profilePattern = useMatch('/profile/*');
 
     return (
         <header className={headerStyles.header}>
             <div className="container-wrapper">
-                <nav className={`${headerStyles.nav} pt-4 pb-4`}>
-                    <section className={`${headerStyles.menu} `}>
-                        <a className={headerStyles.menu_element}>
-                            <BurgerIcon type="primary"/>
-                            <p className="text text_type_main-default">Конструктор</p>
-                        </a>
-                        <a className={`${headerStyles.menu_element}`}>
-                            <ListIcon type="secondary"/>
-                            <p className="text text_type_main-default text_color_inactive">Лента заказов</p>
-                        </a>
+                <Link
+                    to='/'
+                    className={headerStyles.logo}>
+                    <Logo/>
+                </Link>
+                <div className={`${headerStyles.menu} pt-8 pb-8`}>
+                    <section className={headerStyles.left}>
+                        <NavLink
+                            to='/'
+                            className={({isActive}) => headerStyles.menu_element + (isActive ?
+                                ` ${headerStyles.active_link}` : ``)}
+                        >
+                            <BurgerIcon type={location.pathname === '/' ? 'primary' : 'secondary'}/>
+                            <p>Конструктор</p>
+                        </NavLink>
+
+                        <NavLink
+                            to='/order-feed'
+                            className={({isActive}) => headerStyles.menu_element + (isActive ?
+                                ` ${headerStyles.active_link}` : ``)}
+                        >
+                            <ListIcon type={location.pathname === '/order-feed' ? 'primary' : 'secondary'}/>
+                            <p >Лента заказов</p>
+                        </NavLink>
+
                     </section>
-                    <section className={headerStyles.logo}>
-                        <Logo/>
+                    <section>
+                        <NavLink
+                            to='/profile'
+                            className={({isActive}) => headerStyles.menu_element + (isActive ?
+                                ` ${headerStyles.active_link}` : ``)}
+                        >
+                            <ProfileIcon type={profilePattern ? 'primary' : 'secondary'} />
+                            <p>Личный кабинет</p>
+                        </NavLink>
                     </section>
-                    <section className={headerStyles.user_lk}>
-                        <a className={`${headerStyles.menu_element}`}>
-                            <ProfileIcon type="secondary"/>
-                            <p className="text text_type_main-default text_color_inactive">Личный кабинет</p>
-                        </a>
-                    </section>
-                </nav>
+                </div>
             </div>
         </header>
     )

@@ -42,3 +42,14 @@ export const GET_ORDER_SUCCESS = 'GET_ORDER_SUCCESS';
 export const GET_ORDER_FAILED = 'GET_ORDER_FAILED';
 export const ORDER_MODAL_DATA_LOADING_ON = 'ORDER_MODAL_DATA_LOADING_ON';
 export const ORDER_MODAL_DATA_LOADING_OFF = 'ORDER_MODAL_DATA_LOADING_OFF'
+
+/**
+ * Работа с пользователем
+ */
+export const SET_USER = 'SET_USER';
+export const USER_REGISTER_FAILED = 'USER_REGISTER_FAILED';
+
+export const AUTH_CHECKED = 'AUTH_CHECKED';
+export const CLEAR_USER_DATA = 'CLEAR_USER_DATA';
+
+export const EMAIL_SENT = 'EMAIL_SENT';

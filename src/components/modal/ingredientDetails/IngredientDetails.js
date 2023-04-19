@@ -1,20 +1,17 @@
-import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import cardStyles from "./ingredientsModal.module.css";
-import React from "react";
-import {useDispatch} from "react-redux";
+import cardStyles from "./IngredientDetails.module.css";
+import React, {useEffect} from "react";
 import PropTypes from "prop-types";
+import {ingredientTypes} from "../../../utils/types";
 
 
-export default function IngredientsModal({onClose, ingredient}) {
+export default function IngredientDetails({ingredient}) {
+
 
     return (
         <div className={cardStyles.ingredients_modal}>
             <div className={cardStyles.content_wrapper}>
                 <div className={cardStyles.modal_header}>
                     <h1 className={`text text_type_main-large ${cardStyles.header_text}`}>Детали ингредиента</h1>
-                    <a href='#' className={cardStyles.close_button} onClick={onClose}>
-                        <CloseIcon type="primary"/>
-                    </a>
                 </div>
                 <ul className={`pl-15 pr-15 ${cardStyles.modal_content}`}>
                     <li className={cardStyles.modal_image}>
@@ -67,19 +64,6 @@ export default function IngredientsModal({onClose, ingredient}) {
     )
 }
 
-IngredientsModal.propTypes = {
-    onClose: PropTypes.func.isRequired,
-    ingredient: PropTypes.shape({
-        _id: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        type: PropTypes.string.isRequired,
-        proteins: PropTypes.number.isRequired,
-        fat: PropTypes.number.isRequired,
-        carbohydrates: PropTypes.number.isRequired,
-        calories: PropTypes.number.isRequired,
-        price: PropTypes.number.isRequired,
-        image: PropTypes.string.isRequired,
-        image_large: PropTypes.string.isRequired,
-        image_mobile: PropTypes.string.isRequired,
-    }).isRequired
-}
+IngredientDetails.propTypes = {
+    ingredient: ingredientTypes
+};
