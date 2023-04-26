@@ -1,20 +1,19 @@
-import React, {useEffect, useMemo, useRef, useState} from "react";
+import React, {ReactComponentElement, ReactElement, useEffect, useMemo, useRef, useState} from "react";
 import ingredientStyles from "./burgerIngredients.module.css";
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
-import IngredientType from "../ingredientType/ingredientType";
+import {IngredientType} from "../ingredientType/ingredientType";
 import PropTypes from "prop-types";
 import {useDispatch, useSelector} from "react-redux";
 import {ingredientsLoad} from "../../services/actions";
+import {IIngredient} from "../../utils/types";
 
 
 export default function BurgerIngredients() {
 
-    const [activeTab, setActiveTab] = useState('bun');
+    const [activeTab, setActiveTab] = useState<string>('bun');
 
-    const ingredientsData = useSelector(state => {
-        const {dataReducer} = state;
-        return dataReducer.data;
-    })
+    // @ts-ignore
+    const ingredientsData: Array<IIngredient> = useSelector(state => state.dataReducer.data);
 
     const bun = useMemo(
         () => ingredientsData.filter((ingredient) => ingredient.type === 'bun'),
@@ -31,18 +30,19 @@ export default function BurgerIngredients() {
         [ingredientsData]
     );
 
-    const tabsRef = useRef(null);
-    const bunRef = useRef(null);
-    const toppingRef = useRef(null);
-    const sauceRef = useRef(null);
+    const tabsRef = useRef<HTMLDivElement | null>(null);
+    const bunRef = useRef<HTMLDivElement | null>(null);
+    const toppingRef = useRef<HTMLDivElement | null>(null);
+    const sauceRef = useRef<HTMLDivElement | null>(null);
 
     const handleOnScroll = () => {
-        const bunSpacing = Math.abs(tabsRef.current.getBoundingClientRect().top
-            - bunRef.current.getBoundingClientRect().top)
-        const toppingSpacing = Math.abs(tabsRef.current.getBoundingClientRect().top
-            - toppingRef.current.getBoundingClientRect().top);
-        const sauceSpacing = Math.abs(tabsRef.current.getBoundingClientRect().top
-            - sauceRef.current.getBoundingClientRect().top);
+
+        const bunSpacing = Math.abs(tabsRef.current!.getBoundingClientRect().top
+            - bunRef.current!.getBoundingClientRect().top)
+        const toppingSpacing = Math.abs(tabsRef.current!.getBoundingClientRect().top
+            - toppingRef.current!.getBoundingClientRect().top);
+        const sauceSpacing = Math.abs(tabsRef.current!.getBoundingClientRect().top
+            - sauceRef.current!.getBoundingClientRect().top);
 
         const minSpacing = Math.min(bunSpacing, toppingSpacing, sauceSpacing);
         let currentTab = activeTab;
@@ -59,19 +59,19 @@ export default function BurgerIngredients() {
         setActiveTab(currentTab === activeTab ? activeTab : currentTab);
     }
 
-    const handleOnTabClick = (id) => {
-        const element = document.querySelector(`#${id}`);
-        element.scrollIntoView({
+    const handleOnTabClick = (id: string) => {
+        const element: HTMLElement | null = document.querySelector(`#${id}`);
+        element?.scrollIntoView({
             behavior: "smooth"
         })
     }
 
     return (
         <div className={ingredientStyles.container}>
-            <section className={`${ingredientStyles.title} pt-10 pb-5`}>
+            <div className={`${ingredientStyles.title} pt-10 pb-5`}>
                 <h1>Соберите бургер</h1>
-            </section>
-            <section className={`${ingredientStyles.tab_section}`}>
+            </div>
+            <div className={`${ingredientStyles.tab_section}`}>
                 <Tab value="bun" active={activeTab === 'bun'}
                 onClick={() => handleOnTabClick('bun')}>
                     Булки
@@ -84,14 +84,14 @@ export default function BurgerIngredients() {
                 onClick={() => handleOnTabClick('topping')}>
                     Начинки
                 </Tab>
-            </section>
-            <section className={`${ingredientStyles.scroll_container}`}
+            </div>
+            <div className={`${ingredientStyles.scroll_container}`}
                      ref={tabsRef}
                      onScroll={handleOnScroll}>
                 <IngredientType groupType={bun} id='bun' title='Булки' propsRef={bunRef}/>
                 <IngredientType groupType={sauce} id='sauce' title='Соусы' propsRef={sauceRef}/>
                 <IngredientType groupType={topping} id='topping' title='Начинки' propsRef={toppingRef}/>
-            </section>
+            </div>
         </div>
     )
 }

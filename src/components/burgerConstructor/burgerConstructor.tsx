@@ -15,17 +15,24 @@ import {itemTypes} from "../../services/itemTypes";
 import ConstructorItem from "../constructorItem/constructorItem";
 import {userReducer} from "../../services/reducers/userReducer";
 import {useNavigate} from "react-router-dom";
+import {IConstructorIngredient, IIngredient, IUser} from "../../utils/types";
+import {TIngredientsDragType} from "../ingredientCard/ingredientCard";
 
 
-export default function BurgerConstructor() {
-    const ingredientsList = useSelector(state => state.constructorReducer.ingredientsList);
-    const bun = useSelector(state => state.constructorReducer.bun);
+export default function BurgerConstructor(): JSX.Element {
 
-    const originalIngredients = useSelector(state => state.dataReducer.data);
+    // @ts-ignore
+    const ingredientsList: Array<IConstructorIngredient> = useSelector(state => state.constructorReducer.ingredientsList);
+    // @ts-ignore
+    const bun: IIngredient = useSelector(state => state.constructorReducer.bun);
+
+    // @ts-ignore
+    const originalIngredients: Array<IIngredient> = useSelector(state => state.dataReducer.data);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const user = useSelector(state => state.userReducer.user);
+    // @ts-ignore
+    const user: IUser = useSelector(state => state.userReducer.user);
 
     const totalPriceUpdated = useMemo(() => {
         let sum = 0;
@@ -43,13 +50,14 @@ export default function BurgerConstructor() {
         const idsToOrder = [bun?._id, ...ingredientIds, bun?._id];
         checkUserAuth();
         if (user) {
-            dispatch(createOrder(idsToOrder))
+            // @ts-ignore
+            dispatch(createOrder(idsToOrder));
             dispatch(modalOpen());
             dispatch(clearConstructor());
         } else navigate('/login');
     }
 
-    const [, dropTarget] = useDrop({
+    const [, dropTarget] = useDrop<TIngredientsDragType>({
             accept: itemTypes.CARD,
             drop(item) {
                 handleDrop(item._id);
@@ -57,23 +65,23 @@ export default function BurgerConstructor() {
         }
     )
 
-    const handleDrop = (id) => {
+    const handleDrop = (id: string) => {
         const currentItem = originalIngredients.find((item) => item._id === id);
-        if (!bun && currentItem.type === 'bun') {
+        if (!bun && currentItem?.type === 'bun') {
             dispatch(addBun(currentItem));
-        } else if (!bun && currentItem.type !== 'bun') {
+        } else if (!bun && currentItem?.type !== 'bun') {
             return;
         } else {
-            currentItem.type === 'bun' ? dispatch(addBun(currentItem)) : dispatch(addIngredient(currentItem));
+            currentItem?.type === 'bun' ? dispatch(addBun(currentItem)) : dispatch(addIngredient(currentItem));
         }
     }
 
-    const handleMovingItem = (dragIndex, hoverIndex) => {
+    const handleMovingItem = (dragIndex: number, hoverIndex: number) => {
         dispatch(updateIngredients(dragIndex, hoverIndex));
     }
 
 
-    const handleDeleteItem = (key) => {
+    const handleDeleteItem = (key: string) => {
         const filteredArray = ingredientsList.filter(item => item.key !== key);
         dispatch(removeIngredient(filteredArray));
     }
@@ -89,7 +97,7 @@ export default function BurgerConstructor() {
                                 isLocked={true}
                                 text="Перетащите сюда булочку (верх)"
                                 price={0}
-                                //thumbnail={''}
+                                thumbnail={''}
                             />
                         </div>
                         <div className={constructorStyles.item_bottom}>
@@ -98,7 +106,7 @@ export default function BurgerConstructor() {
                                 isLocked={true}
                                 text="Перетащите сюда булочку (низ)"
                                 price={0}
-                                //thumbnail={''}
+                                thumbnail={''}
                             />
                         </div>
                     </>

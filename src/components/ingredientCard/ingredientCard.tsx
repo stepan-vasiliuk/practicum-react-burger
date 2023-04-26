@@ -1,23 +1,22 @@
-import React, {useEffect, useMemo, useState} from "react";
+import React, {FC, FunctionComponent, useEffect, useMemo, useState} from "react";
 import cardStyles from './ingredientCard.module.css';
 import {CurrencyIcon, Counter} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useDispatch, useSelector} from "react-redux";
-import {addBun, addIngredient, modalOpen} from "../../services/actions";
 import {useDrag} from "react-dnd";
 import {itemTypes} from "../../services/itemTypes";
-import {v4 as uuidv4} from 'uuid';
-import PropTypes from "prop-types";
-import ConstructorItem from "../constructorItem/constructorItem";
 import {Link, useLocation} from "react-router-dom";
-import {ingredientTypes} from "../../utils/types";
+import {IIngredient, IIngredientCard} from "../../utils/types";
 
-export default function IngredientCard({ingredient}) {
+export type TIngredientsDragType = {
+    _id: string;
+}
+export const IngredientCard: FunctionComponent<IIngredientCard> = ({ingredient}) => {
 
-    const bun = useSelector(state => state.constructorReducer.bun);
-    const ingredientsList = useSelector(state => state.constructorReducer.ingredientsList);
+    // @ts-ignore
+    const bun: IIngredient = useSelector(state => state.constructorReducer.bun);
+    // @ts-ignore
+    const ingredientsList: Array<IIngredient> = useSelector(state => state.constructorReducer.ingredientsList);
 
-
-    const dispatch = useDispatch();
 
     const location = useLocation();
     const currentId = ingredient._id;
@@ -26,7 +25,7 @@ export default function IngredientCard({ingredient}) {
 
 
     function getCount() {
-        let count = 0;
+        let count: number = 0;
 
         if (ingredient.type === 'bun') {
             if (bun?._id === ingredient._id) {
@@ -46,7 +45,7 @@ export default function IngredientCard({ingredient}) {
 
     const {_id} = ingredient;
 
-    const [, dragRef] = useDrag({
+    const [, dragRef] = useDrag<TIngredientsDragType>({
         type: itemTypes.CARD,
         item: {_id},
 
@@ -75,7 +74,4 @@ export default function IngredientCard({ingredient}) {
             </li>
         </Link>
     )
-}
-IngredientCard.propTypes = {
-    ingredient: ingredientTypes,
 }
