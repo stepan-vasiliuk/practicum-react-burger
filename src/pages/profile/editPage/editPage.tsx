@@ -28,7 +28,7 @@ export default function EditPage() {
         });
     }, [name, email]);
 
-    const {form, setForm, handleChange} = useFormCustom(initial);
+    const {form, setForm, handleChange, } = useFormCustom(initial)
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -43,22 +43,22 @@ export default function EditPage() {
 
     return (
         <div className={editStyles.wrapper}>
-            <form className={editStyles.form_flexbox} onSubmit={e => handleSubmit(e)}>
+            <form className={editStyles.form_flexbox} onSubmit={handleSubmit}>
                 <Input
                     placeholder='Имя'
                     type='text'
                     value={form.name!}
-                    onChange={e => handleChange(e)}
+                    onChange={handleChange}
                     name='name'
                 />
                 <EmailInput
                     value={form.email!}
-                    onChange={e => handleChange(e)}
+                    onChange={handleChange}
                     name='email'
                 />
                 <PasswordInput
                     value={form.password!}
-                    onChange={e => handleChange(e)}
+                    onChange={handleChange}
                     name='password'
                 />
                 <div className={editStyles.bottom_menu}>

@@ -37,12 +37,12 @@ export default function ResetPassword() {
                         <h1 className='text text_type_main-medium'>Восстановление пароля</h1>
                         <PasswordInput value={form.password!}
                                        placeholder='Введите новый пароль'
-                                       onChange={e => handleChange(e)}
+                                       onChange={handleChange}
                                        name='password'
                         />
                         <Input value={form.token!}
                                placeholder='Введите код из письма'
-                               onChange={e => handleChange(e)}
+                               onChange={handleChange}
                                name='token'
                         />
                         <Button htmlType='submit' type='primary' size='medium'>Сохранить</Button>

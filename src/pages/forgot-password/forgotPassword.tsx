@@ -37,7 +37,7 @@ export default function ForgotPassword() {
                 <h1 className='text text_type_main-medium'>Восстановление пароля</h1>
                 <EmailInput
                     value={form.email!}
-                    onChange={e => handleChange(e)}
+                    onChange={handleChange}
                     placeholder='Укажите e-mail'
                     name='email'
                 />

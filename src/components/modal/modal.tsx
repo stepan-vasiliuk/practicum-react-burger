@@ -23,7 +23,7 @@ export default function Modal({onClose, children} : TModalProps): JSX.Element {
         }
     }, [])
 
-    const handleEscButton = (e: { key: string; }) => {
+    const handleEscButton = (e: KeyboardEvent) => {
         e.key === 'Escape' && onClose();
     }
 

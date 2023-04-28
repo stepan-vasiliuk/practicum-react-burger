@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {ChangeEvent, FormEvent, useState} from "react";
 import {useDispatch} from "react-redux";
 
 type TFormParams = {
@@ -8,20 +8,12 @@ type TFormParams = {
     token?: string,
 
 }
-export const useFormCustom = (initial: TFormParams, action?: any) => {
-    const dispatch = useDispatch();
+export const useFormCustom = (initial: TFormParams) => {
     const [form, setForm] = useState(initial);
 
-    const handleChange = (e: { target: { name: string; value: string; }; }) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setForm({...form, [e.target.name]: e.target.value});
     };
 
-    const handleSubmit = (e: { preventDefault: () => void; }) => {
-        e.preventDefault();
-        console.log(form);
-        dispatch(action(form));
-        setForm(initial);
-    };
-
-    return {form, setForm, handleChange, handleSubmit};
+    return {form, setForm, handleChange};
 };

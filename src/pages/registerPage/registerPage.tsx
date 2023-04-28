@@ -37,16 +37,16 @@ export default function RegisterPage() {
                     value={form.name!}
                     placeholder='Имя'
                     name='name'
-                    onChange={e => handleChange(e)}
+                    onChange={handleChange}
 
                 />
                 <EmailInput
                     value={form.email!}
-                    onChange={e => handleChange(e)}
+                    onChange={handleChange}
                     name='email'/>
                 <PasswordInput
                     value={form.password!}
-                    onChange={e => handleChange(e)}
+                    onChange={handleChange}
                     name='password'/>
                 <Button htmlType='submit' type='primary' size='medium'>Зарегистрироваться</Button>
             </form>

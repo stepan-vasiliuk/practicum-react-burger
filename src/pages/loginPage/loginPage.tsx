@@ -29,12 +29,12 @@ export default function LoginPage() {
                 <h1 className='text text_type_main-medium'>Вход</h1>
                 <EmailInput
                     value={form.email!}
-                    onChange={e => handleChange(e)}
+                    onChange={handleChange}
                     name='email'
                 />
                 <PasswordInput
                     value={form.password!}
-                    onChange={e => handleChange(e)}
+                    onChange={handleChange}
                     name='password'
                 />
                 <Button htmlType="submit" type='primary' size='medium'>Войти</Button>
