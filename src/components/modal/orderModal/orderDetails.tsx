@@ -6,9 +6,12 @@ import {useSelector} from "react-redux";
 
 export default function OrderDetails() {
 
-    const orderNumber = useSelector(state => state.orderReducer.orderNumber);
-    const hasError = useSelector(state => state.orderReducer.hasError);
-    const isLoading = useSelector(state => state.orderReducer.isLoading);
+    // @ts-ignore
+    const orderNumber: number = useSelector(state => state.orderReducer.orderNumber);
+    // @ts-ignore
+    const hasError: boolean = useSelector(state => state.orderReducer.hasError);
+    // @ts-ignore
+    const isLoading: boolean = useSelector(state => state.orderReducer.isLoading);
 
     return (
         <div className={orderStyles.order_modal}>

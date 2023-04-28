@@ -1,6 +1,6 @@
 import loginStyles from '../formStyles.module.css';
 import {Button, EmailInput, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useCallback, useEffect, useState} from "react";
+import {FormEvent, useCallback, useEffect, useState} from "react";
 import {Link, useLocation, useNavigate, useSearchParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {useFormCustom} from "../../utils/form";
@@ -10,13 +10,14 @@ export default function LoginPage() {
     const dispatch = useDispatch();
 
     const initial = {
-        email: '',
-        password: '',
-    }
+        email: "",
+        password: "",
+    };
 
     const {form, setForm, handleChange} = useFormCustom(initial);
-    const onSubmit = (e) => {
+    const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        // @ts-ignore
         dispatch(userLogin(form));
         setForm(initial);
     }
@@ -27,12 +28,12 @@ export default function LoginPage() {
             <form className={loginStyles.form_flexbox} onSubmit={e => onSubmit(e)}>
                 <h1 className='text text_type_main-medium'>Вход</h1>
                 <EmailInput
-                    value={form.email}
+                    value={form.email!}
                     onChange={e => handleChange(e)}
                     name='email'
                 />
                 <PasswordInput
-                    value={form.password}
+                    value={form.password!}
                     onChange={e => handleChange(e)}
                     name='password'
                 />

@@ -12,6 +12,7 @@ export default function ProfilePage() {
 
     const onExitClick = () => {
         console.log('Выход>>> ')
+        // @ts-ignore
         dispatch(userLogOut());
     }
 

@@ -19,31 +19,36 @@ import {OnlyAuth, OnlyUnAuth} from "../protectedRoute";
 import NotFoundPage from "../../pages/notFoundPage/notFoundPage";
 import OrderFeed from "../../pages/orderFeed/orderFeed";
 import OrdersHistory from "../../pages/profile/ordersHistory/ordersHistory";
+import {IIngredient} from "../../utils/types";
 
-export default function App() {
+export default function App(): JSX.Element {
 
-    const dataReducer = useSelector(state => {
-        const {dataReducer} = state;
-        return dataReducer;
-    })
+    // @ts-ignore
+    const data: Array<IIngredient> = useSelector(state => state.dataReducer.data);
+    // @ts-ignore
+    const isLoading: boolean = useSelector(state => state.dataReducer.isLoading);
+    // @ts-ignore
+    const hasError: boolean = useSelector(state => state.dataReducer.hasError);
+
+    // @ts-ignore
+    const isModalOpen: boolean = useSelector(state => state.orderReducer.isOpen);
+
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const modal = useSelector(state => {
-        const {orderReducer} = state;
-        return orderReducer;
-    })
     const closeModals = () => {
-        modal.isOpen ? dispatch(modalClose()) : navigate(-1);
+        isModalOpen ? dispatch(modalClose()) : navigate(-1);
     }
 
     useEffect(() => {
+        // @ts-ignore
         dispatch(ingredientsLoad())
     }, []);
 
 
     useEffect(() => {
+        // @ts-ignore
         dispatch(checkUserAuth());
     }, [])
 
@@ -68,7 +73,6 @@ export default function App() {
         } else return null;
     }
 
-    const {data, hasError, isLoading} = dataReducer;
 
     return (
         <>
@@ -92,7 +96,7 @@ export default function App() {
                                 <Route path='/ingredients/:_id' element={<IngredientDetailsPage
                                     ingredient={getCurrentIngredient()}/>}/>
                             }
-                            <Route path='/profile' element={<OnlyAuth component={<ProfilePage/>}/>}>
+                            <Route path='/profile' element={<OnlyAuth component={<ProfilePage/>} />}>
                                 <Route index element={<EditPage/>}/>
                                 <Route path='orders' element={<OrdersHistory/>}/>
                             </Route>
@@ -108,13 +112,13 @@ export default function App() {
                     <Routes>
                         <Route path='/ingredients/:_id' element={
                             <Modal onClose={closeModals}>
-                                <IngredientDetails ingredient={getCurrentIngredient()}/>
+                                <IngredientDetails ingredient={getCurrentIngredient()!}/>
                             </Modal>
                         }/>
                     </Routes>
                 )
             }
-            {modal.isOpen &&
+            {isModalOpen &&
                 <Modal onClose={closeModals}>
                     <OrderDetails/>
                 </Modal>

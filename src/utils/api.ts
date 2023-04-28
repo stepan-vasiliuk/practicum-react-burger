@@ -1,21 +1,24 @@
 export const BASE_URL = 'https://norma.nomoreparties.space/api/';
 
+export type TResponse = {
+    success : boolean;
+}
 
-const checkResponse = res => {
+const checkResponse = <T extends TResponse>(res: Response): Promise<T> => {
     return res.ok ? res.json() : res.json().then(err => Promise.reject(err));
 }
 
-export const checkSuccess = (res) => {
-    if (res && res.success) {
-        return res;
+export const checkSuccess = <T extends TResponse>(value: T): Promise<T>  => {
+    if (value && value.success) {
+        return Promise.resolve(value);
     }
-    return Promise.reject(`Data was not success >>> ${res}`);
+    throw Error(`Data was not success >>> ${value}`);
 }
 
-export const request = (endpoint, options) => {
-    return fetch(`${BASE_URL}${endpoint}`, options)
+export const request = <T extends TResponse>(endpoint: string, options?: RequestInit): Promise<T> => {
+    return fetch (`${BASE_URL}${endpoint}`, options)
         .then(checkResponse)
-        .then(checkSuccess);
+        .then(checkSuccess) as Promise<T>
 }
 
 export const ingredientsRequest = () => {
@@ -23,7 +26,7 @@ export const ingredientsRequest = () => {
 }
 
 
-export const orderRequest = data => {
+export const orderRequest = (data: string[]) => {
     return request(`orders`, {
         method: 'POST',
         headers: {
@@ -36,7 +39,7 @@ export const orderRequest = data => {
 }
 
 
-export const registerRequest = data => {
+export const registerRequest = (data: Record<string, string>) => {
     return request(`auth/register`, {
             method: 'POST',
             headers: {
@@ -47,7 +50,7 @@ export const registerRequest = data => {
     )
 }
 
-export const loginRequest = async data => {
+export const loginRequest = async (data: Record<string, string>) => {
     return request(`auth/login`, {
             method: 'POST',
             headers: {
@@ -58,7 +61,7 @@ export const loginRequest = async data => {
     )
 }
 
-export const passwordResetRequest = async email => {
+export const passwordResetRequest = async (email: string) => {
     return request(`password-reset`, {
             method: 'POST',
             headers: {
@@ -70,7 +73,7 @@ export const passwordResetRequest = async email => {
 
 }
 
-export const passwordRecoveryRequest = async data => {
+export const passwordRecoveryRequest = async (data: Record<string, string>) => {
     return request(`password-reset/reset`, {
             method: 'POST',
             headers: {
@@ -81,12 +84,12 @@ export const passwordRecoveryRequest = async data => {
     )
 }
 
-export const userDataUpdateRequest = async data => {
+export const userDataUpdateRequest = async (data: Record<string, string>) => {
     return request(`auth/user`, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
-            authorization: localStorage.getItem("accessToken")
+            authorization: localStorage.getItem("accessToken") ?? '',
         },
         body: JSON.stringify(data),
     })
@@ -104,8 +107,8 @@ export const logOutRequest = () => {
     })
 
 }
-export const refreshToken = () => {
-    return request(`auth/token`, {
+export const refreshToken = (): Promise <Record<string, string>>  => {
+    return request<Record <string, string> & TResponse>(`auth/token`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
@@ -116,16 +119,21 @@ export const refreshToken = () => {
     })
 }
 
-export const fetchWithRefresh = async (url, options) => {
+export const fetchWithRefresh = async (url: string, options: RequestInit) => {
     try {
          return await request(`${url}`, options);
-    } catch (err) {
-        if (err.message === 'jwt expired') {
+    } catch (err: unknown) {
+
+        if ((err as Error).message === 'jwt expired') {
             console.log('JWT expired');
             const refreshData = await refreshToken();
             localStorage.setItem("refreshToken", refreshData.refreshToken);
             localStorage.setItem('accessToken', refreshData.accessToken);
-            options.headers.authorization = refreshData.accessToken;
+
+            options.headers = {
+                ...options.headers,
+                authorization: refreshData.accessToken,
+            }
             return await request(url, options);
         } else {
             return Promise.reject(err);

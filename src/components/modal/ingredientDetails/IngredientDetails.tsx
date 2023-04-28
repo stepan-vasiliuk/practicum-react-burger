@@ -1,10 +1,11 @@
 import cardStyles from "./IngredientDetails.module.css";
 import React, {useEffect} from "react";
 import PropTypes from "prop-types";
-import {ingredientTypes} from "../../../utils/types";
+import {IIngredient, IIngredientCard, ingredientTypes} from "../../../utils/types";
 
 
-export default function IngredientDetails({ingredient}) {
+
+export default function IngredientDetails({ingredient}: IIngredientCard): JSX.Element {
 
 
     return (
@@ -63,7 +64,3 @@ export default function IngredientDetails({ingredient}) {
         </div>
     )
 }
-
-IngredientDetails.propTypes = {
-    ingredient: ingredientTypes
-};
