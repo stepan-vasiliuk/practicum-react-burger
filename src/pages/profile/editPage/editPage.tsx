@@ -1,7 +1,7 @@
 import formStyles from '../../formStyles.module.css';
 import editStyles from './editPage.module.css';
 import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useEffect, useState} from "react";
+import {FormEvent, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useFormCustom} from "../../../utils/form";
 import {updateUserData} from "../../../services/actions";
@@ -9,28 +9,31 @@ import {updateUserData} from "../../../services/actions";
 export default function EditPage() {
 
     const dispatch = useDispatch();
-    const name = useSelector(state => state.userReducer.user.name);
-    const email = useSelector(state => state.userReducer.user.email);
+    // @ts-ignore
+    const name: string = useSelector(state => state.userReducer.user.name);
+    // @ts-ignore
+    const email: string = useSelector(state => state.userReducer.user.email);
 
     const [initial, setInitial] = useState({
         name: name,
         email: email,
-        password: '',
-    })
+        password: "",
+    });
 
     useEffect(() => {
         setInitial({
             ...initial,
             name: name,
             email: email,
-        })
-    }, [name, email])
+        });
+    }, [name, email]);
 
-    const {form, setForm, handleChange} = useFormCustom(initial);
+    const {form, setForm, handleChange, } = useFormCustom(initial)
 
-    const handleSubmit = e => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log(form);
+        // @ts-ignore
         dispatch(updateUserData(form));
     }
 
@@ -40,22 +43,22 @@ export default function EditPage() {
 
     return (
         <div className={editStyles.wrapper}>
-            <form className={editStyles.form_flexbox} onSubmit={e => handleSubmit(e)}>
+            <form className={editStyles.form_flexbox} onSubmit={handleSubmit}>
                 <Input
                     placeholder='Имя'
                     type='text'
-                    value={form.name}
-                    onChange={e => handleChange(e)}
+                    value={form.name!}
+                    onChange={handleChange}
                     name='name'
                 />
                 <EmailInput
-                    value={form.email}
-                    onChange={e => handleChange(e)}
+                    value={form.email!}
+                    onChange={handleChange}
                     name='email'
                 />
                 <PasswordInput
-                    value={form.password}
-                    onChange={e => handleChange(e)}
+                    value={form.password!}
+                    onChange={handleChange}
                     name='password'
                 />
                 <div className={editStyles.bottom_menu}>

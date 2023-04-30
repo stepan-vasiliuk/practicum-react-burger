@@ -1,6 +1,6 @@
 import registerStyles from '..//formStyles.module.css';
 import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useState} from "react";
+import {FormEvent, useState} from "react";
 import {Link, useSubmit} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import {useDispatch} from "react-redux";
@@ -12,15 +12,16 @@ export default function RegisterPage() {
     const dispatch = useDispatch();
 
     const initial = {
-        name: '',
-        email: '',
-        password: '',
-    }
+        name: "",
+        email: "",
+        password: "",
+    };
     const {form, setForm, handleChange} = useFormCustom(initial);
 
-    const onSubmit = (e) => {
+    const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log(form);
+        // @ts-ignore
         dispatch(userRegister(form));
         setForm(initial);
     }
@@ -33,19 +34,19 @@ export default function RegisterPage() {
                 <h1 className='text text_type_main-medium'>Регистрация</h1>
                 <Input
                     type='text'
-                    value={form.name}
+                    value={form.name!}
                     placeholder='Имя'
                     name='name'
-                    onChange={e => handleChange(e)}
+                    onChange={handleChange}
 
                 />
                 <EmailInput
-                    value={form.email}
-                    onChange={e => handleChange(e)}
+                    value={form.email!}
+                    onChange={handleChange}
                     name='email'/>
                 <PasswordInput
-                    value={form.password}
-                    onChange={e => handleChange(e)}
+                    value={form.password!}
+                    onChange={handleChange}
                     name='password'/>
                 <Button htmlType='submit' type='primary' size='medium'>Зарегистрироваться</Button>
             </form>

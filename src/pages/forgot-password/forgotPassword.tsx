@@ -1,6 +1,6 @@
 import forgotStyles from '..//formStyles.module.css';
 import {Button, EmailInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useEffect, useState} from "react";
+import {FormEvent, useEffect, useState} from "react";
 import {Link, Navigate, useNavigate} from "react-router-dom";
 import {useFormCustom} from "../../utils/form";
 import {useDispatch, useSelector} from "react-redux";
@@ -8,23 +8,25 @@ import {resetPassword} from "../../services/actions";
 
 export default function ForgotPassword() {
     const navigate = useNavigate();
-    const emailSentSuccess = useSelector(state => state.userReducer.emailSent);
+    // @ts-ignore
+    const emailSentSuccess: boolean = useSelector(state => state.userReducer.emailSent);
 
     const dispatch = useDispatch();
     const initial = {
-        email: '',
-    }
+        email: "",
+    };
 
     useEffect(() => {
         if (emailSentSuccess) {
-            navigate('/reset-password');
+            navigate("/reset-password");
         }
-    }, [emailSentSuccess])
+    }, [emailSentSuccess]);
 
-    const {form, setForm, handleChange} = useFormCustom(initial);
+    const {form, handleChange} = useFormCustom(initial);
 
-    const onSubmit = e => {
+    const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        // @ts-ignore
         dispatch(resetPassword(form));
         navigate('')
     }
@@ -34,8 +36,8 @@ export default function ForgotPassword() {
             <form onSubmit={e => onSubmit(e)} className={forgotStyles.form_flexbox}>
                 <h1 className='text text_type_main-medium'>Восстановление пароля</h1>
                 <EmailInput
-                    value={form.email}
-                    onChange={e => handleChange(e)}
+                    value={form.email!}
+                    onChange={handleChange}
                     placeholder='Укажите e-mail'
                     name='email'
                 />

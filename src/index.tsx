@@ -8,6 +8,7 @@ import {BrowserRouter as Router} from "react-router-dom";
 import {DevSupport} from "@react-buddy/ide-toolbox";
 import {ComponentPreviews, useInitial} from "./dev";
 
+// @ts-ignore
 const root = ReactDOM.createRoot(document.querySelector('#root'));
 const store = configureStore();
 

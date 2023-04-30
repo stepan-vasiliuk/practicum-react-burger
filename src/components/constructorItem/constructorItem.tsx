@@ -1,21 +1,36 @@
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import React, {useRef} from "react";
-import itemStyles from './constructorItem.module.css';
+import itemStyles from "./constructorItem.module.css";
 import {useDrag, useDrop} from "react-dnd";
 import {itemTypes} from "../../services/itemTypes";
 import PropTypes, {number} from "prop-types";
-import {ingredientTypes} from "../../utils/types";
+import {IConstructorIngredient, IIngredient, ingredientTypes} from "../../utils/types";
 
+export type TConstructorItemProps = {
+    ingredient: IConstructorIngredient;
+    index: number;
+    handleMovingItem: (dragIndex: number, hoverIndex: number) => void;
+    handleClose: (key: string) => void;
+    id: string;
+}
 
-export default function ConstructorItem({ingredient, index, handleMovingItem, handleClose, id}) {
+export type TDragType = {
+    id: string,
+    index: number,
+}
+type TDragCollectedProps = {
+    isDragging: boolean,
+}
+export default function ConstructorItem({ingredient, index, handleMovingItem, handleClose, id}: TConstructorItemProps)
+    : JSX.Element {
 
-    const ref = useRef(null);
+    const ref = useRef<HTMLLIElement | null>(null);
 
-    const [, drop] = useDrop({
+    const [, drop] = useDrop<TDragType>({
         accept: itemTypes.INGREDIENT,
         hover(item, monitor) {
             if (!ref.current) {
-                return
+                return;
             }
             const dragIndex = item.index;
             const hoverIndex = index;
@@ -28,6 +43,9 @@ export default function ConstructorItem({ingredient, index, handleMovingItem, ha
             const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
 
             const clientOffset = monitor.getClientOffset();
+            if (!clientOffset) {
+                return;
+            }
             const hoverClientY = clientOffset.y - hoverBoundingRect.top;
 
             if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
@@ -40,17 +58,18 @@ export default function ConstructorItem({ingredient, index, handleMovingItem, ha
             handleMovingItem(dragIndex, hoverIndex);
             item.index = hoverIndex;
         }
-    })
+    });
 
-    const [{opacity}, drag] = useDrag({
+    const [{isDragging}, drag] = useDrag<TDragType, unknown, TDragCollectedProps>({
         type: itemTypes.INGREDIENT,
         item: () => {
             return {index, id};
         },
         collect: monitor => ({
-            opacity: monitor.isDragging() ? 0 : 1
+            isDragging: monitor.isDragging(),
         })
-    })
+    });
+    const opacity = isDragging ? 0 : 1;
 
     drag(drop(ref));
 
@@ -64,13 +83,5 @@ export default function ConstructorItem({ingredient, index, handleMovingItem, ha
                 handleClose={() => handleClose(ingredient.key)}
             />
         </li>
-    )
-}
-
-ConstructorItem.propTypes = {
-    id: PropTypes.string.isRequired,
-    handleClose: PropTypes.func.isRequired,
-    handleMovingItem: PropTypes.func.isRequired,
-    index: PropTypes.number.isRequired,
-    ingredient: ingredientTypes,
+    );
 }
