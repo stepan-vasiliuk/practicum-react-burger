@@ -128,7 +128,7 @@ export function createOrder(ingredients) {
     return async dispatch => {
         try {
             dispatch(orderDataLoadingOn());
-            const jsonData = await orderRequest(ingredients);
+            const jsonData = await orderRequest(ingredients, localStorage.getItem('accessToken'));
             dispatch({
                 type: GET_ORDER_SUCCESS,
                 data: jsonData.order.number

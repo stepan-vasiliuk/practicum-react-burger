@@ -1,0 +1,53 @@
+import dashBoardStyles from "./feedDashBoard.module.css";
+
+export default function FeedDashBoard(): JSX.Element {
+
+    const readyOrdersArray: Array<number> = [2331, 2131, 1234, 2331, 2131, 1234];
+
+    return (
+        <div className={`${dashBoardStyles.container} mt-25`}>
+            <section className={dashBoardStyles.order_list}>
+                <div className={dashBoardStyles.order_list_column}>
+
+                    <h2 className={`text text_type_main-medium`}>Готовы:</h2>
+                    <div className={dashBoardStyles.order_list_content}>
+                        {readyOrdersArray.map((item, index) => {
+                            if (index > 9) {
+                                return null;
+                            } else {
+                                return (
+                                    <p className={`text text_type_digits-default text_color_success`}>{item}</p>
+                                );
+                            }
+                        })}
+                    </div>
+
+                </div>
+                <div className={dashBoardStyles.order_list_column}>
+
+                    <h2 className={`text text_type_main-medium`}>В работе:</h2>
+                    <div className={dashBoardStyles.order_list_content}>
+                        {readyOrdersArray.map((item, index) => {
+                            if (index > 9) {
+                                return null;
+                            } else {
+                                return (
+                                    <p className={`text text_type_digits-default`}>{item}</p>
+                                );
+                            }
+                        })}
+                    </div>
+
+                </div>
+            </section>
+            <section className={dashBoardStyles.total_orders}>
+                <h2 className={`text text_type_main-medium`}>Выполнено за все время:</h2>
+                <p className={`text text_type_digits-large`}>21222</p>
+            </section>
+            <section className={dashBoardStyles.today_orders}>
+                <h2 className={`text text_type_main-medium`}>Выполнено за сегодня:</h2>
+                <p className={`text text_type_digits-large`}>150</p>
+            </section>
+        </div>
+    );
+}

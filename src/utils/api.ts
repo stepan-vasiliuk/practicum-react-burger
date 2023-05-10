@@ -26,11 +26,12 @@ export const ingredientsRequest = () => {
 }
 
 
-export const orderRequest = (data: string[]) => {
+export const orderRequest = (data: string[], token: string) => {
     return request(`orders`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json;charset=utf-8'
+            'Content-Type': 'application/json;charset=utf-8',
+            authorization: token,
         },
         body: JSON.stringify({
             ingredients: data,
