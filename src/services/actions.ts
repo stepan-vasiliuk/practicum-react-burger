@@ -1,0 +1,171 @@
+
+import {
+    fetchWithRefresh, ingredientsRequest,
+    loginRequest, logOutRequest, orderRequest,
+    passwordRecoveryRequest,
+    passwordResetRequest,
+    registerRequest, userDataUpdateRequest
+} from "../utils/api";
+import {AppThunk, IUser} from "../utils/types";
+import {
+    dataErrorOn,
+    dataLoadingOff,
+    dataLoadingOn,
+    ingredientsGetFailed,
+    ingredientsGetSuccess
+} from "./actions/dataActions";
+import {getOrderFailed, getOrderSuccess, orderDataLoadingOff, orderDataLoadingOn} from "./actions/orderActions";
+import {clearUserData, emailSent, setAuthChecked, setUser, userRegisterFailed} from "./actions/userActions";
+
+export function ingredientsLoad(): AppThunk {
+    return async dispatch => {
+        try {
+            dispatch(dataLoadingOn());
+            const jsonData = await ingredientsRequest();
+            dispatch(ingredientsGetSuccess(jsonData.data!));
+            dispatch(dataLoadingOff());
+        } catch (e) {
+            dispatch(dataErrorOn("Ошибка при получении данных ингредиентов из API"));
+            dispatch(ingredientsGetFailed());
+            dispatch(dataLoadingOff());
+        }
+    };
+}
+
+
+/**
+ * Working with order creating:
+ */
+export function createOrder(ingredients: string[]): AppThunk {
+    return async dispatch => {
+        try {
+            dispatch(orderDataLoadingOn());
+                const jsonData = await orderRequest(ingredients, localStorage.getItem("accessToken")!);
+                dispatch(getOrderSuccess(jsonData.order!.number));
+                dispatch(orderDataLoadingOff());
+        } catch (e) {
+            console.log("An error has occurred while getting Order data from API >>> ");
+            dispatch(getOrderFailed());
+            dispatch(orderDataLoadingOff());
+        }
+    };
+}
+
+export function checkUserAuth(): AppThunk {
+    return async dispatch => {
+        if (localStorage.getItem("accessToken")) {
+            dispatch(getUser())
+                .catch((e: Error) => {
+                    console.log("localStorage getItem Error>>", e);
+                    localStorage.removeItem("accessToken");
+                    localStorage.removeItem("refreshToken");
+                    dispatch(clearUserData());
+                })
+                .finally(() => dispatch(setAuthChecked(true)));
+        } else {
+            dispatch(setAuthChecked(true));
+        }
+    };
+}
+
+export function getUser(): AppThunk<Promise<unknown>> {
+    return dispatch => {
+        try {
+            const jsonData = fetchWithRefresh(`auth/user`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json;charset=utf-8",
+                        authorization: localStorage.getItem("accessToken")
+
+                    }
+                });
+            dispatch(setUser(jsonData));
+        } catch (err) {
+            console.log("Ошибка при получении информации о пользователе", err);
+        }
+    };
+}
+
+export function userRegister(userData: Record<string, string>): AppThunk {
+    return async dispatch => {
+        try {
+            const jsonData = await registerRequest(userData);
+            console.log("Json Data>>>", jsonData);
+            localStorage.setItem("accessToken", jsonData.accessToken!);
+            localStorage.setItem("refreshToken", jsonData.refreshToken!);
+            dispatch(setUser(jsonData));
+        } catch (e) {
+            console.log("Ошибка при регистрации", e);
+            dispatch(userRegisterFailed());
+        }
+    };
+}
+
+export function userLogin(userData: IUser): AppThunk {
+    return async dispatch => {
+        try {
+            const jsonData = await loginRequest(userData);
+            console.log("Auth JSON data >>>>", jsonData);
+            localStorage.setItem("accessToken", jsonData.accessToken!);
+            localStorage.setItem("refreshToken", jsonData.refreshToken!);
+            dispatch(setUser(jsonData));
+        } catch (e) {
+            console.log("Ошибка при авторизации", e);
+            dispatch(userRegisterFailed());
+        }
+    };
+}
+
+export function resetPassword(email: string): AppThunk {
+    return async dispatch => {
+        try {
+            const jsonData = await passwordResetRequest(email);
+            console.log("Reset pass success:\n", jsonData);
+            dispatch(emailSent(true));
+        } catch (err) {
+            console.log("Ошибка при сбросе пароля:\n", err);
+        }
+    };
+}
+
+export function passwordRecovery(data: { password: string, token: string }): AppThunk {
+    return async dispatch => {
+        try {
+            const jsonData = await passwordRecoveryRequest(data);
+            console.log("Reset pass success:\n", jsonData);
+            dispatch(emailSent(false));
+        } catch (err) {
+            console.log("Ошибка при сбросе пароля:\n", err);
+        }
+    };
+
+}
+
+export function updateUserData(updatedForm: {
+    name: string;
+    email: string;
+    password: string;
+}): AppThunk {
+    return async dispatch => {
+        try {
+            const jsonData = await userDataUpdateRequest(updatedForm);
+            dispatch(setUser(jsonData));
+        } catch (err) {
+            console.log("Ошибка при изменении данных пользователя\n", err);
+        }
+    };
+}
+
+export function userLogOut(): AppThunk {
+    return async dispatch => {
+        try {
+            await logOutRequest();
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("refreshToken");
+            dispatch(clearUserData());
+        } catch (err) {
+            console.log("Ошибка при выходе\n", err);
+        }
+    };
+}

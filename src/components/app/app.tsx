@@ -5,7 +5,7 @@ import Modal from "../modal/modal";
 import OrderDetails from "../modal/orderModal/orderDetails";
 import IngredientDetails from "../modal/ingredientDetails/IngredientDetails";
 import {useDispatch, useSelector} from "react-redux";
-import {checkUserAuth, ingredientsLoad, modalClose} from "../../services/actions";
+import {checkUserAuth, ingredientsLoad } from "../../services/actions";
 import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import HomePage from "../../pages/homePage/homePage";
 import LoginPage from "../../pages/loginPage/loginPage";
@@ -20,6 +20,7 @@ import NotFoundPage from "../../pages/notFoundPage/notFoundPage";
 import OrderFeed from "../../pages/orderFeed/orderFeed";
 import OrdersHistory from "../../pages/profile/ordersHistory/ordersHistory";
 import {IIngredient} from "../../utils/types";
+import {modalClose} from "../../services/actions/orderActions";
 
 export default function App(): JSX.Element {
 

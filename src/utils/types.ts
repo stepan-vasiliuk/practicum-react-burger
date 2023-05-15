@@ -1,5 +1,8 @@
 import PropTypes from "prop-types";
 import {LegacyRef} from "react";
+import {ThunkAction} from "redux-thunk";
+import {AppActions, RootState} from "../services";
+import {access} from "fs";
 
 export const ingredientTypes = PropTypes.shape({
     _id: PropTypes.string.isRequired,
@@ -48,3 +51,9 @@ export interface IUser {
     name: string,
     email: string,
 }
+
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, AppActions>
+export type AppDispatch<TReturnType = void> = (
+    action: AppActions | AppThunk<TReturnType>
+) => TReturnType;
+

@@ -1,7 +1,15 @@
+import {IIngredient, IUser} from "./types";
+
 export const BASE_URL = 'https://norma.nomoreparties.space/api/';
 
 export type TResponse = {
+    accessToken?: string;
+    refreshToken?: string;
+    order?: {
+        number: number;
+    };
     success : boolean;
+    data? : Array<IIngredient>;
 }
 
 const checkResponse = <T extends TResponse>(res: Response): Promise<T> => {
@@ -51,7 +59,7 @@ export const registerRequest = (data: Record<string, string>) => {
     )
 }
 
-export const loginRequest = async (data: Record<string, string>) => {
+export const loginRequest = async (data: IUser) => {
     return request(`auth/login`, {
             method: 'POST',
             headers: {

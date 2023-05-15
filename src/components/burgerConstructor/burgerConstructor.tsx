@@ -1,15 +1,9 @@
 import React, {useEffect, useMemo} from "react";
-import constructorStyles from './burgerConstructor.module.css';
+import constructorStyles from "./burgerConstructor.module.css";
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 import {useDispatch, useSelector} from "react-redux";
-import {
-    addBun,
-    addIngredient, checkUserAuth, clearConstructor,
-    createOrder,
-    modalOpen, removeIngredient,
-    updateIngredients
-} from "../../services/actions";
+import {checkUserAuth, createOrder} from "../../services/actions";
 import {useDrag, useDrop} from "react-dnd";
 import {itemTypes} from "../../services/itemTypes";
 import ConstructorItem from "../constructorItem/constructorItem";
@@ -17,6 +11,14 @@ import {userReducer} from "../../services/reducers/userReducer";
 import {useNavigate} from "react-router-dom";
 import {IConstructorIngredient, IIngredient, IUser} from "../../utils/types";
 import {TIngredientsDragType} from "../ingredientCard/ingredientCard";
+import {modalOpen} from "../../services/actions/orderActions";
+import {
+    addBun,
+    addIngredient,
+    clearConstructor,
+    removeIngredient,
+    updateIngredients
+} from "../../services/actions/constructorActions";
 
 
 export default function BurgerConstructor(): JSX.Element {
@@ -43,7 +45,7 @@ export default function BurgerConstructor(): JSX.Element {
             return 0;
         }
         return sum;
-    }, [ingredientsList, bun])
+    }, [ingredientsList, bun]);
 
     const handleOrderClick = () => {
         const ingredientIds = ingredientsList.map((ingredient) => ingredient._id);
@@ -54,8 +56,8 @@ export default function BurgerConstructor(): JSX.Element {
             dispatch(createOrder(idsToOrder));
             dispatch(modalOpen());
             dispatch(clearConstructor());
-        } else navigate('/login');
-    }
+        } else navigate("/login");
+    };
 
     const [, dropTarget] = useDrop<TIngredientsDragType>({
             accept: itemTypes.CARD,
@@ -63,28 +65,30 @@ export default function BurgerConstructor(): JSX.Element {
                 handleDrop(item._id);
             }
         }
-    )
+    );
 
     const handleDrop = (id: string) => {
         const currentItem = originalIngredients.find((item) => item._id === id);
-        if (!bun && currentItem?.type === 'bun') {
-            dispatch(addBun(currentItem));
-        } else if (!bun && currentItem?.type !== 'bun') {
-            return;
-        } else {
-            currentItem?.type === 'bun' ? dispatch(addBun(currentItem)) : dispatch(addIngredient(currentItem));
+        if (currentItem) {
+            if (!bun && currentItem?.type === "bun") {
+                dispatch(addBun(currentItem));
+            } else if (!bun && currentItem?.type !== "bun") {
+                return;
+            } else {
+                currentItem?.type === "bun" ? dispatch(addBun(currentItem)) : dispatch(addIngredient(currentItem));
+            }
         }
-    }
+    };
 
     const handleMovingItem = (dragIndex: number, hoverIndex: number) => {
         dispatch(updateIngredients(dragIndex, hoverIndex));
-    }
+    };
 
 
     const handleDeleteItem = (key: string) => {
         const filteredArray = ingredientsList.filter(item => item.key !== key);
         dispatch(removeIngredient(filteredArray));
-    }
+    };
 
     return (
         <div className={`${constructorStyles.board} pt-25 pb-10 pl-4`}>
@@ -97,7 +101,7 @@ export default function BurgerConstructor(): JSX.Element {
                                 isLocked={true}
                                 text="Перетащите сюда булочку (верх)"
                                 price={0}
-                                thumbnail={''}
+                                thumbnail={""}
                             />
                         </div>
                         <div className={constructorStyles.item_bottom}>
@@ -106,7 +110,7 @@ export default function BurgerConstructor(): JSX.Element {
                                 isLocked={true}
                                 text="Перетащите сюда булочку (низ)"
                                 price={0}
-                                thumbnail={''}
+                                thumbnail={""}
                             />
                         </div>
                     </>
@@ -148,11 +152,11 @@ export default function BurgerConstructor(): JSX.Element {
                     <span className="text text_type_digits-medium">{totalPriceUpdated}</span>
                     <CurrencyIcon type="primary"/>
                 </p>
-                <Button htmlType='button' type={"primary"} size={"large"}
+                <Button htmlType="button" type={"primary"} size={"large"}
                         onClick={() => handleOrderClick()}
                 >Оформить заказ</Button>
             </section>
         </div>
-    )
+    );
 
 }
