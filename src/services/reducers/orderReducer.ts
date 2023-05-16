@@ -5,6 +5,8 @@ import {
     MODAL_OPEN, ORDER_MODAL_DATA_LOADING_OFF,
     ORDER_MODAL_DATA_LOADING_ON
 } from "../actionTypes";
+import {TConstructorActions} from "../actions/constructorActions";
+import {TOrderActions} from "../actions/orderActions";
 
 const initialState = {
     isOpen: false,
@@ -13,7 +15,7 @@ const initialState = {
     isLoading: false,
 }
 
-export const orderReducer = (state = initialState, action) => {
+export const orderReducer = (state = initialState, action: TOrderActions) => {
     switch (action.type) {
         case MODAL_CLOSE:
             return {

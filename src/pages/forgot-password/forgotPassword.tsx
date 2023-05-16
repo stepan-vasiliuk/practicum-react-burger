@@ -1,17 +1,17 @@
 import forgotStyles from '..//formStyles.module.css';
 import {Button, EmailInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import {FormEvent, useEffect, useState} from "react";
-import {Link, Navigate, useNavigate} from "react-router-dom";
+import {FormEvent, useEffect} from "react";
+import {Link, useNavigate} from "react-router-dom";
 import {useFormCustom} from "../../utils/form";
-import {useDispatch, useSelector} from "react-redux";
 import {resetPassword} from "../../services/actions";
+import {useTypedDispatch, useTypedSelector} from "../../hooks/hooks";
 
 export default function ForgotPassword() {
     const navigate = useNavigate();
-    // @ts-ignore
-    const emailSentSuccess: boolean = useSelector(state => state.userReducer.emailSent);
 
-    const dispatch = useDispatch();
+    const emailSentSuccess: boolean = useTypedSelector(state => state.userReducer.emailSent);
+
+    const dispatch = useTypedDispatch();
     const initial = {
         email: "",
     };

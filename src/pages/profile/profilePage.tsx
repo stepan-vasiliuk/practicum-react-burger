@@ -1,25 +1,16 @@
 import profileStyles from "./profilePage.module.css";
-import {NavLink, Outlet, useMatch, useResolvedPath} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {useFormCustom} from "../../utils/form";
+import {NavLink, Outlet, useMatch} from "react-router-dom";
 import {userLogOut} from "../../services/actions";
-import headerStyles from "../../components/header/header.module.css";
-import {element} from "prop-types";
+import {useTypedDispatch} from "../../hooks/hooks";
 
 export default function ProfilePage() {
 
-    const dispatch = useDispatch();
+    const dispatch = useTypedDispatch();
 
     const onExitClick = () => {
         console.log('Выход>>> ')
-        // @ts-ignore
         dispatch(userLogOut());
     }
-
-    const matchPattern = useResolvedPath('').pathname;
-    const isProfile = ['/profile', '/profile/orders'].find(
-        (route) => route === matchPattern);
-
 
     const profilePattern = useMatch('/profile');
     const historyPattern = useMatch('/profile/orders');

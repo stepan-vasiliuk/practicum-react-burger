@@ -1,4 +1,4 @@
-import {IIngredient} from "../../utils/types";
+import {IConstructorIngredient, IIngredient} from "../../utils/types";
 import {ADD_BUN, ADD_INGREDIENT, CLEAR_CONSTRUCTOR_DATA, REMOVE_INGREDIENT, UPDATE_INGREDIENTS} from "../actionTypes";
 import {v4 as uuid} from "uuid";
 import exp from "constants";
@@ -17,7 +17,7 @@ export type TUpdateIngredients = {
 
 export type TRemoveIngredient = {
     readonly type: typeof REMOVE_INGREDIENT;
-    readonly data: readonly IIngredient[];
+    readonly data: readonly IConstructorIngredient[];
 }
 
 export type TAddBun = {
@@ -54,7 +54,7 @@ export function updateIngredients(dragIndex: number, hoverIndex: number): TUpdat
     };
 }
 
-export function removeIngredient(updatedList: Array<IIngredient>): TRemoveIngredient {
+export function removeIngredient(updatedList: Array<IConstructorIngredient>): TRemoveIngredient {
     return {
         type: REMOVE_INGREDIENT,
         data: updatedList,

@@ -6,14 +6,14 @@ import PropTypes from "prop-types";
 import {useDispatch, useSelector} from "react-redux";
 import {ingredientsLoad} from "../../services/actions";
 import {IIngredient} from "../../utils/types";
+import {useTypedSelector} from "../../hooks/hooks";
 
 
 export default function BurgerIngredients() {
 
     const [activeTab, setActiveTab] = useState<string>('bun');
 
-    // @ts-ignore
-    const ingredientsData: Array<IIngredient> = useSelector(state => state.dataReducer.data);
+    const ingredientsData: ReadonlyArray<IIngredient> | [] = useTypedSelector(state => state.dataReducer.data);
 
     const bun = useMemo(
         () => ingredientsData.filter((ingredient) => ingredient.type === 'bun'),

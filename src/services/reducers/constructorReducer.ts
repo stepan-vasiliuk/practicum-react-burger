@@ -4,18 +4,29 @@ import {
     REMOVE_INGREDIENT,
     UPDATE_INGREDIENTS
 } from "../actionTypes";
+import {TConstructorActions} from "../actions/constructorActions";
+import {IConstructorIngredient, IIngredient} from "../../utils/types";
 
-const initialState = {
+export type TConstructorInitial = {
+    ingredientsList: ReadonlyArray<IConstructorIngredient> | []
+    bun: IIngredient | null;
+}
+
+type TConstructorReturn = {
+    state: TConstructorInitial
+}
+
+const initialState: TConstructorInitial = {
     ingredientsList: [],
     bun: null,
 }
 
-export const constructorReducer = (state = initialState, action) => {
+export const constructorReducer = (state = initialState, action: TConstructorActions): TConstructorInitial => {
     switch (action.type) {
         case ADD_INGREDIENT:
             return {
                 ...state,
-                totalPrice: action.data.price,
+                // totalPrice: action.data.price,
                 ingredientsList: [
                     ...state.ingredientsList,
                     {

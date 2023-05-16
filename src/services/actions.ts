@@ -1,4 +1,3 @@
-
 import {
     fetchWithRefresh, ingredientsRequest,
     loginRequest, logOutRequest, orderRequest,
@@ -16,6 +15,7 @@ import {
 } from "./actions/dataActions";
 import {getOrderFailed, getOrderSuccess, orderDataLoadingOff, orderDataLoadingOn} from "./actions/orderActions";
 import {clearUserData, emailSent, setAuthChecked, setUser, userRegisterFailed} from "./actions/userActions";
+import {TFormParams} from "../utils/form";
 
 export function ingredientsLoad(): AppThunk {
     return async dispatch => {
@@ -40,9 +40,9 @@ export function createOrder(ingredients: string[]): AppThunk {
     return async dispatch => {
         try {
             dispatch(orderDataLoadingOn());
-                const jsonData = await orderRequest(ingredients, localStorage.getItem("accessToken")!);
-                dispatch(getOrderSuccess(jsonData.order!.number));
-                dispatch(orderDataLoadingOff());
+            const jsonData = await orderRequest(ingredients, localStorage.getItem("accessToken")!);
+            dispatch(getOrderSuccess(jsonData.order!.number));
+            dispatch(orderDataLoadingOff());
         } catch (e) {
             console.log("An error has occurred while getting Order data from API >>> ");
             dispatch(getOrderFailed());
@@ -70,24 +70,22 @@ export function checkUserAuth(): AppThunk {
 
 export function getUser(): AppThunk<Promise<unknown>> {
     return dispatch => {
-        try {
-            const jsonData = fetchWithRefresh(`auth/user`,
-                {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json;charset=utf-8",
-                        authorization: localStorage.getItem("accessToken")
+        return fetchWithRefresh(`auth/user`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json;charset=utf-8",
+                    authorization: localStorage.getItem("accessToken")
 
-                    }
-                });
-            dispatch(setUser(jsonData));
-        } catch (err) {
-            console.log("Ошибка при получении информации о пользователе", err);
-        }
+                } as HeadersInit
+            }).then(jsonData => dispatch(setUser(jsonData)))
+            .catch(err => {
+                console.log("Ошибка при получении информации о пользователе", err);
+            });
     };
 }
 
-export function userRegister(userData: Record<string, string>): AppThunk {
+export function userRegister(userData: TFormParams): AppThunk {
     return async dispatch => {
         try {
             const jsonData = await registerRequest(userData);
@@ -102,7 +100,7 @@ export function userRegister(userData: Record<string, string>): AppThunk {
     };
 }
 
-export function userLogin(userData: IUser): AppThunk {
+export function userLogin(userData: TFormParams): AppThunk {
     return async dispatch => {
         try {
             const jsonData = await loginRequest(userData);
@@ -129,7 +127,7 @@ export function resetPassword(email: string): AppThunk {
     };
 }
 
-export function passwordRecovery(data: { password: string, token: string }): AppThunk {
+export function passwordRecovery(data: TFormParams): AppThunk {
     return async dispatch => {
         try {
             const jsonData = await passwordRecoveryRequest(data);
@@ -142,11 +140,7 @@ export function passwordRecovery(data: { password: string, token: string }): App
 
 }
 
-export function updateUserData(updatedForm: {
-    name: string;
-    email: string;
-    password: string;
-}): AppThunk {
+export function updateUserData(updatedForm: TFormParams): AppThunk {
     return async dispatch => {
         try {
             const jsonData = await userDataUpdateRequest(updatedForm);

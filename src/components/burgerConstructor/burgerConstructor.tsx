@@ -1,13 +1,11 @@
 import React, {useEffect, useMemo} from "react";
 import constructorStyles from "./burgerConstructor.module.css";
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
-import {useDispatch, useSelector} from "react-redux";
+import {useTypedDispatch, useTypedSelector} from "../../hooks/hooks";
 import {checkUserAuth, createOrder} from "../../services/actions";
 import {useDrag, useDrop} from "react-dnd";
 import {itemTypes} from "../../services/itemTypes";
 import ConstructorItem from "../constructorItem/constructorItem";
-import {userReducer} from "../../services/reducers/userReducer";
 import {useNavigate} from "react-router-dom";
 import {IConstructorIngredient, IIngredient, IUser} from "../../utils/types";
 import {TIngredientsDragType} from "../ingredientCard/ingredientCard";
@@ -23,22 +21,27 @@ import {
 
 export default function BurgerConstructor(): JSX.Element {
 
-    // @ts-ignore
-    const ingredientsList: Array<IConstructorIngredient> = useSelector(state => state.constructorReducer.ingredientsList);
-    // @ts-ignore
-    const bun: IIngredient = useSelector(state => state.constructorReducer.bun);
+    const ingredientsList: ReadonlyArray<IConstructorIngredient> | [] = useTypedSelector(
+        state => state.constructorReducer.ingredientsList);
 
-    // @ts-ignore
-    const originalIngredients: Array<IIngredient> = useSelector(state => state.dataReducer.data);
+    const bun: IIngredient | null = useTypedSelector(
+        state => state.constructorReducer.bun);
 
-    const dispatch = useDispatch();
+    const originalIngredients: ReadonlyArray<IIngredient> | [] = useTypedSelector(
+        state => state.dataReducer.data);
+
+    const user: IUser | null = useTypedSelector(state => state.userReducer.user);
+
+    const dispatch = useTypedDispatch();
     const navigate = useNavigate();
-    // @ts-ignore
-    const user: IUser = useSelector(state => state.userReducer.user);
+
 
     const totalPriceUpdated = useMemo(() => {
         let sum = 0;
-        const bunPrice = bun?.price * 2;
+        let bunPrice = 0;
+        if (bun) {
+            bunPrice = bun.price * 2;
+        }
         ingredientsList.map((item) => sum += item.price);
         sum = sum + bunPrice;
         if (!sum) {

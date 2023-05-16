@@ -4,17 +4,23 @@ import {
     EMAIL_SENT,
     SET_USER,
     USER_REGISTER_FAILED,
-    USER_REGISTER_SUCCESS
 } from "../actionTypes";
-import {compareArraysAsSet} from "@testing-library/jest-dom/dist/utils";
+import {TUserActions} from "../actions/userActions";
+import {IUser} from "../../utils/types";
 
-const initialState = {
+type TUserInitial = {
+    user: IUser | null;
+    isAuthChecked: boolean;
+    emailSent: boolean;
+}
+
+const initialState: TUserInitial = {
     user: null,
     isAuthChecked: false,
     emailSent: false,
 }
 
-export const userReducer = (state = initialState, action) => {
+export const userReducer = (state = initialState, action: TUserActions): TUserInitial => {
     switch (action.type) {
         case SET_USER:
             return {

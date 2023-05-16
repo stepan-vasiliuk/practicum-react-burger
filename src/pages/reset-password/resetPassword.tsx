@@ -1,17 +1,15 @@
-import {FormEvent, useState} from "react";
+import {FormEvent} from "react";
 import resetStyles from "..//formStyles.module.css";
-import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useDispatch, useSelector} from "react-redux";
-import {Link, Navigate, useNavigate} from "react-router-dom";
+import {Button, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
+import {Link, Navigate} from "react-router-dom";
 import {useFormCustom} from "../../utils/form";
-import {resetPassword} from "../../services/actions";
 import {passwordRecovery} from "../../services/actions";
+import {useTypedDispatch, useTypedSelector} from "../../hooks/hooks";
 
 export default function ResetPassword() {
 
-    // @ts-ignore
-    const emailSent: boolean = useSelector(state => state.userReducer.emailSent);
-    const dispatch = useDispatch();
+    const emailSent: boolean = useTypedSelector(state => state.userReducer.emailSent);
+    const dispatch = useTypedDispatch();
 
 
     const initial = {
@@ -24,7 +22,6 @@ export default function ResetPassword() {
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log(form);
-        // @ts-ignore
         dispatch(passwordRecovery(form))
         setForm(initial);
     }

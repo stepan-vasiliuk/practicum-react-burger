@@ -37,7 +37,7 @@ export interface IConstructorIngredient extends IIngredient {
 }
 
 export interface IIngredientCard {
-    ingredient: IIngredient;
+    ingredient: IIngredient | undefined | null;
 }
 
 export interface IIngredientType {

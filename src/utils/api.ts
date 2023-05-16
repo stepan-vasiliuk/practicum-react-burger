@@ -1,4 +1,5 @@
 import {IIngredient, IUser} from "./types";
+import {TFormParams} from "./form";
 
 export const BASE_URL = 'https://norma.nomoreparties.space/api/';
 
@@ -59,7 +60,7 @@ export const registerRequest = (data: Record<string, string>) => {
     )
 }
 
-export const loginRequest = async (data: IUser) => {
+export const loginRequest = async (data: TFormParams) => {
     return request(`auth/login`, {
             method: 'POST',
             headers: {
@@ -93,7 +94,7 @@ export const passwordRecoveryRequest = async (data: Record<string, string>) => {
     )
 }
 
-export const userDataUpdateRequest = async (data: Record<string, string>) => {
+export const userDataUpdateRequest = async (data: TFormParams) => {
     return request(`auth/user`, {
         method: 'PATCH',
         headers: {

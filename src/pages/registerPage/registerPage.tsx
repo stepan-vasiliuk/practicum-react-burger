@@ -1,15 +1,14 @@
 import registerStyles from '..//formStyles.module.css';
 import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import {FormEvent, useState} from "react";
-import {Link, useSubmit} from "react-router-dom";
-import {useForm} from "react-hook-form";
-import {useDispatch} from "react-redux";
+import {FormEvent} from "react";
+import {Link} from "react-router-dom";
 import {userRegister} from "../../services/actions";
 import {useFormCustom} from "../../utils/form";
+import {useTypedDispatch} from "../../hooks/hooks";
 
 export default function RegisterPage() {
 
-    const dispatch = useDispatch();
+    const dispatch = useTypedDispatch();
 
     const initial = {
         name: "",
@@ -21,7 +20,6 @@ export default function RegisterPage() {
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log(form);
-        // @ts-ignore
         dispatch(userRegister(form));
         setForm(initial);
     }
