@@ -4,20 +4,6 @@ import {ThunkAction} from "redux-thunk";
 import {AppActions, RootState} from "../services";
 import {access} from "fs";
 
-export const ingredientTypes = PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    proteins: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    carbohydrates: PropTypes.number.isRequired,
-    calories: PropTypes.number.isRequired,
-    price: PropTypes.number.isRequired,
-    image: PropTypes.string.isRequired,
-    image_large: PropTypes.string.isRequired,
-    image_mobile: PropTypes.string.isRequired,
-}).isRequired;
-
 export interface IIngredient {
     _id: string,
     name: string,
@@ -57,3 +43,23 @@ export type AppDispatch<TReturnType = void> = (
     action: AppActions | AppThunk<TReturnType>
 ) => TReturnType;
 
+export type TFeedOrders = {
+    orders: Array<TFeedDetailedOrder>;
+    total: number;
+    totalToday: number;
+}
+
+export type TFeedDetailedOrder = {
+    ingredients: Array<string>;
+    _id: string;
+    status: string;
+    number: number;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export enum WebsocketStatus {
+    ONLINE = 'ONLINE',
+    OFFLINE = 'OFFLINE',
+    CONNECTING = 'CONNECTING',
+}

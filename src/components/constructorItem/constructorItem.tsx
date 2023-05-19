@@ -3,8 +3,7 @@ import React, {useRef} from "react";
 import itemStyles from "./constructorItem.module.css";
 import {useDrag, useDrop} from "react-dnd";
 import {itemTypes} from "../../services/itemTypes";
-import PropTypes, {number} from "prop-types";
-import {IConstructorIngredient, IIngredient, ingredientTypes} from "../../utils/types";
+import {IConstructorIngredient} from "../../utils/types";
 
 export type TConstructorItemProps = {
     ingredient: IConstructorIngredient;
