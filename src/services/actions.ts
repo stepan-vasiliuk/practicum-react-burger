@@ -34,7 +34,7 @@ export function ingredientsLoad(): AppThunk {
 
 
 /**
- * Working with order creating:
+ * Working with orderInfo creating:
  */
 export function createOrder(ingredients: string[]): AppThunk {
     return async dispatch => {
@@ -44,7 +44,7 @@ export function createOrder(ingredients: string[]): AppThunk {
             dispatch(getOrderSuccess(jsonData.order!.number));
             dispatch(orderDataLoadingOff());
         } catch (e) {
-            console.log("An error has occurred while getting Order data from API >>> ");
+            console.log("An error has occurred while getting OrderInfo data from API >>> ");
             dispatch(getOrderFailed());
             dispatch(orderDataLoadingOff());
         }

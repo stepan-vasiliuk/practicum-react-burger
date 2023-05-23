@@ -15,7 +15,8 @@ export const IngredientCard: FunctionComponent<IIngredientCard> = ({ingredient})
 
     const bun: IIngredient | null = useTypedSelector(state => state.constructorReducer.bun);
 
-    const ingredientsList: ReadonlyArray<IConstructorIngredient> | [] = useTypedSelector(state => state.constructorReducer.ingredientsList);
+    const ingredientsList: ReadonlyArray<IConstructorIngredient> | [] = useTypedSelector(
+        state => state.constructorReducer.ingredientsList);
 
 
     const location = useLocation();

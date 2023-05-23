@@ -43,6 +43,7 @@ export type AppDispatch<TReturnType = void> = (
     action: AppActions | AppThunk<TReturnType>
 ) => TReturnType;
 
+
 export type TFeedOrders = {
     orders: Array<TFeedDetailedOrder>;
     total: number;
@@ -56,6 +57,11 @@ export type TFeedDetailedOrder = {
     number: number;
     createdAt: string;
     updatedAt: string;
+    name: string;
+}
+
+export type TFeedProps = {
+    order: TFeedDetailedOrder;
 }
 
 export enum WebsocketStatus {

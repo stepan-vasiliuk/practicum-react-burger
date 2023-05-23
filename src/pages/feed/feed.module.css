@@ -1,0 +1,18 @@
+.grid_container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 85vh;
+    gap: 40px;
+}
+
+.left_board {
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.right_board {
+    max-width: 600px;
+}
+

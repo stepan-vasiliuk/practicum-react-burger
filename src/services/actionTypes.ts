@@ -33,7 +33,7 @@ export const ADD_BUN: 'ADD_BUN' = 'ADD_BUN';
 export const CLEAR_CONSTRUCTOR_DATA: 'CLEAR_CONSTRUCTOR_DATA' = 'CLEAR_CONSTRUCTOR_DATA';
 
 /**
- * Работа с Order Modal
+ * Работа с OrderInfo Modal
  * @type {string}
  */
 

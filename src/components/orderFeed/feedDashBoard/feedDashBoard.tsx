@@ -1,6 +1,23 @@
 import dashBoardStyles from "./feedDashBoard.module.css";
+import {TFeedOrders} from "../../../utils/types";
+import {useMemo} from "react";
+import {orderReducer} from "../../../services/reducers/orderReducer";
 
-export default function FeedDashBoard(): JSX.Element {
+type TFeedDashBoardProps = {
+    orders: TFeedOrders;
+}
+
+export default function FeedDashBoard({orders}: TFeedDashBoardProps): JSX.Element {
+
+
+    const ready = useMemo(() => orders.orders.filter(order => order.status === 'done')
+        .map(order => order.number), [orders]);
+
+    const inProgress = useMemo(() => orders.orders.filter(order => order.status !== 'done')
+        .map(order => order.number), [orders]);
+
+    const totalOrders = useMemo(() => orders.total, [orders]);
+    const todayOrders = useMemo(() => orders.totalToday, [orders]);
 
     const readyOrdersArray: Array<number> = [2331, 2131, 1234, 2331, 2131, 1234];
 
@@ -11,7 +28,7 @@ export default function FeedDashBoard(): JSX.Element {
 
                     <h2 className={`text text_type_main-medium`}>Готовы:</h2>
                     <div className={dashBoardStyles.order_list_content}>
-                        {readyOrdersArray.map((item, index) => {
+                        {ready.map((item, index) => {
                             if (index > 9) {
                                 return null;
                             } else {
@@ -27,7 +44,7 @@ export default function FeedDashBoard(): JSX.Element {
 
                     <h2 className={`text text_type_main-medium`}>В работе:</h2>
                     <div className={dashBoardStyles.order_list_content}>
-                        {readyOrdersArray.map((item, index) => {
+                        {inProgress.map((item, index) => {
                             if (index > 9) {
                                 return null;
                             } else {
@@ -42,11 +59,11 @@ export default function FeedDashBoard(): JSX.Element {
             </section>
             <section className={dashBoardStyles.total_orders}>
                 <h2 className={`text text_type_main-medium`}>Выполнено за все время:</h2>
-                <p className={`text text_type_digits-large`}>21222</p>
+                <p className={`text text_type_digits-large`}>{totalOrders}</p>
             </section>
             <section className={dashBoardStyles.today_orders}>
                 <h2 className={`text text_type_main-medium`}>Выполнено за сегодня:</h2>
-                <p className={`text text_type_digits-large`}>150</p>
+                <p className={`text text_type_digits-large`}>{todayOrders}</p>
             </section>
         </div>
     );

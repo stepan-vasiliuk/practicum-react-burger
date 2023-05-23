@@ -5,7 +5,7 @@ import {
     MODAL_OPEN, ORDER_MODAL_DATA_LOADING_OFF,
     ORDER_MODAL_DATA_LOADING_ON
 } from "../actionTypes";
-import {TConstructorActions} from "../actions/constructorActions";
+
 import {TOrderActions} from "../actions/orderActions";
 
 const initialState = {
