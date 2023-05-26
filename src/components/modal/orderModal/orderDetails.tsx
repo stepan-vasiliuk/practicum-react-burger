@@ -7,7 +7,7 @@ import { useTypedSelector} from "../../../hooks/hooks";
 export default function OrderDetails() {
 
 
-    const orderNumber: number = useTypedSelector(state => state.orderReducer.orderNumber);
+    const orderNumber: number | undefined = useTypedSelector(state => state.orderReducer.order?.number);
 
     const hasError: boolean = useTypedSelector(state => state.orderReducer.hasError);
 

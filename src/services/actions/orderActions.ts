@@ -1,4 +1,5 @@
 import {
+    GET_CURRENT_ORDER_INFO,
     GET_ORDER_FAILED,
     GET_ORDER_SUCCESS,
     INGREDIENTS_GET_SUCCESS,
@@ -6,7 +7,7 @@ import {
     MODAL_OPEN, ORDER_MODAL_DATA_LOADING_OFF,
     ORDER_MODAL_DATA_LOADING_ON
 } from "../actionTypes";
-import {IIngredient} from "../../utils/types";
+import {IIngredient, TFeedDetailedOrder, TProfileDetailedOrder} from "../../utils/types";
 
 
 export type TModalOpen = {
@@ -19,7 +20,7 @@ export type TModalClose = {
 
 export type TGetOrderSuccess = {
     readonly type: typeof GET_ORDER_SUCCESS;
-    readonly data: number;
+    readonly data: TProfileDetailedOrder;
 }
 
 export type TGetOrderFailed = {
@@ -34,12 +35,18 @@ export type TOrderDataLoadingOff = {
     readonly type: typeof ORDER_MODAL_DATA_LOADING_OFF,
 }
 
+export type TGetCurrentOrderInfo = {
+    readonly type: typeof GET_CURRENT_ORDER_INFO;
+    readonly data: Array<TFeedDetailedOrder>;
+}
+
 export type TOrderActions = TModalOpen
     | TModalClose
     | TGetOrderSuccess
     | TGetOrderFailed
     | TOrderDataLoadingOn
-    | TOrderDataLoadingOff;
+    | TOrderDataLoadingOff
+    | TGetCurrentOrderInfo;
 
 
 export function modalOpen(): TModalOpen {
@@ -54,10 +61,10 @@ export function modalClose(): TModalClose {
     };
 }
 
-export function getOrderSuccess(orderNumber: number): TGetOrderSuccess {
+export function getOrderSuccess(order: TProfileDetailedOrder): TGetOrderSuccess {
     return {
         type: GET_ORDER_SUCCESS,
-        data: orderNumber,
+        data: order,
     };
 }
 
@@ -76,5 +83,16 @@ export function orderDataLoadingOn(): TOrderDataLoadingOn {
 export function orderDataLoadingOff(): TOrderDataLoadingOff {
     return {
         type: ORDER_MODAL_DATA_LOADING_OFF,
+    };
+}
+
+/**
+ * Экшен получения конкретного заказа по его номеру
+ * @param orders
+ */
+export function getCurrentOrderInfo(orders: Array<TFeedDetailedOrder>): TGetCurrentOrderInfo {
+    return {
+        type: GET_CURRENT_ORDER_INFO,
+        data: orders,
     };
 }

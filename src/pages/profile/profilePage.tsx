@@ -8,19 +8,19 @@ export default function ProfilePage() {
     const dispatch = useTypedDispatch();
 
     const onExitClick = () => {
-        console.log('Выход>>> ')
+        console.log("Выход>>> ");
         dispatch(userLogOut());
-    }
+    };
 
-    const profilePattern = useMatch('/profile');
-    const historyPattern = useMatch('/profile/orders');
+    const profilePattern = useMatch("/profile");
+    const historyPattern = useMatch("/profile/orders");
 
     return (
         <div className={`mt-30 ${profileStyles.profile}`}>
             <section className={profileStyles.static}>
                 <ul className={profileStyles.menu}>
                     <li className={profileStyles.menu_item}>
-                        <NavLink to='/profile'
+                        <NavLink to="/profile"
                                  className={profileStyles.element_text + (profilePattern ?
                                      ` ${profileStyles.active_text}` : ``)}
                         >
@@ -28,7 +28,7 @@ export default function ProfilePage() {
                         </NavLink>
                     </li>
                     <li className={profileStyles.menu_item}>
-                        <NavLink to='/profile/orders'
+                        <NavLink to="/profile/orders"
                                  className={profileStyles.element_text + (historyPattern ?
                                      ` ${profileStyles.active_text}` : ``)}
                         >
@@ -42,13 +42,19 @@ export default function ProfilePage() {
                     </li>
                 </ul>
                 <div className={profileStyles.page_description}>
-                    <p className='text text_type_main-small text_color_inactive'>В этом разделе вы можете<br/>
-                        изменить свои персональные данные</p>
+                    {profilePattern &&
+                        <p className="text text_type_main-small text_color_inactive">В этом разделе вы можете<br/>
+                            изменить свои персональные данные</p>
+                    }
+                    {historyPattern &&
+                        <p className="text text_type_main-small text_color_inactive">В этом разделе вы можете<br/>
+                            просмотреть свою историю заказов</p>
+                    }
                 </div>
             </section>
             <section className={profileStyles.dynamic_page}>
                 <Outlet/>
             </section>
         </div>
-    )
+    );
 }

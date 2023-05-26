@@ -4,7 +4,7 @@ import React from "react";
 import itemStyles from "./feedItem.module.css";
 import {IIngredient, TFeedDetailedOrder} from "../../../utils/types";
 import {useTypedSelector} from "../../../hooks/hooks";
-import {Link, useLocation} from "react-router-dom";
+import {Link, useLocation, useMatch} from "react-router-dom";
 
 type TFeedItemProps = {
     order: TFeedDetailedOrder;
@@ -45,9 +45,11 @@ export default function FeedItem({order}: TFeedItemProps) {
     let leftSpace = -48;
     const location = useLocation();
 
+    const feedPattern = useMatch('/feed');
+
     return (
         <Link
-            to={`/feed/${order.number}`}
+            to={ feedPattern ? `/feed/${order.number}` : `/profile/orders/${order.number}`}
             key={order.number}
             state={{background: location}}
             style={{textDecoration: "none"}}

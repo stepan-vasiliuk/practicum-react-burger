@@ -1,7 +1,6 @@
 import dashBoardStyles from "./feedDashBoard.module.css";
 import {TFeedOrders} from "../../../utils/types";
 import {useMemo} from "react";
-import {orderReducer} from "../../../services/reducers/orderReducer";
 
 type TFeedDashBoardProps = {
     orders: TFeedOrders;
@@ -19,7 +18,6 @@ export default function FeedDashBoard({orders}: TFeedDashBoardProps): JSX.Elemen
     const totalOrders = useMemo(() => orders.total, [orders]);
     const todayOrders = useMemo(() => orders.totalToday, [orders]);
 
-    const readyOrdersArray: Array<number> = [2331, 2131, 1234, 2331, 2131, 1234];
 
     return (
         <div className={`${dashBoardStyles.container} mt-25`}>

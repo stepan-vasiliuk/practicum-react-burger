@@ -1,0 +1,6 @@
+.component_wrapper {
+    max-width: 872px;
+    max-height: 75vh;
+    display: flex;
+    flex-direction: column;
+}

@@ -22,6 +22,8 @@ import {IIngredient} from "../../utils/types";
 import {modalClose} from "../../services/actions/orderActions";
 import {useTypedDispatch, useTypedSelector} from "../../hooks/hooks";
 import OrderInfo from "../orderInfo/orderInfo";
+import ProfileOrderInfoPage from "../../pages/profile/orderDetailedPage/profileOrderInfoPage";
+import FeedInfoPage from "../../pages/feed/feedInfoPage/feedInfoPage";
 
 export default function App(): JSX.Element {
 
@@ -97,8 +99,11 @@ export default function App(): JSX.Element {
                             }
                             <Route path="/profile" element={<OnlyAuth component={<ProfilePage/>}/>}>
                                 <Route index element={<EditPage/>}/>
-                                <Route path="orders" element={<OrdersHistory/>}/>
+                                <Route path="orders" element={<OrdersHistory/>} />
                             </Route>
+                            <Route path="/profile/orders/:number" element={<OnlyAuth
+                                component={<ProfileOrderInfoPage />} />} />
+                            <Route path="/feed/:number" element={<FeedInfoPage />} />
                             <Route path="/*" element={<NotFoundPage/>}/>
                         </Routes>
 
@@ -107,7 +112,7 @@ export default function App(): JSX.Element {
 
             }
             {
-                 state?.background && (
+                state?.background && (
                     <Routes>
 
                         <Route path="/ingredients/:number" element={
@@ -119,7 +124,13 @@ export default function App(): JSX.Element {
                         />
                         <Route path="/feed/:number" element={
                             <Modal onClose={closeModals}>
-                                <OrderInfo />
+                                <OrderInfo/>
+                            </Modal>
+                        }
+                        />
+                        <Route path="/profile/orders/:number" element={
+                            <Modal onClose={closeModals}>
+                                <OrderInfo/>
                             </Modal>
                         }
                         />

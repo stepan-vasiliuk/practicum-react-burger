@@ -3,9 +3,9 @@ import {
     loginRequest, logOutRequest, orderRequest,
     passwordRecoveryRequest,
     passwordResetRequest,
-    registerRequest, userDataUpdateRequest
+    registerRequest, singleOrderRequest, userDataUpdateRequest
 } from "../utils/api";
-import {AppThunk, IUser} from "../utils/types";
+import {AppThunk, IUser, TFeedDetailedOrder, TFeedOrders} from "../utils/types";
 import {
     dataErrorOn,
     dataLoadingOff,
@@ -13,7 +13,13 @@ import {
     ingredientsGetFailed,
     ingredientsGetSuccess
 } from "./actions/dataActions";
-import {getOrderFailed, getOrderSuccess, orderDataLoadingOff, orderDataLoadingOn} from "./actions/orderActions";
+import {
+    getCurrentOrderInfo,
+    getOrderFailed,
+    getOrderSuccess,
+    orderDataLoadingOff,
+    orderDataLoadingOn
+} from "./actions/orderActions";
 import {clearUserData, emailSent, setAuthChecked, setUser, userRegisterFailed} from "./actions/userActions";
 import {TFormParams} from "../utils/form";
 
@@ -41,12 +47,31 @@ export function createOrder(ingredients: string[]): AppThunk {
         try {
             dispatch(orderDataLoadingOn());
             const jsonData = await orderRequest(ingredients, localStorage.getItem("accessToken")!);
-            dispatch(getOrderSuccess(jsonData.order!.number));
-            dispatch(orderDataLoadingOff());
+            if (jsonData.order) {
+                dispatch(getOrderSuccess(jsonData.order));
+                dispatch(orderDataLoadingOff());
+            }
         } catch (e) {
             console.log("An error has occurred while getting OrderInfo data from API >>> ");
             dispatch(getOrderFailed());
             dispatch(orderDataLoadingOff());
+        }
+    };
+}
+
+export function getOrder(orderNumber: number): AppThunk {
+    return async dispatch => {
+        try {
+            const jsonData = await singleOrderRequest(orderNumber);
+            if (jsonData.orders) {
+                dispatch(getCurrentOrderInfo(jsonData.orders))
+            }
+            else {
+                console.log('Ошибка..')
+                console.log('jsonData:', jsonData);
+            }
+        } catch (e) {
+            console.log("Get Order Error >>> ", e);
         }
     };
 }

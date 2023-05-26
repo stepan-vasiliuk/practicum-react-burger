@@ -60,12 +60,19 @@ export type TFeedDetailedOrder = {
     name: string;
 }
 
-export type TFeedProps = {
-    order: TFeedDetailedOrder;
+export type TProfileDetailedOrder = TFeedDetailedOrder & {
+    owner: IUser;
 }
+
 
 export enum WebsocketStatus {
     ONLINE = 'ONLINE',
     OFFLINE = 'OFFLINE',
     CONNECTING = 'CONNECTING',
+}
+
+export enum orderStatus {
+    done = 'Выполнен',
+    pending = 'Готовится',
+    created = 'Создан',
 }

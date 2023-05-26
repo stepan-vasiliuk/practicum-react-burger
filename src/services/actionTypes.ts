@@ -1,3 +1,5 @@
+import exp from "constants";
+
 /**
  * Загрузка данных ингредиентов
  * @type {string}
@@ -42,6 +44,8 @@ export const GET_ORDER_SUCCESS: 'GET_ORDER_SUCCESS' = 'GET_ORDER_SUCCESS';
 export const GET_ORDER_FAILED: 'GET_ORDER_FAILED' = 'GET_ORDER_FAILED';
 export const ORDER_MODAL_DATA_LOADING_ON: 'ORDER_MODAL_DATA_LOADING_ON' = 'ORDER_MODAL_DATA_LOADING_ON';
 export const ORDER_MODAL_DATA_LOADING_OFF: 'ORDER_MODAL_DATA_LOADING_OFF' = 'ORDER_MODAL_DATA_LOADING_OFF'
+
+export const GET_CURRENT_ORDER_INFO: 'GET_CURRENT_ORDER_INFO' = 'GET_CURRENT_ORDER_INFO';
 
 /**
  * Работа с пользователем
