@@ -1,19 +1,31 @@
 import {
+    GET_CURRENT_ORDER_INFO,
     GET_ORDER_FAILED,
     GET_ORDER_SUCCESS,
     MODAL_CLOSE,
-    MODAL_OPEN, ORDER_MODAL_DATA_LOADING_OFF,
+    MODAL_OPEN,
+    ORDER_MODAL_DATA_LOADING_OFF,
     ORDER_MODAL_DATA_LOADING_ON
 } from "../actionTypes";
 
-const initialState = {
-    isOpen: false,
-    orderNumber: 0,
-    hasError: false,
-    isLoading: false,
+import {TOrderActions} from "../actions/orderActions";
+import {TFeedDetailedOrder, TProfileDetailedOrder} from "../../utils/types";
+
+type TOrderInitial = {
+    isOpen: boolean;
+    order: TProfileDetailedOrder | TFeedDetailedOrder | null;
+    hasError: boolean;
+    isLoading: boolean;
 }
 
-export const orderReducer = (state = initialState, action) => {
+const initialState: TOrderInitial = {
+    isOpen: false,
+    order: null,
+    hasError: false,
+    isLoading: false,
+};
+
+export const orderReducer = (state = initialState, action: TOrderActions) => {
     switch (action.type) {
         case MODAL_CLOSE:
             return {
@@ -21,33 +33,38 @@ export const orderReducer = (state = initialState, action) => {
                 isOpen: false,
                 isLoading: false,
                 hasError: false,
-            }
+            };
         case MODAL_OPEN:
             return {
                 ...state,
                 isOpen: true,
-            }
+            };
         case GET_ORDER_SUCCESS:
             return {
                 ...state,
-                orderNumber: action.data
-            }
+                order: action.data
+            };
         case GET_ORDER_FAILED:
             return {
                 ...state,
                 hasError: true
-            }
+            };
         case ORDER_MODAL_DATA_LOADING_ON:
             return {
                 ...state,
                 isLoading: true,
-            }
+            };
         case ORDER_MODAL_DATA_LOADING_OFF:
             return {
                 ...state,
                 isLoading: false,
-            }
+            };
+        case GET_CURRENT_ORDER_INFO:
+            return {
+                ...state,
+                order: action.data[0],
+            };
         default:
             return state;
     }
-}
+};

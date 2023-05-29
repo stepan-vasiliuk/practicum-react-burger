@@ -31,11 +31,11 @@ export default function Header() {
                         </NavLink>
 
                         <NavLink
-                            to='/order-feed'
+                            to='/feed'
                             className={({isActive}) => headerStyles.menu_element + (isActive ?
                                 ` ${headerStyles.active_link}` : ``)}
                         >
-                            <ListIcon type={location.pathname === '/order-feed' ? 'primary' : 'secondary'}/>
+                            <ListIcon type={location.pathname === '/feed' ? 'primary' : 'secondary'}/>
                             <p >Лента заказов</p>
                         </NavLink>
 

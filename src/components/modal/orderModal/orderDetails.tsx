@@ -1,17 +1,17 @@
 import orderImage from "../../../images/orderImage.svg";
 import orderStyles from "./orderDetails.module.css";
 import React from "react";
-import {useSelector} from "react-redux";
+import { useTypedSelector} from "../../../hooks/hooks";
 
 
 export default function OrderDetails() {
 
-    // @ts-ignore
-    const orderNumber: number = useSelector(state => state.orderReducer.orderNumber);
-    // @ts-ignore
-    const hasError: boolean = useSelector(state => state.orderReducer.hasError);
-    // @ts-ignore
-    const isLoading: boolean = useSelector(state => state.orderReducer.isLoading);
+
+    const orderNumber: number | undefined = useTypedSelector(state => state.orderReducer.order?.number);
+
+    const hasError: boolean = useTypedSelector(state => state.orderReducer.hasError);
+
+    const isLoading: boolean = useTypedSelector(state => state.orderReducer.isLoading);
 
     return (
         <div className={orderStyles.order_modal}>

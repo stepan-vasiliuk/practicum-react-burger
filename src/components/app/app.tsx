@@ -1,11 +1,10 @@
-import React, {useState, useEffect} from "react";
-import appStyles from './app.module.css';
+import React, {useEffect} from "react";
+import appStyles from "./app.module.css";
 import Header from "../header/header";
 import Modal from "../modal/modal";
 import OrderDetails from "../modal/orderModal/orderDetails";
 import IngredientDetails from "../modal/ingredientDetails/IngredientDetails";
-import {useDispatch, useSelector} from "react-redux";
-import {checkUserAuth, ingredientsLoad, modalClose} from "../../services/actions";
+import {checkUserAuth, ingredientsLoad} from "../../services/actions";
 import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import HomePage from "../../pages/homePage/homePage";
 import LoginPage from "../../pages/loginPage/loginPage";
@@ -17,49 +16,51 @@ import ProfilePage from "../../pages/profile/profilePage";
 import EditPage from "../../pages/profile/editPage/editPage";
 import {OnlyAuth, OnlyUnAuth} from "../protectedRoute";
 import NotFoundPage from "../../pages/notFoundPage/notFoundPage";
-import OrderFeed from "../../pages/orderFeed/orderFeed";
+import Feed from "../../pages/feed/feed";
 import OrdersHistory from "../../pages/profile/ordersHistory/ordersHistory";
 import {IIngredient} from "../../utils/types";
+import {modalClose} from "../../services/actions/orderActions";
+import {useTypedDispatch, useTypedSelector} from "../../hooks/hooks";
+import OrderInfo from "../orderInfo/orderInfo";
+import ProfileOrderInfoPage from "../../pages/profile/orderDetailedPage/profileOrderInfoPage";
+import FeedInfoPage from "../../pages/feed/feedInfoPage/feedInfoPage";
 
 export default function App(): JSX.Element {
 
-    // @ts-ignore
-    const data: Array<IIngredient> = useSelector(state => state.dataReducer.data);
-    // @ts-ignore
-    const isLoading: boolean = useSelector(state => state.dataReducer.isLoading);
-    // @ts-ignore
-    const hasError: boolean = useSelector(state => state.dataReducer.hasError);
 
-    // @ts-ignore
-    const isModalOpen: boolean = useSelector(state => state.orderReducer.isOpen);
+    const data: ReadonlyArray<IIngredient> | [] = useTypedSelector(state => state.dataReducer.data);
+
+    const isLoading: boolean = useTypedSelector(state => state.dataReducer.isLoading);
+
+    const hasError: boolean = useTypedSelector(state => state.dataReducer.hasError);
+
+    const isModalOpen: boolean = useTypedSelector(state => state.orderReducer.isOpen);
 
 
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useTypedDispatch();
 
     const closeModals = () => {
         isModalOpen ? dispatch(modalClose()) : navigate(-1);
-    }
+    };
 
     useEffect(() => {
-        // @ts-ignore
-        dispatch(ingredientsLoad())
+        dispatch(ingredientsLoad());
     }, []);
 
 
     useEffect(() => {
-        // @ts-ignore
         dispatch(checkUserAuth());
-    }, [])
+    }, []);
 
 
     const handleError = () => {
-        alert('Ошибка при загрузке данных с сервера')
-    }
+        alert("Ошибка при загрузке данных с сервера");
+    };
 
     const handleIsLoading = () => {
-        console.log('Загрузка данных с сервера')
-    }
+        console.log("Загрузка данных с сервера");
+    };
 
     let location = useLocation();
     let state = location.state;
@@ -71,7 +72,7 @@ export default function App(): JSX.Element {
             });
             return current;
         } else return null;
-    }
+    };
 
 
     return (
@@ -86,21 +87,24 @@ export default function App(): JSX.Element {
                 <main className={appStyles.main}>
                     <div className="container-wrapper">
                         <Routes location={state?.background || location}>
-                            <Route path='/' element={<HomePage/>}/>
-                            <Route path='/order-feed' element={<OrderFeed/>}/>
-                            <Route path='/login' element={<OnlyUnAuth component={<LoginPage/>}/>}/>
-                            <Route path='/register' element={<OnlyUnAuth component={<RegisterPage/>}/>}/>
-                            <Route path='/forgot-password' element={<OnlyUnAuth component={<ForgotPassword/>}/>}/>
-                            <Route path='/reset-password' element={<OnlyUnAuth component={<ResetPassword/>}/>}/>
+                            <Route path="/" element={<HomePage/>}/>
+                            <Route path="/feed" element={<Feed/>}/>
+                            <Route path="/login" element={<OnlyUnAuth component={<LoginPage/>}/>}/>
+                            <Route path="/register" element={<OnlyUnAuth component={<RegisterPage/>}/>}/>
+                            <Route path="/forgot-password" element={<OnlyUnAuth component={<ForgotPassword/>}/>}/>
+                            <Route path="/reset-password" element={<OnlyUnAuth component={<ResetPassword/>}/>}/>
                             {getCurrentIngredient() &&
-                                <Route path='/ingredients/:_id' element={<IngredientDetailsPage
+                                <Route path="/ingredients/:_id" element={<IngredientDetailsPage
                                     ingredient={getCurrentIngredient()}/>}/>
                             }
-                            <Route path='/profile' element={<OnlyAuth component={<ProfilePage/>} />}>
+                            <Route path="/profile" element={<OnlyAuth component={<ProfilePage/>}/>}>
                                 <Route index element={<EditPage/>}/>
-                                <Route path='orders' element={<OrdersHistory/>}/>
+                                <Route path="orders" element={<OrdersHistory/>} />
                             </Route>
-                            <Route path='/*' element={<NotFoundPage/>}/>
+                            <Route path="/profile/orders/:number" element={<OnlyAuth
+                                component={<ProfileOrderInfoPage />} />} />
+                            <Route path="/feed/:number" element={<FeedInfoPage />} />
+                            <Route path="/*" element={<NotFoundPage/>}/>
                         </Routes>
 
                     </div>
@@ -108,13 +112,28 @@ export default function App(): JSX.Element {
 
             }
             {
-                getCurrentIngredient() && state?.background && (
+                state?.background && (
                     <Routes>
-                        <Route path='/ingredients/:_id' element={
+
+                        <Route path="/ingredients/:number" element={
+                            getCurrentIngredient() &&
                             <Modal onClose={closeModals}>
                                 <IngredientDetails ingredient={getCurrentIngredient()!}/>
                             </Modal>
-                        }/>
+                        }
+                        />
+                        <Route path="/feed/:number" element={
+                            <Modal onClose={closeModals}>
+                                <OrderInfo/>
+                            </Modal>
+                        }
+                        />
+                        <Route path="/profile/orders/:number" element={
+                            <Modal onClose={closeModals}>
+                                <OrderInfo/>
+                            </Modal>
+                        }
+                        />
                     </Routes>
                 )
             }
@@ -124,5 +143,5 @@ export default function App(): JSX.Element {
                 </Modal>
             }
         </>
-    )
+    );
 }

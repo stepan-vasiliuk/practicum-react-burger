@@ -1,13 +1,13 @@
 import loginStyles from '../formStyles.module.css';
 import {Button, EmailInput, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import {FormEvent, useCallback, useEffect, useState} from "react";
-import {Link, useLocation, useNavigate, useSearchParams} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
+import {FormEvent} from "react";
+import {Link} from "react-router-dom";
 import {useFormCustom} from "../../utils/form";
-import {userLogin, userRegister} from "../../services/actions";
+import {userLogin} from "../../services/actions";
+import {useTypedDispatch} from "../../hooks/hooks";
 
 export default function LoginPage() {
-    const dispatch = useDispatch();
+    const dispatch = useTypedDispatch();
 
     const initial = {
         email: "",
@@ -17,7 +17,7 @@ export default function LoginPage() {
     const {form, setForm, handleChange} = useFormCustom(initial);
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        // @ts-ignore
+
         dispatch(userLogin(form));
         setForm(initial);
     }

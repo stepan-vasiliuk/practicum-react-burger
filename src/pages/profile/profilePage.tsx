@@ -1,35 +1,26 @@
 import profileStyles from "./profilePage.module.css";
-import {NavLink, Outlet, useMatch, useResolvedPath} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {useFormCustom} from "../../utils/form";
+import {NavLink, Outlet, useMatch} from "react-router-dom";
 import {userLogOut} from "../../services/actions";
-import headerStyles from "../../components/header/header.module.css";
-import {element} from "prop-types";
+import {useTypedDispatch} from "../../hooks/hooks";
 
 export default function ProfilePage() {
 
-    const dispatch = useDispatch();
+    const dispatch = useTypedDispatch();
 
     const onExitClick = () => {
-        console.log('Выход>>> ')
-        // @ts-ignore
+        console.log("Выход>>> ");
         dispatch(userLogOut());
-    }
+    };
 
-    const matchPattern = useResolvedPath('').pathname;
-    const isProfile = ['/profile', '/profile/orders'].find(
-        (route) => route === matchPattern);
-
-
-    const profilePattern = useMatch('/profile');
-    const historyPattern = useMatch('/profile/orders');
+    const profilePattern = useMatch("/profile");
+    const historyPattern = useMatch("/profile/orders");
 
     return (
         <div className={`mt-30 ${profileStyles.profile}`}>
             <section className={profileStyles.static}>
                 <ul className={profileStyles.menu}>
                     <li className={profileStyles.menu_item}>
-                        <NavLink to='/profile'
+                        <NavLink to="/profile"
                                  className={profileStyles.element_text + (profilePattern ?
                                      ` ${profileStyles.active_text}` : ``)}
                         >
@@ -37,7 +28,7 @@ export default function ProfilePage() {
                         </NavLink>
                     </li>
                     <li className={profileStyles.menu_item}>
-                        <NavLink to='/profile/orders'
+                        <NavLink to="/profile/orders"
                                  className={profileStyles.element_text + (historyPattern ?
                                      ` ${profileStyles.active_text}` : ``)}
                         >
@@ -51,13 +42,19 @@ export default function ProfilePage() {
                     </li>
                 </ul>
                 <div className={profileStyles.page_description}>
-                    <p className='text text_type_main-small text_color_inactive'>В этом разделе вы можете<br/>
-                        изменить свои персональные данные</p>
+                    {profilePattern &&
+                        <p className="text text_type_main-small text_color_inactive">В этом разделе вы можете<br/>
+                            изменить свои персональные данные</p>
+                    }
+                    {historyPattern &&
+                        <p className="text text_type_main-small text_color_inactive">В этом разделе вы можете<br/>
+                            просмотреть свою историю заказов</p>
+                    }
                 </div>
             </section>
             <section className={profileStyles.dynamic_page}>
                 <Outlet/>
             </section>
         </div>
-    )
+    );
 }

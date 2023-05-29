@@ -5,14 +5,22 @@ import {
     INGREDIENTS_GET_SUCCESS,
     INGREDIENTS_LOAD
 } from "../actionTypes";
+import {TDataActions} from "../actions/dataActions";
+import {IIngredient} from "../../utils/types";
 
-const initialState = {
+type TDataInitial = {
+    isLoading: boolean,
+    hasError: boolean,
+    data: ReadonlyArray <IIngredient> | []
+}
+
+const initialState: TDataInitial = {
     isLoading: false,
     hasError: false,
     data: []
 }
 
-export const dataReducer = (state = initialState, action) => {
+export const dataReducer = (state = initialState, action: TDataActions): TDataInitial => {
     switch (action.type) {
         case INGREDIENTS_GET_SUCCESS:
             return {

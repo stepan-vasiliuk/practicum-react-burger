@@ -1,19 +1,8 @@
 import PropTypes from "prop-types";
 import {LegacyRef} from "react";
-
-export const ingredientTypes = PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    proteins: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    carbohydrates: PropTypes.number.isRequired,
-    calories: PropTypes.number.isRequired,
-    price: PropTypes.number.isRequired,
-    image: PropTypes.string.isRequired,
-    image_large: PropTypes.string.isRequired,
-    image_mobile: PropTypes.string.isRequired,
-}).isRequired;
+import {ThunkAction} from "redux-thunk";
+import {AppActions, RootState} from "../services";
+import {access} from "fs";
 
 export interface IIngredient {
     _id: string,
@@ -34,7 +23,7 @@ export interface IConstructorIngredient extends IIngredient {
 }
 
 export interface IIngredientCard {
-    ingredient: IIngredient;
+    ingredient: IIngredient | undefined | null;
 }
 
 export interface IIngredientType {
@@ -47,4 +36,43 @@ export interface IIngredientType {
 export interface IUser {
     name: string,
     email: string,
+}
+
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, AppActions>
+export type AppDispatch<TReturnType = void> = (
+    action: AppActions | AppThunk<TReturnType>
+) => TReturnType;
+
+
+export type TFeedOrders = {
+    orders: Array<TFeedDetailedOrder>;
+    total: number;
+    totalToday: number;
+}
+
+export type TFeedDetailedOrder = {
+    ingredients: Array<string>;
+    _id: string;
+    status: string;
+    number: number;
+    createdAt: string;
+    updatedAt: string;
+    name: string;
+}
+
+export type TProfileDetailedOrder = TFeedDetailedOrder & {
+    owner: IUser;
+}
+
+
+export enum WebsocketStatus {
+    ONLINE = 'ONLINE',
+    OFFLINE = 'OFFLINE',
+    CONNECTING = 'CONNECTING',
+}
+
+export enum orderStatus {
+    done = 'Выполнен',
+    pending = 'Готовится',
+    created = 'Создан',
 }

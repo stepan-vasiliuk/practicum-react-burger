@@ -1,7 +1,7 @@
 import {ChangeEvent, FormEvent, useState} from "react";
 import {useDispatch} from "react-redux";
 
-type TFormParams = {
+ export type TFormParams = {
     email?: string,
     name?: string,
     password?: string,

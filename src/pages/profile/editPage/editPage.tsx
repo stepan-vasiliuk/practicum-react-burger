@@ -1,18 +1,17 @@
-import formStyles from '../../formStyles.module.css';
 import editStyles from './editPage.module.css';
 import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import {FormEvent, useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
 import {useFormCustom} from "../../../utils/form";
 import {updateUserData} from "../../../services/actions";
+import {useTypedDispatch, useTypedSelector} from "../../../hooks/hooks";
 
 export default function EditPage() {
 
-    const dispatch = useDispatch();
-    // @ts-ignore
-    const name: string = useSelector(state => state.userReducer.user.name);
-    // @ts-ignore
-    const email: string = useSelector(state => state.userReducer.user.email);
+    const dispatch = useTypedDispatch();
+
+    const name: string | undefined = useTypedSelector(state => state.userReducer.user?.name);
+
+    const email: string | undefined = useTypedSelector(state => state.userReducer.user?.email);
 
     const [initial, setInitial] = useState({
         name: name,
@@ -33,7 +32,7 @@ export default function EditPage() {
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log(form);
-        // @ts-ignore
+
         dispatch(updateUserData(form));
     }
 
