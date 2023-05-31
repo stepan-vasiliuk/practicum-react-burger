@@ -64,11 +64,10 @@ export function getOrder(orderNumber: number): AppThunk {
         try {
             const jsonData = await singleOrderRequest(orderNumber);
             if (jsonData.orders) {
-                dispatch(getCurrentOrderInfo(jsonData.orders))
-            }
-            else {
-                console.log('Ошибка..')
-                console.log('jsonData:', jsonData);
+                dispatch(getCurrentOrderInfo(jsonData.orders));
+            } else {
+                console.log("Ошибка..");
+                console.log("jsonData:", jsonData);
             }
         } catch (e) {
             console.log("Get Order Error >>> ", e);

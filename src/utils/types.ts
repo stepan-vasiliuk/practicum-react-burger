@@ -38,6 +38,12 @@ export interface IUser {
     email: string,
 }
 
+export interface IUserWithToken {
+    accessToken: string,
+    refreshToken: string,
+    user: IUser,
+}
+
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, AppActions>
 export type AppDispatch<TReturnType = void> = (
     action: AppActions | AppThunk<TReturnType>
