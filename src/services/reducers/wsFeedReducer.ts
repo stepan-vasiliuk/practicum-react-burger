@@ -9,7 +9,7 @@ export type TWsFeedState = {
 }
 
 
-const initialState: TWsFeedState = {
+export const initialState: TWsFeedState = {
     status: WebsocketStatus.OFFLINE,
     orders: null,
     connectionError: "",

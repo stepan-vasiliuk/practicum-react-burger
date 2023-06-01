@@ -8,7 +8,7 @@ export type TWSOrderState = {
     connectionError: string;
 }
 
-const initialState: TWSOrderState = {
+export const initialState: TWSOrderState = {
     status: WebsocketStatus.OFFLINE,
     orders: null,
     connectionError: "",
