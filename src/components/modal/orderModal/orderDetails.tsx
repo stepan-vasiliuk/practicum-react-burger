@@ -19,7 +19,7 @@ export default function OrderDetails() {
                 {orderNumber && !hasError && !isLoading &&
                     <>
                         <section className={orderStyles.order_id}>
-                            <h2 className={'text text_type_digits-large'}>{orderNumber}</h2>
+                            <h2 data-test='order_number' className={'text text_type_digits-large'}>{orderNumber}</h2>
                             <p className={'text text_type_main-medium'}>Идентификатор заказа</p>
                         </section>
                         <img className={orderStyles.order_image} src={orderImage}>

@@ -29,7 +29,7 @@ export default function Modal({onClose, children} : TModalProps): JSX.Element {
         (
             <>
                 <div className={modalStyles.modal}>
-                    <a href='#' className={modalStyles.close_button} onClick={onClose}>
+                    <a href='#' data-test='close_modal_button' className={modalStyles.close_button} onClick={onClose}>
                         <CloseIcon type='primary'/>
                     </a>
                     {children}

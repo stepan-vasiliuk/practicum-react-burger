@@ -81,4 +81,8 @@ describe('wsFeedReducer test', () => {
         })
     })
 
+    it('should return initial state', () => {
+        expect(reducer(initialState, {type: ""})).toEqual(initialState);
+    })
+
 })

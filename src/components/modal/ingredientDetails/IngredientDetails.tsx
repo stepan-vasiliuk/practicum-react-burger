@@ -12,7 +12,7 @@ export default function IngredientDetails({ingredient}: IIngredientCard): JSX.El
                 <div className={cardStyles.ingredients_modal}>
                     <div className={cardStyles.content_wrapper}>
                         <div className={cardStyles.modal_header}>
-                            <h1 className={`text text_type_main-large ${cardStyles.header_text}`}>Детали
+                            <h1 data-test='modal_header' className={`text text_type_main-large ${cardStyles.header_text}`}>Детали
                                 ингредиента</h1>
                         </div>
                         <ul className={`pl-15 pr-15 ${cardStyles.modal_content}`}>

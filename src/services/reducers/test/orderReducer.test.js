@@ -10,7 +10,7 @@ import {
     orderDataLoadingOn
 } from "../../actions/orderActions";
 
-describe('order reducer checking', () => {
+describe('order.json reducer checking', () => {
 
     const order = {
         ingredients: ['01', '02', '03'],
@@ -26,7 +26,7 @@ describe('order reducer checking', () => {
         }
     }
 
-    it('should check all flags set to initial, except order', () => {
+    it('should check all flags set to initial, except order.json', () => {
         expect(reducer({
             ...initialState,
             isOpen: true,
@@ -49,7 +49,7 @@ describe('order reducer checking', () => {
         })
     })
 
-    it('should fill order field with correct order', () => {
+    it('should fill order.json field with correct order.json', () => {
         expect(reducer(initialState, getOrderSuccess(order))).toStrictEqual({
             ...initialState,
             order: order,
@@ -75,12 +75,15 @@ describe('order reducer checking', () => {
             .toStrictEqual(initialState)
     })
 
-    it('should set up to order field data from array', () => {
+    it('should set up to order.json field data from array', () => {
         const array = [order];
         expect(reducer(initialState, getCurrentOrderInfo(array))).toStrictEqual({
             ...initialState,
             order: order,
         })
+    })
+    it('should return initial state', () => {
+        expect(reducer(initialState, {type: ""})).toEqual(initialState);
     })
 
 })
