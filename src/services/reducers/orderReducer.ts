@@ -18,7 +18,7 @@ type TOrderInitial = {
     isLoading: boolean;
 }
 
-const initialState: TOrderInitial = {
+export const initialState: TOrderInitial = {
     isOpen: false,
     order: null,
     hasError: false,

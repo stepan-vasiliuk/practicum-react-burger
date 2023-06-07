@@ -1,5 +1,5 @@
 import {AUTH_CHECKED, CLEAR_USER_DATA, EMAIL_SENT, SET_USER, USER_REGISTER_FAILED} from "../actionTypes";
-import {IUser} from "../../utils/types";
+import {IUser, IUserWithToken} from "../../utils/types";
 
 export type TSetAuthChecked = {
     readonly type: typeof AUTH_CHECKED;
@@ -13,7 +13,10 @@ export type TClearUserData = {
 export type TSetUser = {
     readonly type: typeof SET_USER;
     readonly data: {
-        user: IUser;
+        user: {
+            email: string,
+            name: string,
+        }
     };
 }
 

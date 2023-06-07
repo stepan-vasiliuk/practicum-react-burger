@@ -4,7 +4,7 @@ import './index.css';
 import App from "./components/app/app";
 import {Provider} from "react-redux";
 import configureStore from "./services";
-import {BrowserRouter as Router} from "react-router-dom";
+import {HashRouter as Router} from "react-router-dom";
 import {DevSupport} from "@react-buddy/ide-toolbox";
 import {ComponentPreviews, useInitial} from "./dev";
 

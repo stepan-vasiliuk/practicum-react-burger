@@ -62,7 +62,7 @@ export const IngredientCard: FunctionComponent<IIngredientCard> = ({ingredient})
                     state={{background: location}}
                     style={{textDecoration: "none"}}
                 >
-                    <li className={`${cardStyles.card} pl-4 pr-4 pb-8`}>
+                    <li data-test={ingredient.name} className={`${cardStyles.card} pl-4 pr-4 pb-8`}>
                         {counter ?
                             <Counter count={counter} size={"default"}/> : null
                         }

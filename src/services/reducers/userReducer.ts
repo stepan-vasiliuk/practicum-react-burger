@@ -14,7 +14,7 @@ type TUserInitial = {
     emailSent: boolean;
 }
 
-const initialState: TUserInitial = {
+export const initialState: TUserInitial = {
     user: null,
     isAuthChecked: false,
     emailSent: false,

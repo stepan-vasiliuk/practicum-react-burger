@@ -14,7 +14,7 @@ type TDataInitial = {
     data: ReadonlyArray <IIngredient> | []
 }
 
-const initialState: TDataInitial = {
+export const initialState: TDataInitial = {
     isLoading: false,
     hasError: false,
     data: []

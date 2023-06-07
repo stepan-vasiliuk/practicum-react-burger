@@ -55,6 +55,8 @@ export default function BurgerConstructor(): JSX.Element {
         const idsToOrder = [bun?._id, ...ingredientIds, bun?._id];
         checkUserAuth();
         if (user) {
+            //TODO: Убрать ts-ignore
+
             // @ts-ignore
             dispatch(createOrder(idsToOrder));
             dispatch(modalOpen());
@@ -95,7 +97,7 @@ export default function BurgerConstructor(): JSX.Element {
 
     return (
         <div className={`${constructorStyles.board} pt-25 pb-10 pl-4`}>
-            <section className={constructorStyles.items} ref={dropTarget}>
+            <section data-test='drop_target' className={constructorStyles.items} ref={dropTarget}>
                 {!bun ?
                     <>
                         <div className={constructorStyles.item_top}>
@@ -119,7 +121,7 @@ export default function BurgerConstructor(): JSX.Element {
                     </>
                     :
                     <>
-                        <div className={constructorStyles.item_top}>
+                        <div data-test='item_top' className={constructorStyles.item_top}>
                             <ConstructorElement
                                 type="top"
                                 isLocked={true}
@@ -139,7 +141,7 @@ export default function BurgerConstructor(): JSX.Element {
                                 />)
                             )}
                         </ul>
-                        <div className={constructorStyles.item_bottom}>
+                        <div data-test='item_bottom' className={constructorStyles.item_bottom}>
                             <ConstructorElement
                                 type={"bottom"}
                                 isLocked={true}
@@ -155,7 +157,7 @@ export default function BurgerConstructor(): JSX.Element {
                     <span className="text text_type_digits-medium">{totalPriceUpdated}</span>
                     <CurrencyIcon type="primary"/>
                 </p>
-                <Button htmlType="button" type={"primary"} size={"large"}
+                <Button data-test='order_button' htmlType="button" type={"primary"} size={"large"}
                         onClick={() => handleOrderClick()}
                 >Оформить заказ</Button>
             </section>

@@ -2,6 +2,9 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## This Project was uploaded to Yandex cloud
+Open https://sv-stellar-burger.nomoredomains.rocks/ to navigate it in the browser
+
 ## Available Scripts
 
 In the project directory, you can run:
